@@ -17,7 +17,6 @@
 %token <float> FLOAT
 %token <char> CHAR
 %token <string> ID
-%token <list> LIST
 %token EOF
 
 
