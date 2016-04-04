@@ -40,12 +40,10 @@ rule token = parse
 | "true"	{TRUE}
 | "false"	{FALSE}
 | "array<int>"		{INTARRAY}
-| "array<char>"		{CHARARRAY}
 | "array<float>"	{FLOATARRAY}
 | "array<bool>"		{BOOLARRAY}
 | "array<string>"	{STRINGARRAY}
 | "int" 	{INT}
-| "char"	{CHAR}
 | "float"	{FLOAT}
 | "bool"	{BOOL}
 | "string"	{STRING}
