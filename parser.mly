@@ -13,7 +13,6 @@
 %token GT LT
 
 %token <int> LITERAL
-%token <bool> BOOL
 %token <double> DOUBLE
 %token <char> CHAR
 %token <string> ID
