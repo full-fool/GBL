@@ -1,27 +1,40 @@
-/* Ocamlyacc parser for MicroC */
+%{ open Ast %}
 
-%{
-open Ast
-%}
+%token SEMI LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE LANGLE RANGLE COMMA
+%token PLUS MINUS TIMES DIVIDE MODULE ASSIGN NOT
+%token EQ PLUSEQ MINUSEQ TIMESEQ DIVIDEEQ MODULEEQ NEQ
+%token LEQ  GEQ
+%token AND OR
+%token RIGHTSHIFT LEFTSHIFT DOMAINOP
+%token BITAND BITOR BITXOR BITNEG
+%token NEWLINE
+%token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END INT BOOL
+%token VOID TRUE FALSE
+%token GT LT
 
-%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
-%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
-%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
-%token RETURN IF ELSE FOR WHILE INT BOOL VOID
 %token <int> LITERAL
+%token <double> DOUBLE
+%token <char> CHAR
 %token <string> ID
+%token <list> LIST
+%token <dict> DICT
+%token <game> GAME
+%token <player> PLAYER
+%token <sprite> SPRITE
+%token <map> MAP
 %token EOF
 
-%nonassoc NOELSE
+
 %nonassoc ELSE
 %right ASSIGN
 %left OR
 %left AND
 %left EQ NEQ
-%left LT GT LEQ GEQ
+%left LANGLE RANGLE 
+%left LEQ GEQ
 %left PLUS MINUS
 %left TIMES DIVIDE
-%right NOT NEG
+%right NOT
 
 %start program
 %type <Ast.program> program
