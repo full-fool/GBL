@@ -10,6 +10,7 @@
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
 %token INT BOOL GAME PLAYER SPRITE MAP
+%token INTARRAY CHARARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -61,13 +62,18 @@ formal_list:
   | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 typ:
-    INT { Int }
-  | BOOL { Bool }
-  | VOID { Void }
-  | GAME { Game }
-  | PLAYER { Player }
-  | SPRITE {Sprite}
-  | MAP { Map }
+    INT         { Int         }
+  | BOOL        { Bool        }
+  | VOID        { Void        }
+  | GAME        { Game        }
+  | PLAYER      { Player      }
+  | SPRITE      { Sprite      }
+  | MAP         { Map         }
+  | INTARRAY    { IntArray    }
+  | CHARARRAY   { CharArray   }
+  | BOOLARRAY   { BoolArray   }
+  | FLOATARRAY  { FloatArray  }
+  | STRINGARRAY { StringArray }
 
 vdecl_list:
     /* nothing */    { [] }
