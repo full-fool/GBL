@@ -42,7 +42,7 @@ let translate (globals, functions) =
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
 
-  let put_t = L.var_arg_function_type i32_t (L.pointer_type i8_t) in
+  let put_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let put_func = L.declare_function "put" put_t the_module in
 
   (* Define each function (arguments and return type) so we can call it *)
