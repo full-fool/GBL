@@ -65,7 +65,7 @@ typ:
     INT { Int }
   | BOOL { Bool }
   | VOID { Void }
-  | GMAE { Game }
+  | GAME { Game }
   | PLAYER { Player }
   | SPRITE {Sprite}
   | MAP { Map }
