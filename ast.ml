@@ -23,4 +23,4 @@ type func_decl = {
 	body     : stmt list;
 }
 
-type program = bind list
+type program = bind list * func_decl list
