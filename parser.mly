@@ -9,14 +9,14 @@
 %token BITAND BITOR BITXOR BITNEG
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
-%token INT BOOL GAME PLAYER SPRITE MAP
+%token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
 %token INTARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
-%token STRINGCONSTANT FLOATCONSTANT
 %token GT LT
 
 %token <int> LITERAL
-%token <float> FLOAT
+%token <float> FLOATCONSTANT
+%token <string> STRINGCONSTANT
 %token <string> ID
 %token EOF
 
@@ -64,6 +64,8 @@ formal_list:
 typ:
     INT         { Int         }
   | BOOL        { Bool        }
+  | FLOAT       { Float       }
+  | STRING      { String      }
   | VOID        { Void        }
   | GAME        { Game        }
   | PLAYER      { Player      }
@@ -73,8 +75,6 @@ typ:
   | BOOLARRAY   { BoolArray   }
   | FLOATARRAY  { FloatArray  }
   | STRINGARRAY { StringArray }
-  | STRINGCONSTANT { StringLit }
-  | FLOATCONSTANT { FloatLit }
 
 
 
@@ -105,6 +105,7 @@ expr_opt:
 
 expr:
     LITERAL          { Literal($1)          }
+  | FLOATCONSTANT    { FloatLit($1)         }
   | TRUE             { BoolLit(true)        }
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
