@@ -40,6 +40,8 @@ rule token = parse
 | "or" 	{OR}
 | "not"	{NOT}
 | "int" {INT}
+| "true"	{TRUE}
+| "false"	{FALSE}
 | "double"	{DOUBLE}
 | "bool"	{BOOL}
 | "string"	{STRING}
@@ -49,6 +51,7 @@ rule token = parse
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}
 | "map"		{MAP}
+| "void"	{VOID}
 | "for"		{FOR}
 | "if"		{IF}
 | "else"	{ELSE}
@@ -57,8 +60,6 @@ rule token = parse
 | "continue"	{CONTINUE}
 | "while"	{WHILE}
 | "return"	{RETURN}
-| "end"		{END}
-| "fun"		{FUN}
 
 | ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
 | ['0'-'9']+['.']['0'-'9']+ as lxm {LITERAL(float_of_string lxm)}
