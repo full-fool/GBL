@@ -100,7 +100,7 @@ let translate (globals, functions) =
     	  | A.Mult    -> L.build_mul
         | A.Div     -> L.build_sdiv
     	  | A.And     -> L.build_and
-    	  | A.Equal   -> L.build_icmp L.Icmp.Eq
+    	  | A.Is   -> L.build_icmp L.Icmp.Eq
     	  ) e1' e2' "tmp" builder
       | A.Unop(op, e) ->
 	  let e' = expr builder e in
