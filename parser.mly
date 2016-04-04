@@ -26,7 +26,7 @@
 %token EOF
 
 
-%nonaasoc ELSE
+%nonassoc ELSE
 %right Assign
 %left Or
 %left And
