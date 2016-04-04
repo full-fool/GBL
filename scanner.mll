@@ -47,7 +47,6 @@ rule token = parse
 | "float"	{FLOAT}
 | "bool"	{BOOL}
 | "string"	{STRING}
-| "array"	{ARRAY}
 | "game"	{GAME}
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}
