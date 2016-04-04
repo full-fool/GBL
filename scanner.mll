@@ -22,7 +22,7 @@ rule token = parse
 | '^'	{BITXOR}
 | '~'	{BITNEG}
 | '@'	{DOMAINOP}
-| '\'	{NEWLINE}
+| '\\'	{NEWLINE}
 | ">>"	{RIGHTSHIFT}
 | "<<"	{LEFTSHIFT}
 | "+="	{PLUSEQ}
