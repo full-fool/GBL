@@ -88,7 +88,7 @@ let translate (globals, functions) =
     let rec expr builder = function
 	     A.Literal i -> L.const_int i32_t i
       | A.StringLit s -> let len = String.length s in 
-                      let cu = String.sub s 1 len - 2 in
+                      let cu = String.sub s 1 (len - 2) in
                       L.build_global_stringptr cu "str" builder
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | A.Noexpr -> L.const_int i32_t 0
