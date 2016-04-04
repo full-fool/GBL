@@ -106,6 +106,7 @@ expr_opt:
 expr:
     LITERAL          { Literal($1)          }
   | FLOATCONSTANT    { FloatLit($1)         }
+  | STRINGCONSTANT   { StringLit($1)        }
   | TRUE             { BoolLit(true)        }
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
