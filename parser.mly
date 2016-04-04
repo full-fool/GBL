@@ -37,9 +37,6 @@
 %left TIMES DIVIDE
 %right NOT
 
-%start expr
-%type <Ast.expr> expr
-
 %start program
 %type <Ast.program> program
 
