@@ -2,11 +2,13 @@ type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEq
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | Char | String | IntArray | CharArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
+ 
 
 type expr = Literal of int            | BoolLit of bool
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr
+          | ConstStr of string
 
 type stmt = Block of stmt list        | Expr of expr
           | If of expr * stmt         | Else of stmt
