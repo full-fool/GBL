@@ -10,14 +10,13 @@
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
 %token INT BOOL GAME PLAYER SPRITE MAP
-%token INTARRAY CHARARRAY FLOATARRAY BOOLARRAY STRINGARRAY
+%token INTARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
 %token STRINGCONSTANT FLOATCONSTANT
 %token GT LT
 
 %token <int> LITERAL
 %token <float> FLOAT
-%token <char> CHAR
 %token <string> ID
 %token EOF
 
@@ -71,7 +70,6 @@ typ:
   | SPRITE      { Sprite      }
   | MAP         { Map         }
   | INTARRAY    { IntArray    }
-  | CHARARRAY   { CharArray   }
   | BOOLARRAY   { BoolArray   }
   | FLOATARRAY  { FloatArray  }
   | STRINGARRAY { StringArray }
