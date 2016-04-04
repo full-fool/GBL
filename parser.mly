@@ -1,7 +1,7 @@
 %{ open Ast %}
 
 %token SEMI LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE LANGLE RANGLE COMMA
-%token PLUS MINUS TIMES DIVIDE MODULE ASSIGN Neg NOT
+%token PLUS MINUS TIMES DIVIDE MODULE ASSIGN NOT
 %token EQ PLUSEQ MINUSEQ TIMESEQ DIVIDEEQ MODULEEQ NEQ
 %token LEQ  GEQ
 %token AND OR
@@ -27,17 +27,16 @@
 
 
 %nonassoc ELSE
-%right Assign
-%left Or
-%left And
-%left Is
-%left Xor
-%left Equal Neq
+%right ASSIGN
+%left OR
+%left AND
+%left EQ
+%left EQ NEQ
 %left LANGLE RANGLE 
-%left Leq Geq
-%left Add Sub
-%left Mult Div
-%right Not Neg
+%left LEQ GEQ
+%left PLUS MINUS
+%left TIMES DIVIDE
+%right NOT
 
 %start expr
 %type <Ast.expr> expr
