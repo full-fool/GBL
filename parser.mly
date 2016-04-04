@@ -12,6 +12,7 @@
 %token INT BOOL GAME PLAYER SPRITE MAP
 %token INTARRAY CHARARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
+%token STRINGCONSTANT FLOATCONSTANT
 %token GT LT
 
 %token <int> LITERAL
@@ -74,6 +75,7 @@ typ:
   | BOOLARRAY   { BoolArray   }
   | FLOATARRAY  { FloatArray  }
   | STRINGARRAY { StringArray }
+
 
 vdecl_list:
     /* nothing */    { [] }
