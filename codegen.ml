@@ -108,13 +108,11 @@ let translate (globals, functions) =
 	  let e' = expr builder e in
 	  (match op with
 	    A.Neg     -> L.build_neg
-          | A.Not     -> L.build_not) e' "tmp" builder
+      | A.Not     -> L.build_not) e' "tmp" builder
       | A.Assign (s, e) -> let e' = expr builder e in
 	                   ignore (L.build_store e' (lookup s) builder); e'
-      | A.Call ("print", [e])  ->
-      L.build_call put_func [| expr builder e |] "" builder
-      | A.Call ("printb", [e]) ->
-	    L.build_call printf_func [| int_format_str ; (expr builder e) |] "printf" builder
+      | A.Call ("print", [e]) -> L.build_call put_func [| expr builder e |] "" builder
+      | A.Call ("printb", [e]) -> L.build_call printf_func [| int_format_str ; (expr builder e) |] "printf" builder
       | A.Call (f, act) ->
          let (fdef, fdecl) = StringMap.find f function_decls in
 	 let actuals = List.rev (List.map (expr builder) (List.rev act)) in
