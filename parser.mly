@@ -1,40 +1,27 @@
-%{ open Ast %}
+/* Ocamlyacc parser for MicroC */
 
-%token SEMI LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE LANGLE RANGLE COMMA
-%token PLUS MINUS TIMES DIVIDE MODULE ASSIGN NOT
-%token EQ PLUSEQ MINUSEQ TIMESEQ DIVIDEEQ MODULEEQ NEQ
-%token LEQ  GEQ
-%token AND OR
-%token RIGHTSHIFT LEFTSHIFT DOMAINOP
-%token BITAND BITOR BITXOR BITNEG
-%token NEWLINE
-%token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END INT BOOL
-%token VOID TRUE FALSE
-%token GT LT
+%{
+open Ast
+%}
 
+%token SEMI LPAREN RPAREN LBRACE RBRACE COMMA
+%token PLUS MINUS TIMES DIVIDE ASSIGN NOT
+%token EQ NEQ LT LEQ GT GEQ TRUE FALSE AND OR
+%token RETURN IF ELSE FOR WHILE INT BOOL VOID
 %token <int> LITERAL
-%token <double> DOUBLE
-%token <char> CHAR
 %token <string> ID
-%token <list> LIST
-%token <dict> DICT
-%token <game> GAME
-%token <player> PLAYER
-%token <sprite> SPRITE
-%token <map> MAP
 %token EOF
 
-
+%nonassoc NOELSE
 %nonassoc ELSE
 %right ASSIGN
 %left OR
 %left AND
 %left EQ NEQ
-%left LANGLE RANGLE 
-%left LEQ GEQ
+%left LT GT LEQ GEQ
 %left PLUS MINUS
 %left TIMES DIVIDE
-%right NOT
+%right NOT NEG
 
 %start program
 %type <Ast.program> program
@@ -86,6 +73,7 @@ stmt:
   | RETURN SEMI { Return Noexpr }
   | RETURN expr SEMI { Return $2 }
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
+  | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
   | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
@@ -112,6 +100,7 @@ expr:
   | expr GEQ    expr { Binop($1, Geq,   $3) }
   | expr AND    expr { Binop($1, And,   $3) }
   | expr OR     expr { Binop($1, Or,    $3) }
+  | MINUS expr %prec NEG { Unop(Neg, $2) }
   | NOT expr         { Unop(Not, $2) }
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
