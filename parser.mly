@@ -30,7 +30,6 @@
 %right ASSIGN
 %left OR
 %left AND
-%left EQ
 %left EQ NEQ
 %left LANGLE RANGLE 
 %left LEQ GEQ
