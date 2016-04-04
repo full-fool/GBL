@@ -1,27 +1,24 @@
 %{ open Ast %}
 
 %token SEMI LPAREN RPAREN LBRACK RBRACK LBRACE RBRACE LANGLE RANGLE COMMA
-%token Add Sub Mult Div Mod Assign Neg Not
-%token Equal AddEqual SubEqual MulEqual DivEqual ModEqual Neq
-%token Leq  Geq
-%token And Or Is Xor
-%token ShiftLeft ShiftRight At
-%token BITAND BITXOR BITNEG
+%token PLUS MINUS TIMES DIVIDE MODULE ASSIGN Neg NOT
+%token EQ PLUSEQ MINUSEQ TIMESEQ DIVIDEEQ MODULEEQ NEQ
+%token LEQ  GEQ
+%token AND OR
+%token RIGHTSHIFT LEFTSHIFT DOMAINOP
+%token BITAND BITOR BITXOR BITNEG
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END FUN
-(* we need  *)
 %token VOID TRUE FALSE
+%token GT LT
 
 %token <int> Literal
 %token <bool> BoolLit
 %token <double> Double
 %token <char> Char
 %token <string> Id
-%token <intarray> IntArray
-%token <chararray> chararray
-%token <boolarray> BoolArray
-%token <doublearray> DoubleArray
-%token <stringarray> StringArray
+%token <list> List
+%token <dict> Dict
 %token <game> Game
 %token <player> Player
 %token <sprite> Sprite
