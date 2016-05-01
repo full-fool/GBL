@@ -1,0 +1,1 @@
+Fatal error: exception Failure("illegal assignment array<int> = array<string> in intArray = stringArray”)
