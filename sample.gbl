@@ -1,0 +1,291 @@
+class GobangSprite::Sprite
+{
+  #variable in Sprite
+  #int Id;
+  #string Text;
+  #int OwnerId;
+
+  #function in Sprite
+  #Sprite();   ##construct function
+  #printSprite();
+
+};
+
+class GobangPlayer::Player
+{
+  #variable in Player
+  #int Id;
+  #string Name;
+  #string spritename;
+
+  #function in Player
+  #Player();  ##construct function
+  #printPlayer();
+
+
+};
+
+struct Status
+{
+
+    Sprite SpriteList[MapSize[0]][MapSize[1]];
+    #LastMove:
+    int FormerId; #the ID of former player
+    array<int> FormerPosition[2];
+    #只保存上一步的信息
+    #int LatterId;
+    #array<int> LatterPosition[2];
+    int NextPlayerID;
+    int NextSpriteID;
+};
+
+class Gobang::Game
+{
+    #functions:
+    void initialize(array<int> MapS, int PlayerNum, Player PlayerL, string Blanksignal)
+    {
+        ##paraments
+        array<int> MapSize[2] = {MapS[0], MapS[1]};
+        int PlayerNumber = PlayerNum;
+        #这里的new不知道怎么实现
+        Player PlayerList[PlayerNum];
+        for(int i = 0; i < PlayerNum; i++)
+        {
+            Id@PlayerList[i] = Id@PlayerL[i];
+            Name@PlayerList[i] = Name@PlayerL[i];
+            spritename@PlayerList[i] = spritename@PlayerL[i];
+        }
+        
+        string blank = Blanksignal;
+        for(int i = 0; i < MapSize[0]; i++)
+        {
+            for(int j = 0; j < MapSize[1]; j++)
+            {
+                Id@SpriteList[i][j]@GobangStatus = -1;
+                Text@SpriteList[i][j]@GobangStatus = "*";
+                OwnerId@SpriteList[i][j]@GobangStatus = -1;
+            }
+        }
+        FormerId@GobangStatus = -1;
+        FormerPosition[0]@GobangStatus = -1;
+        FormerPosition[1]@GobangStatus = -1;
+        #LatterId@GobangStatus = -1;
+        #LatterPosition[0]@GobangStatus = -1;
+        #LatterPosition[1]@GobangStatus = -1;
+        NextPlayerID@GobangStatus = 0;
+        NextSpriteID@GobangStatus = 0;
+    }
+    #bool win(Status s, Move move), 由于status里已经包含了上次下的棋的位置等信息，故删除Move move
+    bool win()
+    {
+      string PlayerSprite = spritename@PlayerList[FormerId@GobangStatus];
+      array<int> position[2];
+      position[0] = FormerPosition[0]@GobangStatus;
+      position[1] = FormerPosition[1]@GobangStatus;
+      int left = max(position[0] - 4, 0);
+      int right = min(position[0] + 4, Mapsize[0] - 1);
+      int up = max(position[1] - 4, 0);
+      int down = min(position[1] + 4, Mapsize[1] - 1);
+
+      int count;
+      string PreSprite; = "*";
+      #check row
+      PreSprite = "*";
+      count = 0;
+      for(int j = left; j <= right; j++)
+      {
+        string curSprite = Text@SpriteList[position[0]][j]@GobangStatus;
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite is not PlayerSprite)
+          {
+            count = 1;
+          }
+          else count++;
+          if(count == 5)
+            return true;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      #check column
+      PreSprite = "*";
+      count = 0;
+      for(int i = up; i <= down; i++)
+      {
+        string curSprite = Text@SpriteList[i][position[1]]@GobangStatus;
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite is not PlayerSprite)
+          {
+            count = 1;
+          }
+          else count++;
+          if(count == 5)
+            return true;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      #check diagonal left-up to right-down
+      PreSprite = "*";
+      count = 0;
+      array<int> leftup[2];
+      int leftupDistance = min(4, position[0], position[1])
+      leftup[0] = position[0] - leftupDistance;
+      leftup[1] = position[1] - leftupDistance;
+
+      array<int> rightdown[2];
+      int rightdownDistance = min(4, MapSize[0] - 1 - position[0], MapSize[1] - 1 - position[1]);
+      rightdown[0] = position[0] + rightdownDistance;
+      rightdown[1] = position[1] + rightdownDistance;
+
+      array<int> curposition[2];
+      
+      for(int i = 0; i <= (rightdown[0] - leftup[0]); i++)
+      {
+        curposition[0] = leftup[0] + i;
+        curposition[1] = leftup[1] + i;
+        string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite is not PlayerSprite)
+          {
+            count = 1;
+          }
+          else count++;
+          if(count == 5)
+            return true;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+
+      #check diagonal left-down to right-up
+      PreSprite = "*";
+      count = 0;
+      array<int> leftdown[2];
+      int leftdownDistance = min(4, position[0], MapSize[1] - 1 - position[1])
+      leftdown[0] = position[0] - leftdownDistance;
+      leftdown[1] = position[1] + leftdownDistance;
+
+      array<int> rightup[2];
+      int rightupDistance = min(4, MapSize[0] - 1 - position[0], position[1]);
+      rightup[0] = position[0] + rightupDistance;
+      rightup[1] = position[1] - rightupDistance;
+
+      array<int> curposition[2];
+      
+      for(int i = 0; i <= (rightup[0] - leftdown[0]); i++)
+      {
+        curposition[0] = leftdown[0] + i;
+        curposition[1] = leftdown[1] - i;
+        string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite is not PlayerSprite)
+          {
+            count = 1;
+          }
+          else count++;
+          if(count == 5)
+            return true;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      return false;
+    }
+    #由于检查是在落子之前，此时status还未更新，故需要move的信息，但zst觉得Move里只包含了位置信息，所以没必要单独创一个Move的结构体
+    #bool isLegal(Status s, Move nextmove)
+    bool isLegal(Status GobangStatus, array<int> position)
+    {
+      if(not (position[0]>=0 and position[0]<MapSize[0] and position[1]>=0 and position[1]<MapSize[1]))
+        return false;
+      if(Text@SpriteList[position[0]][position[1]]@GobangStatus@mygame == "*")
+        return true;
+      else return false;
+    }
+    void update(array<int> InputPosition)
+    {
+        ID@SpriteList[InputPosition[0]][InputPosition[1]]@GobangStatus = NextSpriteID@GobangStatus;
+        OwnerId@SpriteList[InputPosition[0]][InputPosition[1]]@GobangStatus = NextPlayerID@GobangStatus;
+        Text@SpriteList[InputPosition[0]][InputPosition[1]]@GobangStatus = spritename@PlayerList[NextPlayerID];
+        FormerId@GobangStatus = NextPlayerID@GobangStatus;
+        FormerPosition[0]@GobangStatus = InputPosition[0];
+        FormerPosition[1]@GobangStatus = InputPosition[1];
+        NextSpriteID@GobangStatus = NextSpriteID@GobangStatus + 1;
+        NextPlayerID@GobangStatus = NextPlayerID@GobangStatus + 1;
+        if(NextPlayerID@GobangStatus == PlayerNumber)
+            NextPlayerID@GobangStatus = 0;
+    }
+    
+    
+    
+    void printGame();
+    #for(int i = 0; i < MapSize[0]; i++)
+    {
+      for(int j = 0; j < MapSize[1]; j++)
+      {
+        print(Text@SpriteList[i][j]@GobangStatus@mygame);
+      }
+      print("\n");
+    }
+      
+    
+    #variables:
+    array<int> MapSize[2];
+    int PlayerNumber;
+    Player PlayerList[2];
+    string blank;
+
+    Status GobangStatus;
+
+}
+
+
+#assume the input stream is stdin>>...
+void main()
+{
+    Gobang mygame;
+    array<int> MapS[2] = {15, 15};
+    int PlayerNum = 2;
+    Player PlayerL[2] = {(0, "Cuidiao", "C"), (1, "Xicao", "X")};
+    string Blanksignal = "*";
+    initialize(MapS, PlayerNum, PlayerL, Blanksignal)@mygame;
+    printGame()@mygame;
+    
+    while(not win()@mygame)
+    {
+        print("This is the turn of player");
+        print(NextPlayerID@GobangStatus@mygame);
+        
+        #input position
+        array<int> InputPosition[2];
+        bool legal = false;
+        while(not legal)
+        {
+          stdin>>InputPosition[0];
+          stdin>>InputPosition[1];
+          legal = isLegal(InputPosition)@mygame;
+        }
+        
+        #update status
+        update(InputPosition)@mygame;;
+
+        #print map
+        printGame()@mygame;
+    }
+    #print
+    int winner = NextPlayerID - 1;
+    print("Winner is: ");
+    print(winner);
+}
