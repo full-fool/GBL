@@ -27,26 +27,26 @@ ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o parser.cmi p
 # Target: codegen.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:codegen.cmo, file:codegen.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmo codegen.ml
 + ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmo codegen.ml
-File "codegen.ml", line 28, characters 21-132:
+File "codegen.ml", line 27, characters 21-132:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Float|IntArray|BoolArray|FloatArray|StringArray|Game|Player|Sprite|Map)
-File "codegen.ml", line 99, characters 7-244:
+File "codegen.ml", line 98, characters 7-513:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
-(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Neq|Less|Leq|Greater|Geq|
-Or|Xor|ShiftLeft|ShiftRight|At)
-File "codegen.ml", line 88, characters 27-1519:
+(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Xor|ShiftLeft|ShiftRight|
+At)
+File "codegen.ml", line 87, characters 27-1788:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 FloatLit _
-File "codegen.ml", line 133, characters 27-1560:
+File "codegen.ml", line 138, characters 27-1560:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Else _|Elif (_, _)|Break|Continue)
-File "codegen.ml", line 43, characters 6-17:
+File "codegen.ml", line 42, characters 6-17:
 Warning 26: unused variable printf_func.
-File "codegen.ml", line 63, characters 8-22:
+File "codegen.ml", line 62, characters 8-22:
 Warning 26: unused variable int_format_str.
 # Target: scanner.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:scanner.cmo, file:scanner.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmo scanner.ml
@@ -66,26 +66,26 @@ ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o parser.cmx
 # Target: codegen.cmx, tags: { compile, extension:cmx, extension:ml, file:codegen.cmx, file:codegen.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmx codegen.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmx codegen.ml
-File "codegen.ml", line 28, characters 21-132:
+File "codegen.ml", line 27, characters 21-132:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Float|IntArray|BoolArray|FloatArray|StringArray|Game|Player|Sprite|Map)
-File "codegen.ml", line 99, characters 7-244:
+File "codegen.ml", line 98, characters 7-513:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
-(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Neq|Less|Leq|Greater|Geq|
-Or|Xor|ShiftLeft|ShiftRight|At)
-File "codegen.ml", line 88, characters 27-1519:
+(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Xor|ShiftLeft|ShiftRight|
+At)
+File "codegen.ml", line 87, characters 27-1788:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 FloatLit _
-File "codegen.ml", line 133, characters 27-1560:
+File "codegen.ml", line 138, characters 27-1560:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Else _|Elif (_, _)|Break|Continue)
-File "codegen.ml", line 43, characters 6-17:
+File "codegen.ml", line 42, characters 6-17:
 Warning 26: unused variable printf_func.
-File "codegen.ml", line 63, characters 8-22:
+File "codegen.ml", line 62, characters 8-22:
 Warning 26: unused variable int_format_str.
 # Target: scanner.cmx, tags: { compile, extension:cmx, extension:ml, file:scanner.cmx, file:scanner.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmx scanner.ml

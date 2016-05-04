@@ -8,7 +8,6 @@ class GobangSprite::Sprite
   #function in Sprite
   #Sprite();   ##construct function
   #printSprite();
-
 };
 
 class GobangPlayer::Player
@@ -21,8 +20,6 @@ class GobangPlayer::Player
   #function in Player
   #Player();  ##construct function
   #printPlayer();
-
-
 };
 
 struct Status
@@ -75,6 +72,7 @@ class Gobang::Game
         NextPlayerID@GobangStatus = 0;
         NextSpriteID@GobangStatus = 0;
     }
+
     #bool win(Status s, Move move), 由于status里已经包含了上次下的棋的位置等信息，故删除Move move
     bool win()
     {
@@ -166,7 +164,6 @@ class Gobang::Game
         PreSprite = curSprite;
       }
 
-
       #check diagonal left-down to right-up
       PreSprite = "*";
       count = 0;
@@ -198,10 +195,10 @@ class Gobang::Game
             return true;
         }
         else count = 0;
-
+        
         PreSprite = curSprite;
       }
-
+      
       return false;
     }
     #由于检查是在落子之前，此时status还未更新，故需要move的信息，但zst觉得Move里只包含了位置信息，所以没必要单独创一个Move的结构体
@@ -214,6 +211,7 @@ class Gobang::Game
         return true;
       else return false;
     }
+    
     void update(array<int> InputPosition)
     {
         ID@SpriteList[InputPosition[0]][InputPosition[1]]@GobangStatus = NextSpriteID@GobangStatus;
@@ -228,8 +226,6 @@ class Gobang::Game
             NextPlayerID@GobangStatus = 0;
     }
     
-    
-    
     void printGame();
     #for(int i = 0; i < MapSize[0]; i++)
     {
@@ -239,7 +235,6 @@ class Gobang::Game
       }
       print("\n");
     }
-      
     
     #variables:
     array<int> MapSize[2];

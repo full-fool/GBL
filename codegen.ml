@@ -9,7 +9,6 @@ Detailed documentation on the OCaml LLVM library:
 
 http://llvm.moe/
 http://llvm.moe/ocaml/
-
 *)
 
 module L = Llvm
@@ -97,12 +96,18 @@ let translate (globals, functions) =
     	  let e1' = expr builder e1
     	  and e2' = expr builder e2 in
     	  (match op with
-    	    A.Add     -> L.build_add
+          A.Add     -> L.build_add
     	  | A.Sub     -> L.build_sub
     	  | A.Mult    -> L.build_mul
         | A.Div     -> L.build_sdiv
     	  | A.And     -> L.build_and
     	  | A.Is   -> L.build_icmp L.Icmp.Eq
+        | A.Or      -> L.build_or
+        | A.Neq     -> L.build_icmp L.Icmp.Ne
+        | A.Less    -> L.build_icmp L.Icmp.Slt
+        | A.Leq     -> L.build_icmp L.Icmp.Sle
+        | A.Greater -> L.build_icmp L.Icmp.Sgt
+        | A.Geq     -> L.build_icmp L.Icmp.Sge
     	  ) e1' e2' "tmp" builder
       | A.Unop(op, e) ->
 	  let e' = expr builder e in
