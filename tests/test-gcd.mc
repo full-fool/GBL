@@ -9,10 +9,9 @@ int gcd(int a, int b) {
 int main()
 {
   int a;
-
-  a = gcd(3,15);
   int b;
+  a = gcd(3,15);
 
-  print("123");
+  print(a);
   return 0;
 }

@@ -22,12 +22,14 @@ let translate (globals, functions) =
   and i32_t  = L.i32_type  context
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
+  and float_t = L.float_type   context
   and void_t = L.void_type context in
 
   let ltype_of_typ = function
       A.Int -> i32_t
     | A.Bool -> i1_t
     | A.Void -> void_t
+    | A.Float -> float_t
     | A.String -> L.pointer_type i8_t in
 
   (* Declare each global variable; remember its value in a map *)
@@ -89,6 +91,7 @@ let translate (globals, functions) =
       | A.StringLit s -> let len = String.length s in 
                       let cu = String.sub s 1 (len - 2) in
                       L.build_global_stringptr cu "str" builder
+      | A.FloatLit f -> L.const_float float_t f
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | A.Noexpr -> L.const_int i32_t 0
       | A.Id s -> L.build_load (lookup s) s builder

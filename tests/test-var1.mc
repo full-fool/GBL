@@ -1,7 +1,6 @@
 int main()
 {
-  int a;
-  a = 42;
-  println(a);
+  float a;
+  a = 42.11;
   return 0;
 }
