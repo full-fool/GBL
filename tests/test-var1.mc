@@ -1,7 +1,5 @@
 int main()
 {
-  int a;
-  a = 42;
-  println(a);
+  prints("123123123123");
   return 0;
 }

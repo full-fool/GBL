@@ -11,8 +11,7 @@ type expr = Literal of int            | BoolLit of bool
           | Assign of string * expr   | Call of string * expr list
 
 type stmt = Block of stmt list        | Expr of expr
-          | If of expr * stmt * stmt  | Else of stmt
-          | Elif of expr * stmt       
+          | If of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue

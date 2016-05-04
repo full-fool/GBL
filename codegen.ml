@@ -9,7 +9,6 @@ Detailed documentation on the OCaml LLVM library:
 
 http://llvm.moe/
 http://llvm.moe/ocaml/
-
 *)
 
 module L = Llvm
@@ -23,12 +22,14 @@ let translate (globals, functions) =
   and i32_t  = L.i32_type  context
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
+  and float_t = L.float_type   context
   and void_t = L.void_type context in
 
   let ltype_of_typ = function
       A.Int -> i32_t
     | A.Bool -> i1_t
     | A.Void -> void_t
+    | A.Float -> float_t
     | A.String -> L.pointer_type i8_t in
 
   (* Declare each global variable; remember its value in a map *)
@@ -87,9 +88,8 @@ let translate (globals, functions) =
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
 	     A.Literal i -> L.const_int i32_t i
-      | A.StringLit s -> let len = String.length s in 
-                      let cu = String.sub s 1 (len - 2) in
-                      L.build_global_stringptr cu "str" builder
+      | A.StringLit s -> L.build_global_stringptr s "str" builder
+      | A.FloatLit f -> L.const_float float_t f
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | A.Noexpr -> L.const_int i32_t 0
       | A.Id s -> L.build_load (lookup s) s builder
@@ -97,12 +97,18 @@ let translate (globals, functions) =
     	  let e1' = expr builder e1
     	  and e2' = expr builder e2 in
     	  (match op with
-    	    A.Add     -> L.build_add
+          A.Add     -> L.build_add
     	  | A.Sub     -> L.build_sub
     	  | A.Mult    -> L.build_mul
         | A.Div     -> L.build_sdiv
     	  | A.And     -> L.build_and
-    	  | A.Is   -> L.build_icmp L.Icmp.Eq
+    	  | A.Is      -> L.build_icmp L.Icmp.Eq
+        | A.Or      -> L.build_or
+        | A.Neq     -> L.build_icmp L.Icmp.Ne
+        | A.Less    -> L.build_icmp L.Icmp.Slt
+        | A.Leq     -> L.build_icmp L.Icmp.Sle
+        | A.Greater -> L.build_icmp L.Icmp.Sgt
+        | A.Geq     -> L.build_icmp L.Icmp.Sge
     	  ) e1' e2' "tmp" builder
       | A.Unop(op, e) ->
 	  let e' = expr builder e in
