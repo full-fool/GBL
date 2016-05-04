@@ -11,6 +11,11 @@
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
 %token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
 %token INTARRAY FLOATARRAY BOOLARRAY STRINGARRAY
+
+%token STRUCT CLASS
+%token SPRITEARRAY
+
+
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -78,6 +83,9 @@ typ:
   | BOOLARRAY   { BoolArray   }
   | FLOATARRAY  { FloatArray  }
   | STRINGARRAY { StringArray }
+  | SPRITEARRAY { Spritearray }
+  | STRCUT      { Struct      }
+  | CLASS       { Class       }
 
 
 vdecl_list:
@@ -99,10 +107,21 @@ stmt:
   | RETURN SEMI { Return Noexpr }
   | RETURN expr SEMI { Return $2 }
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
-  | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
+  | IF LPAREN expr RPAREN stmt elifstmt elsestmt  { If({condition=$3; stmt=$5} :: $6, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+  | BREAK SEMI { Break }
+  | CONTINUE SEMI { Continue }
+
+elifstmt:
+	/* nothing */ { [] }
+  | ELIF LPAREN expr RPAREN stmt elifstmt { {condition=$3;stmt=$5} :: $6}
+
+elsestmt:
+	/* nothing */ { [] }
+  | ELSE stmt { Some($2) }
+
 
 expr_opt:
     /* nothing */ { Noexpr }
