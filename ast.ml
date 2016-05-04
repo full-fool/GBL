@@ -1,4 +1,4 @@
-type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | Xor | ShiftLeft | ShiftRight | At
+type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
@@ -47,9 +47,6 @@ let string_of_op = function
   | Geq -> ">="
   | And -> "&&"
   | Or -> "||"
-  | Xor -> "^"
-  | ShiftLeft -> "<<"
-  | ShiftRight -> ">>"
   | At -> "@"
 
 let string_of_uop = function

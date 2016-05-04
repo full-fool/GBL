@@ -97,7 +97,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[position[0]][j]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -118,7 +118,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[i][position[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -153,7 +153,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -189,7 +189,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
