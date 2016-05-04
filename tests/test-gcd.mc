@@ -11,8 +11,6 @@ int main()
   int a;
 
   a = gcd(3,15);
-  int b;
-
-  print("123");
+int c;
   return 0;
 }

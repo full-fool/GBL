@@ -1,4 +1,16 @@
-{ open Parser }
+{ open Parser 
+let strip str =
+  Scanf.sscanf str "%S" (fun s -> s)
+
+}
+
+
+
+let str_chars = [^ '"' '\\'] | "\\\\" | "\\\""  | "\\'"
+| "\\n" | "\\r" | "\\t" | "\\b"
+| "\\" [ '0'-'9' ]  [ '0'-'9' ]  [ '0'-'9' ]
+let str = '"' str_chars* '"'
+
 rule token = parse
 [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
 | "#[^\n]*\n"	{COMMENT}
@@ -57,6 +69,6 @@ rule token = parse
 
 | ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
 | ['0'-'9']+['.']['0'-'9']+ as lxm {FLOATCONSTANT(float_of_string lxm)}
-| '"'[^'"']+'"' as lxm {STRINGCONSTANT(lxm)}
+| str as lxm {STRINGCONSTANT(strip(Lexing.lexeme lexbuf))}
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) } | eof { EOF }
 | _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }

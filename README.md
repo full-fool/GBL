@@ -2,7 +2,8 @@
 programming language and translators course project
 todo
 1. 类型，float，string，array，spritearray
-2. 函数重载
+2. printi, printf, printb, prints
+3. 函数重载
 3. print(重载), println
 4. break, continue
 5. elseif
