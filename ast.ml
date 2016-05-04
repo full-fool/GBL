@@ -11,8 +11,7 @@ type expr = Literal of int            | BoolLit of bool
           | Assign of string * expr   | Call of string * expr list
 
 type stmt = Block of stmt list        | Expr of expr
-          | If of expr * stmt * stmt  | Else of stmt
-          | Elif of expr * stmt       
+          | If of expr * stmt * stmt 
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue
@@ -45,16 +44,13 @@ let string_of_op = function
   | Leq -> "<="
   | Greater -> ">"
   | Geq -> ">="
-  | And -> "&&"
-  | Or -> "||"
-  | Xor -> "^"
-  | ShiftLeft -> "<<"
-  | ShiftRight -> ">>"
+  | And -> "and"
+  | Or -> "or"
   | At -> "@"
 
 let string_of_uop = function
     Neg -> "-"
-  | Not -> "!"
+  | Not -> "not"
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
