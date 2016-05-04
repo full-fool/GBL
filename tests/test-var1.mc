@@ -1,6 +1,5 @@
 int main()
 {
-  float a;
-  a = 42.11;
+  print("123123123123");
   return 0;
 }

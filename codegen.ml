@@ -88,9 +88,7 @@ let translate (globals, functions) =
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
 	     A.Literal i -> L.const_int i32_t i
-      | A.StringLit s -> let len = String.length s in 
-                      let cu = String.sub s 1 (len - 2) in
-                      L.build_global_stringptr cu "str" builder
+      | A.StringLit s -> L.build_global_stringptr s "str" builder
       | A.FloatLit f -> L.const_float float_t f
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | A.Noexpr -> L.const_int i32_t 0
@@ -104,7 +102,7 @@ let translate (globals, functions) =
     	  | A.Mult    -> L.build_mul
         | A.Div     -> L.build_sdiv
     	  | A.And     -> L.build_and
-    	  | A.Is   -> L.build_icmp L.Icmp.Eq
+    	  | A.Is      -> L.build_icmp L.Icmp.Eq
         | A.Or      -> L.build_or
         | A.Neq     -> L.build_icmp L.Icmp.Ne
         | A.Less    -> L.build_icmp L.Icmp.Slt
