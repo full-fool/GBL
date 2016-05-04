@@ -128,27 +128,32 @@ expr_opt:
   | expr          { $1 }
 
 expr:
-    LITERAL          { Literal($1)          }
-  | FLOATCONSTANT    { FloatLit($1)         }
-  | STRINGCONSTANT   { StringLit($1)        }
-  | TRUE             { BoolLit(true)        }
-  | FALSE            { BoolLit(false)       }
-  | ID               { Id($1)               }
-  | expr PLUS   expr { Binop($1, Add,   $3) }
-  | expr MINUS  expr { Binop($1, Sub,   $3) }
-  | expr TIMES  expr { Binop($1, Mult,  $3) }
-  | expr DIVIDE expr { Binop($1, Div,   $3) }
-  | expr EQ     expr { Binop($1, Is, $3) }
-  | expr NEQ    expr { Binop($1, Neq,   $3) }
-  | expr LT     expr { Binop($1, Less,  $3) }
-  | expr LEQ    expr { Binop($1, Leq,   $3) }
-  | expr GT     expr { Binop($1, Greater, $3) }
-  | expr GEQ    expr { Binop($1, Geq,   $3) }
-  | expr AND    expr { Binop($1, And,   $3) }
-  | expr OR     expr { Binop($1, Or,    $3) }
-  | NOT expr         { Unop(Not, $2) }
-  | ID ASSIGN expr   { Assign($1, $3) }
-  | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+    LITERAL            { Literal($1)             }
+  | FLOATCONSTANT      { FloatLit($1)            }
+  | STRINGCONSTANT     { StringLit($1)           }
+  | TRUE               { BoolLit(true)           }
+  | FALSE              { BoolLit(false)          }
+  | ID                 { Id($1)                  }
+  | expr PLUS     expr { Binop($1, Add,      $3) }
+  | expr MINUS    expr { Binop($1, Sub,      $3) }
+  | expr TIMES    expr { Binop($1, Mult,     $3) }
+  | expr DIVIDE   expr { Binop($1, Div,      $3) }
+  | expr EQ       expr { Binop($1, Is,       $3) }
+  | expr NEQ      expr { Binop($1, Neq,      $3) }
+  | expr PLUSEQ   expr { Binop($1, Pluseq,   $3) }
+  | expr MINUSEQ  expr { Binop($1, Minuseq,  $3) }
+  | expr TIMESEQ  expr { Binop($1, Timeseq,  $3) }
+  | expr DIVIDEEQ expr { Binop($1, Divideeq, $3) }
+  | expr MODULEEQ expr { Binop($1, Moduleeq, $3) }
+  | expr LT       expr { Binop($1, Less,     $3) }
+  | expr LEQ      expr { Binop($1, Leq,      $3) }
+  | expr GT       expr { Binop($1, Greater,  $3) }
+  | expr GEQ      expr { Binop($1, Geq,      $3) }
+  | expr AND      expr { Binop($1, And,      $3) }
+  | expr OR       expr { Binop($1, Or,       $3) }
+  | NOT expr           { Unop(Not, $2)           }
+  | ID ASSIGN expr     { Assign($1, $3)          }
+  | ID LPAREN actuals_opt RPAREN { Call($1, $3)  }
   | LPAREN expr RPAREN { $2 }
 
 actuals_opt:
