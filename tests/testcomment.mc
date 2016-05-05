@@ -1,7 +1,5 @@
 int main(){
-# this is another comment
-#
-#this is comment
-print("hello world");
+#int a=3;
+prints("hello world");
 return 0;
 }

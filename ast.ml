@@ -2,6 +2,8 @@ type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEq
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
+type array_bind = typ * string * int
+
 
 
 type expr = Literal of int            | BoolLit of bool
@@ -9,7 +11,7 @@ type expr = Literal of int            | BoolLit of bool
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
-          | Arrayele of string * int
+          | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
 
 type init = typ * string * expr
 
@@ -20,7 +22,8 @@ type stmt = Block of stmt list        | Expr of expr
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue
-          | bind                       | init
+          | Bind of bind              | Init of init
+          | ArrayBind of array_bind
 
 
 
@@ -112,7 +115,7 @@ let string_of_fdecl fdecl =
   string_of_typ fdecl.typ ^ " " ^
   fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
   ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+(*   String.concat "" (List.map string_of_vdecl fdecl.locals) ^ *)
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 

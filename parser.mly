@@ -88,6 +88,11 @@ vdecl_list:
 vdecl:
    typ ID SEMI { ($1, $2) }
 
+array_decl:
+   typ ID LBRACK LITERAL RBRACK SEMI {($1, $2, $4)}
+
+
+
 
 stmt_list:
     /* nothing */  { [] }
@@ -106,6 +111,9 @@ stmt:
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+  | vdecl {Bind $1}
+  | init {Init $1}
+  | array_decl {ArrayBind $1}
 
 expr_opt:
     /* nothing */ { Noexpr }
@@ -118,7 +126,7 @@ expr:
   | TRUE             { BoolLit(true)        }
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
-  | ID LBRACK LITERAL RBRACK {Arrayele($1, $3)}
+  | ID LBRACK LITERAL RBRACK {ArrayElement($1, $3)}
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
@@ -133,8 +141,14 @@ expr:
   | expr OR     expr { Binop($1, Or,    $3) }
   | NOT expr         { Unop(Not, $2) }
   | ID ASSIGN expr   { Assign($1, $3) }
+  | ID LBRACK LITERAL RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | LPAREN expr RPAREN { $2 }
+
+init:
+  typ ID ASSIGN expr SEMI {($1, $2, $4)}
+
+
 
 actuals_opt:
     /* nothing */ { [] }
