@@ -12,3 +12,4 @@ todo
 8. +=, -=, *=, /=
 9. 注释
 10. str()显式类型抓换(需要重载)
+11. cat tests/test-var1.mc | ./microc.native > test.txt
