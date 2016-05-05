@@ -21,9 +21,9 @@ type stmt = Block of stmt list        | Expr of expr
           | If of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
-          | Break                     | Continue
-          | Bind of bind              | Init of init
-          | ArrayBind of array_bind
+          | Break                     | Continue | Init of typ * string * expr
+          | Bind of bind              (* | Init of init *)
+          | ArrayBind of array_bind   
 
 
 
@@ -32,7 +32,6 @@ type func_decl = {
 	typ      : typ;
 	fname    : string;
 	formals  : bind list;
-	locals   : bind list;
 	body     : stmt list;
 }
 

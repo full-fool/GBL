@@ -1,5 +1,6 @@
 int main(){
-#int a=3;
-prints("hello world");
+#for(;true;){}
+int a=3;
+int b[3];
 return 0;
 }
