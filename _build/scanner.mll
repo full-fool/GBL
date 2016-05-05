@@ -27,6 +27,7 @@ rule token = parse
 | '%'	{MODULE}
 | '='	{ASSIGN}
 | '@'	{DOMAINOP}
+| '#'   {SHARP}
 | "+="	{PLUSEQ}
 | "-="	{MINUSEQ}
 | "*="	{TIMESEQ}
