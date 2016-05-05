@@ -8,10 +8,11 @@ let str_chars = [^ '"' '\\'] | "\\\\" | "\\\""  | "\\'"
 | "\\n" | "\\r" | "\\t" | "\\b"
 | "\\" [ '0'-'9' ]  [ '0'-'9' ]  [ '0'-'9' ]
 let str = '"' str_chars* '"'
+let comment = '#' [^'\n']* '\n'
 
 rule token = parse
 [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
-| "#[^\n]*\n"	{COMMENT}
+| comment	{token lexbuf}
 | ';'	{SEMI}
 | '('	{LPAREN}
 | ')'	{RPAREN}
