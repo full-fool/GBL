@@ -2,19 +2,28 @@ type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEq
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map | Spritearray | Struct | Class
 type bind = typ * string
- 
+
 
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
+          | Arrayele of string * int
+
+type init = typ * string * expr
+
+
 
 type stmt = Block of stmt list        | Expr of expr
           | If of expr * stmt * stmt 
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue
+          | bind                       | init
+
+
+
 
 type func_decl = {
 	typ      : typ;
