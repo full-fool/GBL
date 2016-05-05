@@ -1,5 +1,5 @@
 int main()
 {
-  print(); #Fail: should contain one argument
+  prints(); #Fail: should contain one argument
 
 }

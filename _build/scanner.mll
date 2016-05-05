@@ -8,10 +8,12 @@ let str_chars = [^ '"' '\\'] | "\\\\" | "\\\""  | "\\'"
 | "\\n" | "\\r" | "\\t" | "\\b"
 | "\\" [ '0'-'9' ]  [ '0'-'9' ]  [ '0'-'9' ]
 let str = '"' str_chars* '"'
+let comment = '#' [^'\n']* '\n'
 
 rule token = parse
 [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
-| "#[^\n]*\n"	{COMMENT}
+| "/*"                 { comment lexbuf }
+| '#'                   { line_comment lexbuf }
 | ';'	{SEMI}
 | '('	{LPAREN}
 | ')'	{RPAREN}
@@ -27,7 +29,6 @@ rule token = parse
 | '%'	{MODULE}
 | '='	{ASSIGN}
 | '@'	{DOMAINOP}
-| '#'   {SHARP}
 | "+="	{PLUSEQ}
 | "-="	{MINUSEQ}
 | "*="	{TIMESEQ}
@@ -71,3 +72,14 @@ rule token = parse
 | str as lxm {STRINGCONSTANT(strip(Lexing.lexeme lexbuf))}
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) } | eof { EOF }
 | _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }
+
+
+and comment = parse
+ "*/"      { token lexbuf }
+| _         { comment lexbuf }
+
+
+and line_comment = parse
+ ['\n' '\r']   { token lexbuf }
+| _             { line_comment lexbuf }
+
