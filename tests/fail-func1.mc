@@ -8,5 +8,6 @@ void bar() {} #Error: duplicate function bar
 
 int main()
 {
+  int m;
   return 0;
 }

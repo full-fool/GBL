@@ -1,4 +1,3 @@
 int main()
 {
-  return 0;
-# Fail: brace doesn't match
+  return 0; #Fail: brace doesn't match

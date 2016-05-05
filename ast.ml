@@ -1,6 +1,6 @@
-type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | Xor | ShiftLeft | ShiftRight | At
+type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
-type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map | Spritearray | Struct | Class
+type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
 
 
@@ -16,7 +16,7 @@ type init = typ * string * expr
 
 
 type stmt = Block of stmt list        | Expr of expr
-          | If of expr * stmt * stmt 
+          | If of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue
@@ -53,13 +53,13 @@ let string_of_op = function
   | Leq -> "<="
   | Greater -> ">"
   | Geq -> ">="
-  | And -> "and"
-  | Or -> "or"
+  | And -> "&&"
+  | Or -> "||"
   | At -> "@"
 
 let string_of_uop = function
     Neg -> "-"
-  | Not -> "not"
+  | Not -> "!"
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l

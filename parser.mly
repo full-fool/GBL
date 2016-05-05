@@ -20,7 +20,7 @@
 %token <string> ID
 %token EOF
 
-
+%nonassoc NOELSE
 %nonassoc ELSE
 %right ASSIGN
 %left OR
@@ -98,7 +98,10 @@ stmt:
     expr SEMI { Expr $1 }
   | RETURN SEMI { Return Noexpr }
   | RETURN expr SEMI { Return $2 }
+  | BREAK SEMI {Break}
+  | CONTINUE SEMI {Continue}
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
+  | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
   | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }

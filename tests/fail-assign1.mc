@@ -1,11 +1,11 @@
 int main()
 {
-  int i;
+  float i;
   bool b;
-  i = 42;
-  i = 10;
+  i = 42.0;
+  i = 10.0;
   b = true;
   b = false;
-  i = false; #Fail: assigning a bool to an integer
+  i = false;
   return 0;
 }
