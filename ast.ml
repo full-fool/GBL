@@ -40,7 +40,6 @@ type func_decl = {
 
 type cbody = {
   vdecls : bind list;
-  array_decls: array_bind list;
   methods : func_decl list;
 }
 
