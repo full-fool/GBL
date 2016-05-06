@@ -127,14 +127,8 @@ typ:
   | STRINGARRAY { StringArray }
 
 
-
-
-<<<<<<< HEAD
-=======
-
 /*********  statement  *********/
 
->>>>>>> f04bed96bb0223149956a2dcbaa02d572b9308f2
 stmt_list:
     /* nothing */  { [] }
   | stmt_list stmt { $2 :: $1 }
