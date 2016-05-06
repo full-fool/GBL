@@ -14,6 +14,7 @@ type expr = Literal of int            | BoolLit of bool
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
           (* | IdInClass of string * domain * string
           | CallDomain of string * expr list * domain * string *)
+type array_bind = typ * string * expr
 
 type array_bind = typ * string * expr
 
@@ -42,8 +43,7 @@ type func_decl = {
 }
 
 type cbody = {
-  vdecls : bind list;
-  array_decls: array_bind list;
+  vdecls : global list;
   methods : func_decl list;
 }
 
