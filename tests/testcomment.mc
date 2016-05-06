@@ -1,7 +1,6 @@
 int main(){
-# this is another comment
-#
-#this is comment
-print("hello world");
+#for(;true;){}
+int a=3;
+int b[3];
 return 0;
 }

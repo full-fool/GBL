@@ -6,7 +6,10 @@ void myvoid()
 int main()
 {
   int i;
-
-  1 = i; #Fail: left value can't be assigned
+  if(i>10){
+    int j;
+  }
+    
+  #1 = i; #Fail: left value can't be assigned
   return 0;
 }

@@ -44,7 +44,6 @@ class Gobang::Game
         ##paraments
         array<int> MapSize[2] = {MapS[0], MapS[1]};
         int PlayerNumber = PlayerNum;
-        #这里的new不知道怎么实现
         Player PlayerList[PlayerNum];
         for(int i = 0; i < PlayerNum; i++)
         {
@@ -73,7 +72,6 @@ class Gobang::Game
         NextSpriteID@GobangStatus = 0;
     }
 
-    #bool win(Status s, Move move), 由于status里已经包含了上次下的棋的位置等信息，故删除Move move
     bool win()
     {
       string PlayerSprite = spritename@PlayerList[FormerId@GobangStatus];
@@ -95,7 +93,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[position[0]][j]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -116,7 +114,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[i][position[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -151,7 +149,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -186,7 +184,7 @@ class Gobang::Game
         string curSprite = Text@SpriteList[curposition[0]][curposition[1]]@GobangStatus;
         if(curSprite == PlayerSprite)
         {
-          if(PreSprite is not PlayerSprite)
+          if(PreSprite != PlayerSprite)
           {
             count = 1;
           }
@@ -201,7 +199,7 @@ class Gobang::Game
       
       return false;
     }
-    #由于检查是在落子之前，此时status还未更新，故需要move的信息，但zst觉得Move里只包含了位置信息，所以没必要单独创一个Move的结构体
+    
     #bool isLegal(Status s, Move nextmove)
     bool isLegal(Status GobangStatus, array<int> position)
     {

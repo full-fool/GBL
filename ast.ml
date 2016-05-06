@@ -1,26 +1,37 @@
-type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | Xor | ShiftLeft | ShiftRight | At
+type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
-type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map | Spritearray | Struct | Class
+type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
- 
+type array_bind = typ * string * int
+
+
 
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
+          | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
+
+type init = typ * string * expr
+
+
 
 type stmt = Block of stmt list        | Expr of expr
-          | If of expr * stmt * stmt 
+          | If of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
-          | Break                     | Continue
+          | Break                     | Continue | Init of typ * string * expr
+          | Bind of bind              (* | Init of init *)
+          | ArrayBind of array_bind   
+
+
+
 
 type func_decl = {
 	typ      : typ;
 	fname    : string;
 	formals  : bind list;
-	locals   : bind list;
 	body     : stmt list;
 }
 
@@ -44,13 +55,13 @@ let string_of_op = function
   | Leq -> "<="
   | Greater -> ">"
   | Geq -> ">="
-  | And -> "and"
-  | Or -> "or"
+  | And -> "&&"
+  | Or -> "||"
   | At -> "@"
 
 let string_of_uop = function
     Neg -> "-"
-  | Not -> "not"
+  | Not -> "!"
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
@@ -103,7 +114,7 @@ let string_of_fdecl fdecl =
   string_of_typ fdecl.typ ^ " " ^
   fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
   ")\n{\n" ^
-  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+(*   String.concat "" (List.map string_of_vdecl fdecl.locals) ^ *)
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 
