@@ -26,7 +26,7 @@ type stmt = Block of stmt list        | Expr of expr
           | ArrayBind of array_bind   
 
 
-type global = bind list | array_bind list
+type global = Bind of bind list | ArrayBind of array_bind list | Init of typ * string * expr
 
 type func_decl = {
 	typ      : typ;
