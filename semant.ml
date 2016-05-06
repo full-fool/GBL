@@ -88,22 +88,22 @@ let check (globals, functions) =
 
     (* Type of each variable (global, formal, or local *)
     let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
-	StringMap.empty (globals @ func.formals @ func.locals )
+	StringMap.empty (globals @ func.formals)
     in
 
-    let type_of_identifier s =
-      try StringMap.find s symbols
+    let type_of_identifier s symbolstable =
+      try StringMap.find s symbolstable
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
     in
 
     (* Return the type of an expression or throw an exception *)
-    let rec expr = function
+    let rec expr exp symbolstable = match exp with
 	Literal _ -> Int
       | BoolLit _ -> Bool
       | FloatLit _ -> Float
       | StringLit _ -> String
-      | Id s -> type_of_identifier s
-      | Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
+      | Id s -> type_of_identifier s symbolstable
+      | Binop(e1, op, e2) as e -> let t1 = expr e1 symbolstable and t2 = expr e2 symbolstable in
 	(match op with
         Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
         | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
@@ -119,7 +119,7 @@ let check (globals, functions) =
         | _ -> raise (Failure ("illegal binary operator " ^
               string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
               string_of_typ t2 ^ " in " ^ string_of_expr e)))
-      | Unop(op, e) as ex -> let t = expr e in
+      | Unop(op, e) as ex -> let t = expr e symbolstable in
 	 (match op with
 	   Neg when t = Int -> Int
    | Neg when t = Float -> Float
@@ -127,8 +127,8 @@ let check (globals, functions) =
          | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
 	  		   string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
-      | Assign(var, e) as ex -> let lt = type_of_identifier var
-                                and rt = expr e in
+      | Assign(var, e) as ex -> let lt = type_of_identifier var symbolstable
+                                and rt = expr e symbolstable in
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 				     " = " ^ string_of_typ rt ^ " in " ^ 
 				     string_of_expr ex))
@@ -137,7 +137,7 @@ let check (globals, functions) =
            raise (Failure ("expecting " ^ string_of_int
              (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
          else
-           List.iter2 (fun (ft, _) e -> let et = expr e in
+           List.iter2 (fun (ft, _) e -> let et = expr e symbolstable in
               ignore (check_assign ft et
                 (Failure ("illegal actual argument found " ^ string_of_typ et ^
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
@@ -145,34 +145,35 @@ let check (globals, functions) =
            fd.typ
     in
 
-    let check_bool_expr e = if expr e != Bool
+    let check_bool_expr e symbolstable = if expr e symbolstable != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
      else () in
-
+     let rec print_symbol key value = print_string(key ^ " " ^ value ^ "\n") in
+    
     (* Verify a statement or throw an exception *)
-    let rec stmt = function
-	    Block sl -> let rec check_block = function
-           [Return _ as s] -> stmt s
+    let rec stmt parenttable childtable blocks = match blocks with
+	    Block sl -> let rec check_block maintable subtable block = match block with
+           [Return _ as s] -> stmt maintable subtable s
          | Return _ :: _ -> raise (Failure "nothing may follow a return")
-         | Block sl :: ss -> check_block (sl @ ss)
-         | s :: ss -> stmt s ; check_block ss
+         | Block sl :: ss -> check_block subtable (sl @ ss)
+         | s :: ss -> stmt parenttable s ; check_block subtable ss
          | [] -> ()
-        in check_block sl
-      | Expr e -> ignore (expr e)
-      | Return e -> let t = expr e in if t = func.typ then () else
+        in check_block StringMap.empty sl
+      | Expr e -> ignore (expr e parenttable)
+      | Return e -> let t = expr e parenttable in if t = func.typ then () else
          raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                          string_of_typ func.typ ^ " in " ^ string_of_expr e))
            
-      | If(p, b1, b2) -> check_bool_expr p; stmt b1; stmt b2
-      | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
-                               ignore (expr e3); stmt st
-      | While(p, s) -> check_bool_expr p; stmt s
+      | If(p, b1, b2) -> check_bool_expr p; stmt parenttable b1; stmt parenttable b2
+      | For(e1, e2, e3, st) -> ignore (expr e1 parenttable); check_bool_expr e2;
+                               ignore (expr e3 parenttable); stmt parenttable st
+      | While(p, s) -> check_bool_expr p; stmt parenttable s
       | Break -> ()
       | Continue -> () 
-
+    
     in
-
-    stmt (Block func.body)
+    let submaps = StringMap.empty in
+    stmt symbols (Block func.body)
    
   in
   List.iter check_function functions
