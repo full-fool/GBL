@@ -38,7 +38,7 @@ type func_decl = {
 }
 
 type cbody = {
-  vdecls : bind list;
+  vdecls : global list;
   methods : func_decl list;
 }
 
