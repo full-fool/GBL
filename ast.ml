@@ -3,7 +3,6 @@ type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEq
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
-type array_bind = typ * string * int
 
 
 
@@ -15,6 +14,10 @@ type expr = Literal of int            | BoolLit of bool
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
           (* | IdInClass of string * domain * string
           | CallDomain of string * expr list * domain * string *)
+
+type array_bind = typ * string * expr
+
+
 
 type init = typ * string * expr
 
