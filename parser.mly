@@ -55,7 +55,7 @@ decls:
    typ ID SEMI { ($1, $2) }
 
   array_decl:
-    typ ID LBRACK expr RBRACK SEMI {($1, $2, $4)}
+    typ ID LBRACK expr RBRACK SEMI {($1, "_" ^ $2, $4)}
 
  /*********  function  ***********/
 
@@ -175,7 +175,7 @@ expr:
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LBRACK LITERAL RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
-  /* | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, $5, $6) } */
+  | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, DomainOp, $6) }
   | LPAREN expr RPAREN { $2 }
 
 init:
