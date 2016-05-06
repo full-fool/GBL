@@ -1,20 +1,20 @@
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
-type domain = DomainOp
+(* type domain = DomainOp *)
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
-type array_bind = typ * string * expr
+type array_bind = typ * string * int
 
 
 
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
-          | IdInClass of string * domain * string
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
-          | CallDomain of string * expr list * domain * string
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
+          (* | IdInClass of string * domain * string
+          | CallDomain of string * expr list * domain * string *)
 
 type init = typ * string * expr
 
