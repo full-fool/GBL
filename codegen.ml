@@ -17,33 +17,8 @@ let translate (globals, classes) =
     | _ -> (String.make (pos * 4) ' ') ^ ""
   in
 
-  let rec list_gen item = function
-     0 -> []
-    |n -> item :: list_gen item (n - 1)
-  in
-
-  (*complie local variables*)
-  let comp_local_array pos = function
-      (t, n, a) -> (String.make (pos * 4) ' ') ^ n ^ " = [" ^ 
-        (match a with
-         0 -> ""
-        |_ -> String.concat ", " (list_gen "None" a)
-        ) ^ "]\n"
-    | _ -> (String.make (pos * 4) ' ') ^ ""
-  in
-
   let comp_global_decl header = function
       (t, n) -> header ^ n ^ " = None\n"
-    | _ -> ""
-  in
-
-  (*complie local variables*)
-  let comp_global_array header = function
-      (t, n, a) -> header ^ n ^ " = [" ^ 
-        (match a with
-         0 -> ""
-        |_ -> String.concat ", " (list_gen "None" a)
-        ) ^ "]\n"
     | _ -> ""
   in
 
@@ -83,7 +58,6 @@ let translate (globals, classes) =
     | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_expr act) ^ ")"
   in
 
-
   let comp_local_assign pos = function
       (t, n, v) -> (String.make (pos * 4) ' ') ^ n ^ " = " ^ comp_expr v ^ "\n"
     | _ -> (String.make (pos * 4) ' ') ^ ""
@@ -91,6 +65,18 @@ let translate (globals, classes) =
 
   let comp_global_assign header = function
       (t, n, v) -> header ^ n ^ " = " ^ comp_expr v ^ "\n"
+    | _ -> ""
+  in
+
+  (*complie local variables*)
+  let comp_local_array pos = function
+      (t, n, a) -> (String.make (pos * 4) ' ') ^ n ^ " = [ None ] * " ^ comp_expr a ^ "\n"
+    | _ -> (String.make (pos * 4) ' ') ^ ""
+  in
+
+  (*complie local variables*)
+  let comp_global_array header = function
+      (t, n, a) -> header ^ n ^ " = [ None ] * " ^ comp_expr a ^ "\n"
     | _ -> ""
   in
 
@@ -121,12 +107,11 @@ let translate (globals, classes) =
 
   let comp_cbody header cbody = 
     String.concat "" (List.map (comp_global_var header) cbody.A.vdecls) ^ 
-    String.concat "" (List.map (comp_global_var header) cbody.A.array_decls) ^
     String.concat "" (List.map (comp_function header) cbody.A.methods)
   in
 
   let comp_class cdecl = 
-    comp_cbody cdecl.A.cname ^ "_" ^ cdecl.A.extends ^ "_" cdecl.A.cbody
+    comp_cbody (cdecl.A.cname ^ "_" ^ cdecl.A.extends ^ "_") cdecl.A.cbody
   in
 
   String.concat "" (List.map (comp_global_var "") globals) ^ String.concat "" (List.map comp_class classes) ^ "main()" 

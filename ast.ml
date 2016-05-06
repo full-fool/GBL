@@ -13,6 +13,7 @@ type expr = Literal of int            | BoolLit of bool
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
           (* | IdInClass of string * domain * string
           | CallDomain of string * expr list * domain * string *)
+
 type array_bind = typ * string * expr
 
 type init = typ * string * expr
