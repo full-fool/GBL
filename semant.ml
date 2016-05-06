@@ -51,14 +51,14 @@ let check (globals, functions) =
   List.fold_left (fun map (key, value) ->
     StringMap.add key value map
   ) StringMap.empty [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
-       locals = []; body = [] }); ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
-       locals = []; body = [] }); ("printlni", { typ = Void; fname = "printlni"; formals = [(Int, "x")];
-       locals = []; body = [] }); ("printlnb", { typ = Void; fname = "printlnb"; formals = [(Bool, "x")];
-       locals = []; body = [] }); ("printf", { typ = Void; fname = "printf"; formals = [(Float, "x")];
-       locals = []; body = [] }); ("prints", { typ = Void; fname = "prints"; formals = [(String, "x")];
-       locals = []; body = [] }); ("printlnf", { typ = Void; fname = "printlnf"; formals = [(Float, "x")];
-       locals = []; body = [] }); ("printlns", { typ = Void; fname = "printlns"; formals = [(String, "x")];
-       locals = []; body = [] })]
+  body = [] }); ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
+   body = [] }); ("printlni", { typ = Void; fname = "printlni"; formals = [(Int, "x")];
+    body = [] }); ("printlnb", { typ = Void; fname = "printlnb"; formals = [(Bool, "x")];
+    body = [] }); ("printf", { typ = Void; fname = "printf"; formals = [(Float, "x")];
+     body = [] }); ("prints", { typ = Void; fname = "prints"; formals = [(String, "x")];
+    body = [] }); ("printlnf", { typ = Void; fname = "printlnf"; formals = [(Float, "x")];
+    body = [] }); ("printlns", { typ = Void; fname = "printlns"; formals = [(String, "x")];
+      body = [] })]
   
    in
      
@@ -79,25 +79,25 @@ let check (globals, functions) =
 
     report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
       (List.map snd func.formals);
-
+(* 
     List.iter (check_not_void (fun n -> "illegal void local " ^ n ^
-      " in " ^ func.fname)) func.locals;
+      " in " ^ func.fname)) func.locals; *)
 
-    report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
-      (List.map snd func.locals);
+(*     report_duplicate (fun n -> "duplicate local " ^ n ^ " in " ^ func.fname)
+      (List.map snd func.locals); *)
 
     (* Type of each variable (global, formal, or local *)
     let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
 	StringMap.empty (globals @ func.formals)
     in
 
-    let type_of_identifier s symbolstable =
+(*     let type_of_identifier s symbolstable =
       try StringMap.find s symbolstable
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
-    in
+    in *)
 
     (* Return the type of an expression or throw an exception *)
-    let rec expr exp symbolstable = match exp with
+ (*    let rec expr exp symbolstable = match exp with
 	Literal _ -> Int
       | BoolLit _ -> Bool
       | FloatLit _ -> Float
@@ -173,7 +173,88 @@ let check (globals, functions) =
     
     in
     let submaps = StringMap.empty in
-    stmt symbols (Block func.body)
+    stmt symbols (Block func.body) *)
+
+let rec expr symbol_list  = function
+  Literal _ -> Int
+      | BoolLit _ -> Bool
+      | Id s ->    let type_of_identifier s =
+                  try StringMap.find s symbol_list
+                with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+                in
+            type_of_identifier s
+      | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr  symbol_list e2 in
+          (match op with
+                  Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int
+          | Is | Neq when t1 = t2 -> Bool
+          | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
+          | And | Or when t1 = Bool && t2 = Bool -> Bool
+                | _ -> raise (Failure ("illegal binary operator " ^
+                      string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                      string_of_typ t2 ^ " in " ^ string_of_expr e))
+                )
+      | Unop(op, e) as ex -> let t = expr  symbol_list e in
+         (match op with
+           Neg when t = Int -> Int
+         | Not when t = Bool -> Bool
+               | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
+                 string_of_typ t ^ " in " ^ string_of_expr ex)))
+      | Noexpr -> Void
+      | Assign(var, e) as ex ->  let type_of_identifier s =
+                        try StringMap.find s symbol_list
+                    with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+                      in
+
+
+                    let lt = type_of_identifier var
+                                and rt = expr symbol_list e in
+        check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
+             " = " ^ string_of_typ rt ^ " in " ^ 
+             string_of_expr ex))
+      | Call(fname, actuals) as call -> let fd = function_decl fname in
+         if List.length actuals != List.length fd.formals then
+           raise (Failure ("expecting " ^ string_of_int
+             (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
+         else
+           List.iter2 (fun (ft, _) e -> let et = expr symbol_list e in
+              ignore (check_assign ft et
+                (Failure ("illegal actual argument found " ^ string_of_typ et ^
+                " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
+             fd.formals actuals;
+           fd.typ
+    in
+
+ let check_bool_expr symbol_list e  = if expr symbol_list e != Bool
+     then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
+     else () in
+
+    (* Verify a statement or throw an exception，更新后的stmt函数返回一个symbol_list *)
+    let rec stmt symbol_list = function
+   Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
+           [Return _ as s] -> stmt block_symbol_list s
+         | Return _ :: _ -> raise (Failure "nothing may follow a return")
+         | Block sl :: ss -> check_block block_symbol_list sl; check_block block_symbol_list ss;
+         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in check_block rstsymbol_list ss; 
+         | [] -> block_symbol_list
+        in check_block symbol_list sl
+      | Expr e -> ignore (expr symbol_list e); symbol_list
+      | Return e -> let t = expr symbol_list e in if t = func.typ then symbol_list else
+         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
+                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
+           
+      | If(p, b1, b2) -> check_bool_expr symbol_list p ; stmt symbol_list b1; stmt symbol_list b2; symbol_list
+      | For(e1, e2, e3, st) -> ignore (expr symbol_list e1); check_bool_expr symbol_list e2 ;
+                               ignore (expr  symbol_list e3); stmt symbol_list st
+      | While(p, s) -> check_bool_expr symbol_list p; stmt symbol_list s
+      | Bind(b) ->  let typstring = fst b and idstring = snd b in 
+                    let new_symbol_list = StringMap.add idstring typstring symbol_list in
+                      new_symbol_list
+      |Init(t, s, e) -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
+
+    in
+
+    stmt symbols (Block func.body); ()
+
    
   in
   List.iter check_function functions
