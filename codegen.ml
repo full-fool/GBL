@@ -20,6 +20,15 @@ let translate (globals, functions) =
     (t, n) -> (String.make (pos * 4) ' ') ^ n ^ " = None\n"
   | _ -> (String.make (pos * 4) ' ') ^ ""
 
+  (*complie local variables*)
+  let comp_local_array pos = function
+    (t, n) -> (String.make (pos * 4) ' ') ^ n ^ " = []\n"
+  | _ -> (String.make (pos * 4) ' ') ^ ""
+
+  let comp_var_assign pos = function
+    (t, n, v) -> (String.make (pos * 4) ' ') ^ n ^ " = " ^ v ^ "\n"
+  | _ -> (String.make (pos * 4) ' ') ^ ""
+
   (*complie symbols*)
   let comp_sym = function
     A.Add     -> " + "
@@ -56,9 +65,12 @@ let translate (globals, functions) =
 
   (*complie statements*)
   let rec comp_stmt pos = function
-    A.Block sl -> List.fold_left stmt builder sl
+    A.Block sl -> ""
   | A.Expr e -> (String.make (pos * 4) ' ') ^ comp_expr e ^ "\n"
   | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_expr e ^ "\n"
+  | A.Bind e -> comp_local_var pos e
+  | A.ArrayBind e -> comp_local_array pos e
+  | A.Init e -> comp_var_assign pos e
   | A.If (predicate, then_stmt, else_stmt) -> ""
   | A.For (e1, e2, e3, body) -> ""
   | A.While (predicate, body) -> ""

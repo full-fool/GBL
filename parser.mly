@@ -91,8 +91,6 @@ array_decl:
    typ ID LBRACK LITERAL RBRACK SEMI {($1, $2, $4)}
 
 
-
-
 stmt_list:
     /* nothing */  { [] }
   | stmt_list stmt { $2 :: $1 }
