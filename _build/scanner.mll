@@ -55,7 +55,7 @@ rule token = parse
 | "string"	{STRING}
 | "struct"  {STRUCT}
 | "class"   {CLASS}
-| "extends" {EXTENDS}
+| "::"      {EXTENDS}
 | "game"	{GAME}
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}

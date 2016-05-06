@@ -38,24 +38,77 @@
 %type <Ast.program> program
 
 %%
+
+/*
 program:
   decls EOF { $1 }
 
 decls:
-   /* nothing */ { [], [] }
- | decls vandadecl { ($2 :: fst $1), snd $1 }
+     { [] }
+  | decl_list     { List.rev $1 }
+
+decl_list:
+     { [] }
+  | decl_list decl { $2 :: $1 }
+
+
+decl:
+    { [] }
+  | vdecl { $1 }
+  | fdecl { $1 }
+  | cdecl { $1 }
+  | array_decl { $1 }
+
+
+
+ | decls vdecl { ($2 :: fst $1), snd $1 }
+ | decls fdecl { fst $1, ($2 :: snd $1) }
  | decls cdecl { fst $1, ($2 :: snd $1) }
+*/
 
- vandadecl:
-    typ ID ASSIGN expr SEMI {Init($1, $2, $4)}
-  | vdecl {Bind $1}
-  | array_decl {ArrayBind $1}
+program:
+  vdecls array_decls fdecls cdecls EOF { Program($1, $2, $3, $4) }
 
-  vdecl:
+vdecls:
+    /* nothing */   { [] }
+  | vdecl_list { List.rev $1 }
+
+vdecl_list:
+    vdecl    { [$1] }
+  | vdecl_list vdecl { $2 :: $1 }
+
+vdecl:
    typ ID SEMI { ($1, $2) }
 
-  array_decl:
+
+array_decls:
+    /* nothing */   { [] }
+  | array_decl_list { List.rev $1 }
+
+array_decl_list:
+    array_decl   { [$1] }
+  | array_decl_list array_decl { $2 :: $1 }
+
+array_decl:
    typ ID LBRACK LITERAL RBRACK SEMI {($1, $2, $4)}
+
+fdecls:
+    /* nothing */   { [] }
+  | fdecl_list { List.rev $1 }
+
+fdecl_list:
+    fdecl   { [$1] }
+  | fdecl_list fdecl { $2 :: $1 }
+
+cdecls:
+    /* nothing */   { [] }
+  | cdecl_list { List.rev $1 }
+
+cdecl_list:
+    cdecl   { [$1] }
+  | cdecl_list cdecl { $2 :: $1 }
+
+
 
  /*********  function  ***********/
 
@@ -80,7 +133,12 @@ formal_list:
 /********* class *********/
 
 cdecl:
-    CLASS ID EXTENDS ID LBRACE cbody RBRACE {{
+    CLASS ID LBRACE cbody RBRACE {{
+      cname = $2;
+      extends = NoParent;
+      cbody = $4;
+    }}
+  | CLASS ID EXTENDS ID LBRACE cbody RBRACE {{
       cname = $2;
       extends = Parent($4);
       cbody = $6;

@@ -26,7 +26,7 @@ type stmt = Block of stmt list        | Expr of expr
           | ArrayBind of array_bind   
 
 
-type global = bind list | array_bind list
+
 
 type func_decl = {
 	typ      : typ;
@@ -35,7 +35,7 @@ type func_decl = {
 	body     : stmt list;
 }
 
-type extends = Parent of string
+type extends = NoParent | Parent of string
 
 type cbody = {
   vdecls : bind list;
@@ -50,9 +50,7 @@ type class_decl = {
 }
 
 
-type program = global list * func_decl list
-
-(* type program = Program of bind list * func_decl list * class_decl list *)
+type program = Program of bind list * array_bind list * func_decl list * class_decl list
 (* type program = bind list * func_decl list *)
 (* type program = Program of decl_stmt *)
 (* Pretty-printing functions *)
