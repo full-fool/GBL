@@ -50,7 +50,7 @@ type class_decl = {
 }
 
 
-type program = global list * func_decl list
+type program = global list * class_decl list
 
 (* type program = Program of bind list * func_decl list * class_decl list *)
 (* type program = bind list * func_decl list *)
