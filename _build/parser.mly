@@ -14,15 +14,22 @@
 %token VOID TRUE FALSE
 %token GT LT
 
+<<<<<<< HEAD
 %token STRUCT CLASS EXTENDS
 
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 %token <int> LITERAL
 %token <float> FLOATCONSTANT
 %token <string> STRINGCONSTANT
 %token <string> ID
 %token EOF
 
+<<<<<<< HEAD
 %nonassoc NOELSE
+=======
+
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 %nonassoc ELSE
 %right ASSIGN
 %left OR
@@ -39,11 +46,15 @@
 
 %%
 
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 program:
   decls EOF { $1 }
 
 decls:
+<<<<<<< HEAD
      { [] }
   | decl_list     { List.rev $1 }
 
@@ -118,6 +129,19 @@ fdecl:
    fname = $2;
    formals = $4;
    body = List.rev $7 } }
+=======
+   /* nothing */ { [], [] }
+ | decls vdecl { ($2 :: fst $1), snd $1 }
+ | decls fdecl { fst $1, ($2 :: snd $1) }
+
+fdecl:
+   typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
+     { { typ = $1;
+   fname = $2;
+   formals = $4;
+   locals = List.rev $7;
+   body = List.rev $8 } }
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 
 formals_opt:
@@ -130,6 +154,7 @@ formal_list:
   | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 
+<<<<<<< HEAD
 /********* class *********/
 
 cdecl:
@@ -169,6 +194,8 @@ cbody:
 
 /********* other type *********/
 
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 typ:
     INT         { Int         }
   | BOOL        { Bool        }
@@ -185,10 +212,21 @@ typ:
   | STRINGARRAY { StringArray }
 
 
+<<<<<<< HEAD
 
 
 
 /*********  statement  *********/
+=======
+vdecl_list:
+    /* nothing */    { [] }
+  | vdecl_list vdecl { $2 :: $1 }
+
+
+vdecl:
+   typ ID SEMI { ($1, $2) }
+
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 stmt_list:
     /* nothing */  { [] }
@@ -196,6 +234,7 @@ stmt_list:
   
 
 stmt:
+<<<<<<< HEAD
   expr SEMI { Expr $1 }
   | RETURN SEMI { Return Noexpr }
   | RETURN expr SEMI { Return $2 }
@@ -203,10 +242,17 @@ stmt:
   | CONTINUE SEMI {Continue}
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
   | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
+=======
+    expr SEMI { Expr $1 }
+  | RETURN SEMI { Return Noexpr }
+  | RETURN expr SEMI { Return $2 }
+  | LBRACE stmt_list RBRACE { Block(List.rev $2) }
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
   | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
+<<<<<<< HEAD
   | typ ID ASSIGN expr SEMI {Init($1, $2, $4)}
   | vdecl {Bind $1}
   | array_decl {ArrayBind $1}
@@ -216,6 +262,8 @@ stmt:
 /*********  expr  *********/
 
 
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 expr_opt:
     /* nothing */ { Noexpr }
@@ -228,7 +276,10 @@ expr:
   | TRUE             { BoolLit(true)        }
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
+<<<<<<< HEAD
   | ID LBRACK LITERAL RBRACK {ArrayElement($1, $3)}
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
@@ -243,6 +294,7 @@ expr:
   | expr OR     expr { Binop($1, Or,    $3) }
   | NOT expr         { Unop(Not, $2) }
   | ID ASSIGN expr   { Assign($1, $3) }
+<<<<<<< HEAD
   | ID LBRACK LITERAL RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | LPAREN expr RPAREN { $2 }
@@ -252,6 +304,11 @@ init:
 
 
 
+=======
+  | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+  | LPAREN expr RPAREN { $2 }
+
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 actuals_opt:
     /* nothing */ { [] }
   | actuals_list  { List.rev $1 }

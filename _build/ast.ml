@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
@@ -5,12 +6,20 @@ type bind = typ * string
 type array_bind = typ * string * int
 
 
+=======
+type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | Xor | ShiftLeft | ShiftRight | At
+type uop = Neg | Not
+type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map | Spritearray | Struct | Class
+type bind = typ * string
+ 
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
+<<<<<<< HEAD
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
 
 type init = typ * string * expr
@@ -27,11 +36,20 @@ type stmt = Block of stmt list        | Expr of expr
 
 
 
+=======
+
+type stmt = Block of stmt list        | Expr of expr
+          | If of expr * stmt * stmt 
+          | For of expr * expr * expr * stmt
+          | While of expr * stmt      | Return of expr
+          | Break                     | Continue
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 type func_decl = {
 	typ      : typ;
 	fname    : string;
 	formals  : bind list;
+<<<<<<< HEAD
 	body     : stmt list;
 }
 
@@ -53,6 +71,13 @@ type class_decl = {
 type program = Program of bind list * array_bind list * func_decl list * class_decl list
 (* type program = bind list * func_decl list *)
 (* type program = Program of decl_stmt *)
+=======
+	locals   : bind list;
+	body     : stmt list;
+}
+
+type program = bind list * func_decl list
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 (* Pretty-printing functions *)
 
 let string_of_op = function
@@ -72,13 +97,22 @@ let string_of_op = function
   | Leq -> "<="
   | Greater -> ">"
   | Geq -> ">="
+<<<<<<< HEAD
   | And -> "&&"
   | Or -> "||"
+=======
+  | And -> "and"
+  | Or -> "or"
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
   | At -> "@"
 
 let string_of_uop = function
     Neg -> "-"
+<<<<<<< HEAD
   | Not -> "!"
+=======
+  | Not -> "not"
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 
 let rec string_of_expr = function
     Literal(l) -> string_of_int l
@@ -131,7 +165,11 @@ let string_of_fdecl fdecl =
   string_of_typ fdecl.typ ^ " " ^
   fdecl.fname ^ "(" ^ String.concat ", " (List.map snd fdecl.formals) ^
   ")\n{\n" ^
+<<<<<<< HEAD
 (*   String.concat "" (List.map string_of_vdecl fdecl.locals) ^ *)
+=======
+  String.concat "" (List.map string_of_vdecl fdecl.locals) ^
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
   String.concat "" (List.map string_of_stmt fdecl.body) ^
   "}\n"
 

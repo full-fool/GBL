@@ -1,0 +1,11 @@
+iiiii
+int main()
+{
+i = 0;
+for ( ; i < 5 ; ) {
+printlni(i);
+i = i + 1;
+}
+printlni(42);
+return 0;
+}

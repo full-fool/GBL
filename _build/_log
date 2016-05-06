@@ -1,5 +1,6 @@
 ### Starting build.
 # Target: microc.ml.depends, tags: { extension:ml, file:microc.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+<<<<<<< HEAD
 ocamlfind ocamldep -package llvm.analysis -package llvm -modules microc.ml > microc.ml.depends # cached
 # Target: ast.ml.depends, tags: { extension:ml, file:ast.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamldep -package llvm.analysis -package llvm -modules ast.ml > ast.ml.depends
@@ -27,6 +28,34 @@ ocamlfind ocamldep -package llvm.analysis -package llvm -modules parser.mli > pa
 /usr/local/bin/ocamllex.opt -q scanner.mll # cached
 # Target: scanner.ml.depends, tags: { extension:ml, file:scanner.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamldep -package llvm.analysis -package llvm -modules scanner.ml > scanner.ml.depends # cached
+=======
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules microc.ml > microc.ml.depends
+# Target: ast.ml.depends, tags: { extension:ml, file:ast.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules ast.ml > ast.ml.depends
+# Target: codegen.ml.depends, tags: { extension:ml, file:codegen.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules codegen.ml > codegen.ml.depends
+# Target: ast.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:ast.cmo, file:ast.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o ast.cmo ast.ml
++ ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o ast.cmo ast.ml
+File "ast.ml", line 30, characters 19-353:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Xor|ShiftLeft|ShiftRight)
+File "ast.ml", line 85, characters 20-337:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Spritearray|Struct|Class)
+# Target: parser.mly, tags: { extension:mly, file:parser.mly, infer, ocaml, ocamlyacc, package(llvm), package(llvm.analysis), parser, quiet }
+/usr/local/bin/ocamlyacc parser.mly
++ /usr/local/bin/ocamlyacc parser.mly
+48 shift/reduce conflicts.
+# Target: parser.mli.depends, tags: { extension:mli, file:parser.mli, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules parser.mli > parser.mli.depends
+# Target: scanner.mll, tags: { extension:mll, file:scanner.mll, lexer, ocaml, ocamllex, package(llvm), package(llvm.analysis), quiet }
+/usr/local/bin/ocamllex.opt -q scanner.mll
+# Target: scanner.ml.depends, tags: { extension:ml, file:scanner.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules scanner.ml > scanner.ml.depends
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 # Target: parser.cmi, tags: { byte, compile, extension:mli, file:parser.mli, interf, ocaml, package(llvm), package(llvm.analysis), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o parser.cmi parser.mli
 # Target: codegen.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:codegen.cmo, file:codegen.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
@@ -35,6 +64,7 @@ ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmo 
 File "codegen.ml", line 28, characters 21-157:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
+<<<<<<< HEAD
 (IntArray|BoolArray|FloatArray|StringArray|Game|Player|Sprite|Map)
 File "codegen.ml", line 100, characters 7-516:
 Warning 8: this pattern-matching is not exhaustive.
@@ -48,10 +78,24 @@ File "codegen.ml", line 140, characters 27-1560:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Break|Continue|Init (_, _, _)|Bind _|ArrayBind _)
+=======
+(IntArray|BoolArray|FloatArray|StringArray|Game|Player|Sprite|Map|
+Spritearray|Struct|Class)
+File "codegen.ml", line 99, characters 7-516:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Xor|ShiftLeft|ShiftRight|
+At)
+File "codegen.ml", line 139, characters 27-1560:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Break|Continue)
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 File "codegen.ml", line 44, characters 6-17:
 Warning 26: unused variable printf_func.
 File "codegen.ml", line 64, characters 8-22:
 Warning 26: unused variable int_format_str.
+<<<<<<< HEAD
 File "codegen.ml", line 75, characters 10-19:
 Warning 26: unused variable add_local.
 # Target: scanner.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:scanner.cmo, file:scanner.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
@@ -68,3 +112,58 @@ Error: This expression has type Ast.program
          (Ast.typ * string) list * Ast.func_decl list
 Command exited with code 2.
 # Compilation unsuccessful.
+=======
+# Target: scanner.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:scanner.cmo, file:scanner.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmo scanner.ml
++ ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmo scanner.ml
+File "scanner.mll", line 70, characters 9-12:
+Warning 26: unused variable lxm.
+# Target: microc.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:microc.cmo, file:microc.ml, implem, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlc -c -w +a-4 -package llvm.analysis -package llvm -o microc.cmo microc.ml
+# Target: ast.cmx, tags: { compile, extension:cmx, extension:ml, file:ast.cmx, file:ast.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o ast.cmx ast.ml
++ ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o ast.cmx ast.ml
+File "ast.ml", line 30, characters 19-353:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Xor|ShiftLeft|ShiftRight)
+File "ast.ml", line 85, characters 20-337:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Spritearray|Struct|Class)
+# Target: parser.ml.depends, tags: { extension:ml, file:parser.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamldep -package llvm.analysis -package llvm -modules parser.ml > parser.ml.depends
+# Target: parser.cmx, tags: { compile, extension:cmx, extension:ml, file:parser.cmx, file:parser.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o parser.cmx parser.ml
+# Target: codegen.cmx, tags: { compile, extension:cmx, extension:ml, file:codegen.cmx, file:codegen.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmx codegen.ml
++ ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o codegen.cmx codegen.ml
+File "codegen.ml", line 28, characters 21-157:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(IntArray|BoolArray|FloatArray|StringArray|Game|Player|Sprite|Map|
+Spritearray|Struct|Class)
+File "codegen.ml", line 99, characters 7-516:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Mod|AddEqual|SubEqual|MultEqual|DivEqual|ModEqual|Xor|ShiftLeft|ShiftRight|
+At)
+File "codegen.ml", line 139, characters 27-1560:
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+(Break|Continue)
+File "codegen.ml", line 44, characters 6-17:
+Warning 26: unused variable printf_func.
+File "codegen.ml", line 64, characters 8-22:
+Warning 26: unused variable int_format_str.
+# Target: scanner.cmx, tags: { compile, extension:cmx, extension:ml, file:scanner.cmx, file:scanner.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmx scanner.ml
++ ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o scanner.cmx scanner.ml
+File "scanner.mll", line 70, characters 9-12:
+Warning 26: unused variable lxm.
+# Target: microc.cmx, tags: { compile, extension:cmx, extension:ml, file:microc.cmx, file:microc.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), quiet }
+ocamlfind ocamlopt -c -w +a-4 -package llvm.analysis -package llvm -o microc.cmx microc.ml
+# Target: microc.native, tags: { dont_link_with, extension:native, file:microc.native, link, native, ocaml, package(llvm), package(llvm.analysis), program, quiet }
+ocamlfind ocamlopt -linkpkg -package llvm.analysis -package llvm ast.cmx codegen.cmx parser.cmx scanner.cmx microc.cmx -o microc.native
+# Compilation successful.
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346

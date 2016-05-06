@@ -8,12 +8,19 @@ let str_chars = [^ '"' '\\'] | "\\\\" | "\\\""  | "\\'"
 | "\\n" | "\\r" | "\\t" | "\\b"
 | "\\" [ '0'-'9' ]  [ '0'-'9' ]  [ '0'-'9' ]
 let str = '"' str_chars* '"'
+<<<<<<< HEAD
 let comment = '#' [^'\n']* '\n'
 
 rule token = parse
 [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
 | "/*"                 { comment lexbuf }
 | '#'                   { line_comment lexbuf }
+=======
+
+rule token = parse
+[' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
+| "#[^\n]*\n"	{COMMENT}
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 | ';'	{SEMI}
 | '('	{LPAREN}
 | ')'	{RPAREN}
@@ -53,9 +60,12 @@ rule token = parse
 | "float"	{FLOAT}
 | "bool"	{BOOL}
 | "string"	{STRING}
+<<<<<<< HEAD
 | "struct"  {STRUCT}
 | "class"   {CLASS}
 | "::"      {EXTENDS}
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
 | "game"	{GAME}
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}
@@ -75,6 +85,7 @@ rule token = parse
 | str as lxm {STRINGCONSTANT(strip(Lexing.lexeme lexbuf))}
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) } | eof { EOF }
 | _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }
+<<<<<<< HEAD
 
 
 and comment = parse
@@ -86,3 +97,5 @@ and line_comment = parse
  ['\n' '\r']   { token lexbuf }
 | _             { line_comment lexbuf }
 
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346

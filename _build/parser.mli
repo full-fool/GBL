@@ -62,9 +62,12 @@ type token =
   | FALSE
   | GT
   | LT
+<<<<<<< HEAD
   | STRUCT
   | CLASS
   | EXTENDS
+=======
+>>>>>>> 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
   | LITERAL of (int)
   | FLOATCONSTANT of (float)
   | STRINGCONSTANT of (string)
