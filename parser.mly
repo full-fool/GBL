@@ -127,9 +127,6 @@ typ:
   | STRINGARRAY { StringArray }
 
 
-
-
-
 /*********  statement  *********/
 
 stmt_list:
