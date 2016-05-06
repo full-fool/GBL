@@ -1,3 +1,8 @@
+### gloabl variables including array, initialization
+
+
+
+
 class GobangSprite::Sprite
 {
   #variable in Sprite
@@ -22,19 +27,19 @@ class GobangPlayer::Player
   #printPlayer();
 };
 
-struct Status
-{
+# struct Status
+# {
 
-    Sprite SpriteList[MapSize[0]][MapSize[1]];
-    #LastMove:
-    int FormerId; #the ID of former player
-    array<int> FormerPosition[2];
-    #只保存上一步的信息
-    #int LatterId;
-    #array<int> LatterPosition[2];
-    int NextPlayerID;
-    int NextSpriteID;
-};
+#     Sprite SpriteList[MapSize[0]][MapSize[1]];
+#     #LastMove:
+#     int FormerId; #the ID of former player
+#     array<int> FormerPosition[2];
+#     #只保存上一步的信息
+#     #int LatterId;
+#     #array<int> LatterPosition[2];
+#     int NextPlayerID;
+#     int NextSpriteID;
+# };
 
 class Gobang::Game
 {
@@ -246,39 +251,41 @@ class Gobang::Game
 
 
 #assume the input stream is stdin>>...
-void main()
-{
-    Gobang mygame;
-    array<int> MapS[2] = {15, 15};
-    int PlayerNum = 2;
-    Player PlayerL[2] = {(0, "Cuidiao", "C"), (1, "Xicao", "X")};
-    string Blanksignal = "*";
-    initialize(MapS, PlayerNum, PlayerL, Blanksignal)@mygame;
-    printGame()@mygame;
-    
-    while(not win()@mygame)
-    {
-        print("This is the turn of player");
-        print(NextPlayerID@GobangStatus@mygame);
-        
-        #input position
-        array<int> InputPosition[2];
-        bool legal = false;
-        while(not legal)
-        {
-          stdin>>InputPosition[0];
-          stdin>>InputPosition[1];
-          legal = isLegal(InputPosition)@mygame;
-        }
-        
-        #update status
-        update(InputPosition)@mygame;;
+class UserMain::Main{
+  void main()
+  {
+      Gobang mygame;
+      array<int> MapS[2] = {15, 15};
+      int PlayerNum = 2;
+      Player PlayerL[2] = {(0, "Cuidiao", "C"), (1, "Xicao", "X")};
+      string Blanksignal = "*";
+      initialize(MapS, PlayerNum, PlayerL, Blanksignal)@mygame;
+      printGame()@mygame;
+      
+      while(not win()@mygame)
+      {
+          print("This is the turn of player");
+          print(NextPlayerID@GobangStatus@mygame);
+          
+          #input position
+          array<int> InputPosition[2];
+          bool legal = false;
+          while(not legal)
+          {
+            stdin>>InputPosition[0];
+            stdin>>InputPosition[1];
+            legal = isLegal(InputPosition)@mygame;
+          }
+          
+          #update status
+          update(InputPosition)@mygame;;
 
-        #print map
-        printGame()@mygame;
-    }
-    #print
-    int winner = NextPlayerID - 1;
-    print("Winner is: ");
-    print(winner);
+          #print map
+          printGame()@mygame;
+      }
+      #print
+      int winner = NextPlayerID - 1;
+      print("Winner is: ");
+      print(winner);
+  }
 }
