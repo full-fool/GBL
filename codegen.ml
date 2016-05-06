@@ -1,17 +1,4 @@
-(* Code generation: translate takes a semantically checked AST and
-produces LLVM IR
 
-LLVM tutorial: Make sure to read the OCaml version of the tutorial
-
-http://llvm.org/docs/tutorial/index.html
-
-Detailed documentation on the OCaml LLVM library:
-
-http://llvm.moe/
-http://llvm.moe/ocaml/
-*)
-
-module L = Llvm
 module A = Ast
 
 module StringMap = Map.Make(String)
@@ -30,7 +17,7 @@ let translate (globals, functions) =
     | A.Bool -> i1_t
     | A.Void -> void_t
     | A.Float -> float_t
-    | A.String -> L.pointer_type i8_t in
+    | A.String -> i8_t in
 
   (* Declare each global variable; remember its value in a map *)
   let global_vars =
@@ -88,7 +75,7 @@ let translate (globals, functions) =
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
 	     A.Literal i -> L.const_int i32_t i
-      | A.StringLit s -> L.build_global_stringptr s "str" builder
+      | A.StringLit s -> L.const_stringz context s (*L.build_global_stringptr s "str" builder*)
       | A.FloatLit f -> L.const_float float_t f
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | A.Noexpr -> L.const_int i32_t 0

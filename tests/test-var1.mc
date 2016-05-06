@@ -1,5 +1,6 @@
 int main()
 {
-  print("123123123123");
+  string a;
+  a = "123123";
   return 0;
 }
