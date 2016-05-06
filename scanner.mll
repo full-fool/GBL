@@ -52,6 +52,9 @@ rule token = parse
 | "float"	{FLOAT}
 | "bool"	{BOOL}
 | "string"	{STRING}
+| "struct"  {STRUCT}
+| "class"   {CLASS}
+| "extends" {EXTENDS}
 | "game"	{GAME}
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}

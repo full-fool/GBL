@@ -14,6 +14,8 @@
 %token VOID TRUE FALSE
 %token GT LT
 
+%token STRUCT CLASS EXTENDS
+
 %token <int> LITERAL
 %token <float> FLOATCONSTANT
 %token <string> STRINGCONSTANT
@@ -36,14 +38,26 @@
 %type <Ast.program> program
 
 %%
-
 program:
   decls EOF { $1 }
 
 decls:
    /* nothing */ { [], [] }
- | decls vdecl { ($2 :: fst $1), snd $1 }
- | decls fdecl { fst $1, ($2 :: snd $1) }
+ | decls vandadecl { ($2 :: fst $1), snd $1 }
+ | decls cdecl { fst $1, ($2 :: snd $1) }
+
+ vandadecl:
+    typ ID ASSIGN expr SEMI {Init($1, $2, $4)}
+  | vdecl {Bind $1}
+  | array_decl {ArrayBind $1}
+
+  vdecl:
+   typ ID SEMI { ($1, $2) }
+
+  array_decl:
+   typ ID LBRACK LITERAL RBRACK SEMI {($1, $2, $4)}
+
+ /*********  function  ***********/
 
 fdecl:
    typ ID LPAREN formals_opt RPAREN LBRACE stmt_list RBRACE
@@ -63,6 +77,40 @@ formal_list:
   | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 
+/********* class *********/
+
+cdecl:
+    CLASS ID EXTENDS ID LBRACE cbody RBRACE {{
+      cname = $2;
+      extends = Parent($4);
+      cbody = $6;
+    }}
+
+cbody:
+      /* nothing */ { { 
+      vdecls = [];
+      array_decls = [];
+      methods = [];
+    } }
+  |   cbody vdecl { { 
+      vdecls = $2 :: $1.vdecls;
+      array_decls = $1.array_decls;
+      methods = $1.methods;
+    } }
+  |   cbody array_decl { { 
+      vdecls = $1.vdecls;
+      array_decls = $2 :: $1.array_decls;
+      methods = $1.methods;
+    } }
+  |   cbody fdecl { { 
+      vdecls = $1.vdecls;
+      array_decls = $1.array_decls;
+      methods = $2 :: $1.methods;
+    } }
+
+
+/********* other type *********/
+
 typ:
     INT         { Int         }
   | BOOL        { Bool        }
@@ -79,18 +127,14 @@ typ:
   | STRINGARRAY { StringArray }
 
 
-vdecl_list:
-    /* nothing */    { [] }
-  | vdecl_list vdecl { $2 :: $1 }
 
 
-vdecl:
-   typ ID SEMI { ($1, $2) }
+<<<<<<< HEAD
+=======
 
-array_decl:
-   typ ID LBRACK LITERAL RBRACK SEMI {($1, $2, $4)}
+/*********  statement  *********/
 
-
+>>>>>>> f04bed96bb0223149956a2dcbaa02d572b9308f2
 stmt_list:
     /* nothing */  { [] }
   | stmt_list stmt { $2 :: $1 }
@@ -111,6 +155,12 @@ stmt:
   | typ ID ASSIGN expr SEMI {Init($1, $2, $4)}
   | vdecl {Bind $1}
   | array_decl {ArrayBind $1}
+
+
+
+/*********  expr  *********/
+
+
 
 expr_opt:
     /* nothing */ { Noexpr }
