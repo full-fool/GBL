@@ -1,16 +1,19 @@
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
+type domain = DomainOp
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
-type array_bind = typ * string * int
+type array_bind = typ * string * expr
 
 
 
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
+          | IdInClass of string * domain * string
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
+          | CallDomain of string * expr list * domain * string
           | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
 
 type init = typ * string * expr
@@ -26,7 +29,7 @@ type stmt = Block of stmt list        | Expr of expr
           | ArrayBind of array_bind   
 
 
-type global = Bind of bind list | ArrayBind of array_bind list | Init of typ * string * expr
+type global = Bind of bind | ArrayBind of array_bind | Init of typ * string * expr
 
 type func_decl = {
 	typ      : typ;
@@ -34,8 +37,6 @@ type func_decl = {
 	formals  : bind list;
 	body     : stmt list;
 }
-
-type extends = Parent of string
 
 type cbody = {
   vdecls : bind list;
@@ -45,7 +46,7 @@ type cbody = {
 
 type class_decl = {
   cname : string;
-  extends : extends;
+  extends : string;
   cbody : cbody;
 }
 
