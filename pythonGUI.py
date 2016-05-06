@@ -29,11 +29,9 @@ class GameBoard(tk.Frame):
         self.canvas.bind("<Button-1>", self.callback)
 
     def callback(self, event):
-        if self.turns == 0:
-            self.addpiece("Player"+str(len(self.pieces.keys())), event.y/self.size, event.x/self.size)
-            self.turns = 1
-        else:
-            self.addpiece("Player"+str(len(self.pieces.keys())), event.y/self.size, event.x/self.size)
+        self.addpiece("Player"+str(len(self.pieces.keys())), event.y/self.size, event.x/self.size)
+        self.turns += 1
+        if self.turns >= self.numPlayers:
             self.turns = 0
         print "clicked at", event.x, event.y
 
@@ -50,6 +48,7 @@ class GameBoard(tk.Frame):
 
     def addavatar(self, name, row=0, column=0):
         '''Add a piece to the playing board'''
+        column = 9;
         self.avatars[name] = (row, column)
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
@@ -58,13 +57,14 @@ class GameBoard(tk.Frame):
         if self.turns >= self.numPlayers:
             self.turns = 0
         self.canvas.coords(name, x0, y0)
+        self.canvas.create_text((self.rows+1.5)*self.size, 3*self.size, text="Player 1")
     
     def refresh(self, event):
         '''Redraw the board, possibly in response to window being resized'''
         xsize = int((event.width-1) / self.columns)
         ysize = int((event.height-1) / self.rows)
         self.size = min(xsize, ysize)
-        self.canvas.delete("square")
+        self.canvas.delete("all")
         color = self.color2
         for row in range(self.rows):
             color = self.color1 if color == self.color2 else self.color2
@@ -79,7 +79,6 @@ class GameBoard(tk.Frame):
             self.addpiece(name, self.pieces[name][0], self.pieces[name][1])
         for name in self.avatars:
             self.addavatar(name, self.avatars[name][0], self.avatars[name][1])
-        text1 = self.canvas.create_text((self.rows+1.5)*self.size, 3*self.size, text="Player 1")
         text2 = self.canvas.create_text((self.rows+1.5)*self.size, 7*self.size, text="Player 2")
         
         self.canvas.tag_raise("piece")
@@ -93,9 +92,8 @@ if __name__ == "__main__":
     tk.Canvas.create_circle = _create_circle
     board = GameBoard(root)
     board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    
-
-    board.addavatar("player1Avatar", 1, 9)
-    board.addavatar("player2Avatar", 5, 9)
+    for i in range(board.numPlayers):
+        board.addavatar("player"+str(i)+"Avatar", i, board.numPlayers)
+        board.addavatar("player2Avatar", 5, 9)
     
     root.mainloop()

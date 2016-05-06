@@ -183,21 +183,28 @@ let rec expr symbol_list  = function
                 with Not_found -> raise (Failure ("undeclared identifier " ^ s))
                 in
             type_of_identifier s
-      | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr  symbol_list e2 in
-          (match op with
-                  Add | Sub | Mult | Div when t1 = Int && t2 = Int -> Int
-          | Is | Neq when t1 = t2 -> Bool
-          | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
-          | And | Or when t1 = Bool && t2 = Bool -> Bool
-                | _ -> raise (Failure ("illegal binary operator " ^
-                      string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
-                      string_of_typ t2 ^ " in " ^ string_of_expr e))
-                )
-      | Unop(op, e) as ex -> let t = expr  symbol_list e in
+      | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
+  (match op with
+        Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
+        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
+        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Float -> Float
+        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Float -> Float
+  | Mod | ModEqual when t1 = Int && t2 = Int -> Int
+  | Is | Neq when t1 = t2 -> Bool
+  | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
+  | Less | Leq | Greater | Geq when t1 = Int && t2 = Float -> Bool
+  | Less | Leq | Greater | Geq when t1 = Float && t2 = Int -> Bool
+  | Less | Leq | Greater | Geq when t1 = Float && t2 = Float -> Bool
+  | And | Or when t1 = Bool && t2 = Bool -> Bool
+        | _ -> raise (Failure ("illegal binary operator " ^
+              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+              string_of_typ t2 ^ " in " ^ string_of_expr e)))
+      | Unop(op, e) as ex -> let t = expr symbol_list e in
          (match op with
-           Neg when t = Int -> Int
-         | Not when t = Bool -> Bool
-               | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
+          Neg when t = Int -> Int
+        | Neg when t = Float -> Float
+        | Not when t = Bool -> Bool
+        | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
       | Assign(var, e) as ex ->  let type_of_identifier s =
@@ -227,14 +234,14 @@ let rec expr symbol_list  = function
  let check_bool_expr symbol_list e  = if expr symbol_list e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
      else () in
-
+  let print_symbol_list symbol_list = 
     (* Verify a statement or throw an exception，更新后的stmt函数返回一个symbol_list *)
     let rec stmt symbol_list = function
    Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
            [Return _ as s] -> stmt block_symbol_list s
          | Return _ :: _ -> raise (Failure "nothing may follow a return")
          | Block sl :: ss -> check_block block_symbol_list sl; check_block block_symbol_list ss;
-         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in check_block rstsymbol_list ss; 
+         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in print_symbol_list rstsymbol_list; check_block rstsymbol_list ss; 
          | [] -> block_symbol_list
         in check_block symbol_list sl
       | Expr e -> ignore (expr symbol_list e); symbol_list
@@ -249,7 +256,9 @@ let rec expr symbol_list  = function
       | Bind(b) ->  let typstring = fst b and idstring = snd b in 
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
-      |Init(t, s, e) -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
+      | Init(t, s, e) -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
+      | Break -> symbol_list
+      | Continue -> symbol_list
 
     in
 
