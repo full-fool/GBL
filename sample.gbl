@@ -1,7 +1,4 @@
 ### gloabl variables including array, initialization
-
-
-
 class Gobang extends Game
 {
     #variables:
