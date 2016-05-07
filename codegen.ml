@@ -79,7 +79,7 @@ let translate (globals, classes) =
 
     let rec comp_local_expr = function
         A.Literal i -> string_of_int i
-      | A.StringLit s -> s
+      | A.StringLit s -> "\"" ^ s ^ "\""
       | A.FloatLit f -> string_of_float f
       | A.BoolLit b -> ( match b with 
           true    -> "True"
@@ -95,6 +95,7 @@ let translate (globals, classes) =
       | A.Unop(op, e) -> "not (" ^ comp_local_expr e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
       | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
+      | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
     in
 
     (*complie global variables*)
