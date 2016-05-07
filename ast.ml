@@ -18,8 +18,6 @@ type array_bind = typ * string * expr
 
 type init = typ * string * expr
 
-
-
 type stmt = Block of stmt list        | Expr of expr
           | If of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
