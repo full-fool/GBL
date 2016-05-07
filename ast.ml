@@ -17,8 +17,6 @@ type expr = Literal of int            | BoolLit of bool
 type array_bind = typ * string * expr
 
 
-
-
 type init = typ * string * expr
 
 type stmt = Block of stmt list        | Expr of expr

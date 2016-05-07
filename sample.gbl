@@ -1,8 +1,6 @@
 ### gloabl variables including array, initialization
 
 
-
-
 class GobangSprite entends Sprite
 {
   #variable in Sprite

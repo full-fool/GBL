@@ -89,7 +89,7 @@ let translate (globals, classes) =
 
   (*complie statements*)
   let rec comp_stmt pos = function
-      A.Block sl -> ""
+      A.Block sl -> String.concat "" (List.map (comp_stmt pos) sl)
     | A.Expr e -> (String.make (pos * 4) ' ') ^ comp_expr e ^ "\n"
     | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_expr e ^ "\n"
     | A.Bind e -> comp_local_decl pos e
@@ -97,7 +97,8 @@ let translate (globals, classes) =
     | A.Init (t, n, v) -> comp_local_assign pos (t, n, v)
     | A.If (predicate, then_stmt, else_stmt) -> ""
     | A.For (e1, e2, e3, body) -> ""
-    | A.While (predicate, body) -> ""
+    | A.While (predicate, body) -> (String.make (pos * 4) ' ') ^ "while (" ^ comp_expr predicate ^ ")\n" ^
+                                   comp_stmt (pos + 1) body
   in
 
   let comp_function header fdecl = 
