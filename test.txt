@@ -1,7 +1,0 @@
-
-int main()
-{
-bindcontinuefor (i = 0 ; i < 10 ; i = i + 1) {
-bindbind}
-return 0;
-}
