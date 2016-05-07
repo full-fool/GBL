@@ -1,7 +1,6 @@
 class UserMain extends Main{
   void main()
   {
-  	  Gobang mygame;
-      mytest(1,2,3)@mygame;
+  	  InputPosition[1] = rposition % Mapsize[0];
   }
 }

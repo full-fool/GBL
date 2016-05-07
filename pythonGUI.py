@@ -2,20 +2,20 @@ import Tkinter as tk
 
 
 class GameBoard(tk.Frame):
-    def __init__(self, parent, rows=8, columns=8, size=32, players = 6, colors=["black", "white","blue","yellow","grey","pink"], color1 = "blue", color2 = "white"):
+    def __init__(self, parent, rows=8, columns=8, size=32, players = 6, colors=["black", "white","blue","yellow","grey","pink"], color1 = "blue", color2 = "white", ai=False):
         '''size is the size of a square, in pixels'''
         
         self.rows = rows
         self.columns = columns
         self.size = size
         self.colors = colors
-        self.color1 = color1
-        self.color2 = color2
-        self.pieces = {}
-        self.turns = 0
-        self.passPieces = set([])
+        self.color1 = color1 # board color 1
+        self.color2 = color2 # board color 2
+        self.turns = 0 # current player
+        self.pastPieces = [] #sprite list
         self.numPlayers = players
-        self.enable = True
+        self.enable = True # win or tie makes it false
+        self.AI = ai
         canvas_width = (columns+5) * size
         canvas_height = rows * size
         
@@ -30,20 +30,30 @@ class GameBoard(tk.Frame):
         self.canvas.bind("<Button-1>", self.callback)
         self.addavatar()
 
+    #When mouse clicks
     def callback(self, event):
-        if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable:
-            if (event.y/self.size, event.x/self.size) not in self.passPieces:
-                self.addpiece("Player"+str(len(self.pieces.keys())), event.y/self.size, event.x/self.size)
-                self.passPieces.add((event.y/self.size, event.x/self.size))
+        if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet
+            if (event.y/self.size, event.x/self.size) not in self.pastPieces: #isLegal()
+
+                # place sprite
+                self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
+                self.pastPieces.append((event.y/self.size, event.x/self.size))
+
+                #if isWin():
+                    #win()
+                #if isTie():
+                    #tie()
+                #turn to next player
                 self.turns += 1
                 if self.turns >= self.numPlayers:
                     self.turns = 0
+                
                 self.addavatar()
         print "clicked at", event.x, event.y
-
+    
+    #update()
     def addpiece(self, name, row=0, column=0, curr=-1):
         '''Add a piece to the playing board'''
-        self.pieces[name] = (row, column)
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
         if curr==-1:
@@ -52,6 +62,7 @@ class GameBoard(tk.Frame):
             self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[curr])
         self.canvas.coords(name, x0, y0)
 
+    #draw avatars
     def addavatar(self):
         '''Add a piece to the playing board'''
         self.canvas.delete("avatar")
@@ -68,6 +79,7 @@ class GameBoard(tk.Frame):
             self.canvas.coords(name, x0, y0)
             self.canvas.create_text((self.columns+3.5)*self.size, row*self.size, text=name, tags="avatar")
     
+    # redraw whole window
     def redraw(self):
         self.canvas.delete("all")
         color = self.color2
@@ -81,8 +93,8 @@ class GameBoard(tk.Frame):
                 self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=color, tags="square")
                 color = self.color1 if color == self.color2 else self.color2
         i = 0
-        for name in self.pieces:
-            self.addpiece(name, self.pieces[name][0], self.pieces[name][1], curr=i)
+        for name in self.pastPieces:
+            self.addpiece(str(name), name[0], name[1], curr=i)
             i += 1
             if i >= self.numPlayers:
                 i = 0
@@ -101,7 +113,7 @@ class GameBoard(tk.Frame):
     def clear(self):
         self.enable = True
         self.turns = 0
-        self.passPieces = set([])
+        self.pastPieces = set([])
         self.redraw()
 
     def win(self, i):
