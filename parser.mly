@@ -9,7 +9,7 @@
 %token BITAND BITOR BITXOR BITNEG
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
-%token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
+%token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP MAIN AI
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -112,6 +112,8 @@ typ:
   | PLAYER      { Player      }
   | SPRITE      { Sprite      }
   | MAP         { Map         }
+  | MAIN        { Main        }
+  | AI          { Ai          }
 
 
 /*********  statement  *********/

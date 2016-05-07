@@ -1,6 +1,6 @@
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
-type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
+type typ = Int | Bool | Void | Float | String | Game | Player | Sprite | Map | Main | Ai
 type bind = typ * string
 
 
@@ -58,7 +58,7 @@ type program = global list * class_decl list
 (* type program = Program of decl_stmt *)
 (* Pretty-printing functions *)
 
-(*let string_of_op = function
+let string_of_op = function
     Add -> "+"
   | Sub -> "-"
   | Mult -> "*"
@@ -77,6 +77,7 @@ type program = global list * class_decl list
   | Geq -> ">="
   | And -> "&&"
   | Or -> "||"
+  | Is -> "=="
   | At -> "@"
 
 let string_of_uop = function
@@ -90,16 +91,18 @@ let rec string_of_expr = function
   | FloatLit(f) -> string_of_float f
   | StringLit(s) -> s
   | Id(s) -> s
-  | IdInClass(s1, o, s2) -> s1 ^ " " ^ string_of_op o ^ " " ^ s2
+  | Noexpr -> ""
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
   | Unop(o, e) -> string_of_uop o ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
+  | Call(f, el) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | ArrayElement(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
   | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
-  | Call(f, el) ->
-      f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
-  | CallDomain(f, el, o, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")" ^ string_of_op o ^ " " ^ s
-  | Noexpr -> ""
+  | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
+  | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
+  | Negative(o, e) -> string_of_op o ^ string_of_expr e
+
 
 let string_of_typ = function
     Int -> "int"
@@ -107,20 +110,19 @@ let string_of_typ = function
   | Void -> "void"
   | Float -> "float"
   | String -> "string"
-  | IntArray -> "Array<int>"
-  | BoolArray -> "Array<bool>"
-  | FloatArray -> "Array<float>"
-  | StringArray -> "Array<string>"
   | Game -> "game"
   | Player -> "player"
   | Sprite -> "sprite"
   | Map -> "map"
+  | Main -> "main"
+  | Ai -> "ai"
 
-let rec string_of_stmt = function
+(* let rec string_of_stmt = function
     Block(stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
-  | Expr(expr) -> string_of_expr expr ^ ";\n";
-  | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n";
+  | Expr(expr) -> string_of_expr expr ^ ";\n"
+  | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n"
+  | Ifnoelse() -> "if ("
   | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
   | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
       string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2

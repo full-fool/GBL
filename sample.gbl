@@ -223,9 +223,11 @@ class GobangAI extends AI{
   int returnposition()
   {
     int position[2];
-    for(int i = 0; i < Mapsize[0]; i = i + 1)
+    int i;
+    int j;
+    for(i = 0; i < Mapsize[0]; i = i + 1)
     {
-      for(int j = 0; j < Mapsize[1]; j = j + 1)
+      for(j = 0; j < Mapsize[1]; j = j + 1)
       {
         if(SpriteOwnerId == -1)
         {
@@ -234,12 +236,8 @@ class GobangAI extends AI{
         }
       }
     }
-
-
     return position[0]* Mapsize[0] + position[1];
   }
-
-
 }
 
 #assume the input stream is stdin>>...
@@ -284,8 +282,8 @@ class UserMain extends Main{
             bool legal = false;
             while(not legal)
             {
-              stdin>>InputPosition[0];
-              stdin>>InputPosition[1];
+              #stdin>>InputPosition[0];
+              #stdin>>InputPosition[1];
               legal = isLegal(InputPosition)@mygame;
             }
           }

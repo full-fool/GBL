@@ -1,3 +1,4 @@
 ./microc.native
 cyq_private/
 _build/
+ignore/
