@@ -74,7 +74,7 @@ let translate (globals, classes) =
                     | A.Init (t, n, v) -> n) "self." m
     in
 
-    let local_vars = List.fold_left init_var StringMap.empty cbody.A.vdecls
+    let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls
     in
 
     let lookup n = try StringMap.find n local_vars
@@ -99,6 +99,8 @@ let translate (globals, classes) =
       | A.Negative (op, e) -> 
         let e' = comp_global_expr e in
         comp_sym op ^ "(" ^ e' ^ ")"
+      | A.IdInClass (e, s) -> lookup s ^ s ^ "." ^ e
+      | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr i ^ "]"
       | A.Unop(op, e) -> "not (" ^ comp_local_expr e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
       | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
@@ -164,7 +166,7 @@ let translate (globals, classes) =
       (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
     in
 
-    comp_class_var 1 cbody.A.vdecls ^ 
+    comp_class_var 1 cbody.A.vandadecls ^ 
     String.concat "" (List.map (comp_function 1) cbody.A.methods)
   in
 
