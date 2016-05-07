@@ -10,7 +10,6 @@
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
 %token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
-%token INTARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -113,10 +112,6 @@ typ:
   | PLAYER      { Player      }
   | SPRITE      { Sprite      }
   | MAP         { Map         }
-  | INTARRAY    { IntArray    }
-  | BOOLARRAY   { BoolArray   }
-  | FLOATARRAY  { FloatArray  }
-  | STRINGARRAY { StringArray }
 
 
 /*********  statement  *********/
@@ -133,8 +128,8 @@ stmt:
   | BREAK SEMI {Break}
   | CONTINUE SEMI {Continue}
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
-  | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
-  | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
+  | IF LPAREN expr RPAREN stmt { Ifnoelse($3, $5) }
+  | IF LPAREN expr RPAREN stmt ELSE stmt    { Ifelse($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
@@ -158,7 +153,7 @@ expr:
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
   | ID LBRACK LITERAL RBRACK {ArrayElement($1, $3)}
-  | ID DOMAINOP ID   { IdInClass($1, At, $3)}
+  | ID DOMAINOP ID   { IdInClass($1,     $3)}
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
@@ -175,7 +170,7 @@ expr:
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LBRACK expr RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
-  | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, At, $6) }
+  | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, $6) }
   | LPAREN expr RPAREN { $2 }
 
 init:
