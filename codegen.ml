@@ -118,7 +118,7 @@ let translate (globals, classes) =
     in
 
     (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^
-    "(self, " ^ String.concat "," (List.map comp_param fdecl.A.formals) ^  
+    "(" ^ String.concat "," ("self" :: (List.map comp_param fdecl.A.formals)) ^  
     "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^ "\n"
   in
 
