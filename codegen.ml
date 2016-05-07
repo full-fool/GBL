@@ -25,6 +25,7 @@ let translate (globals, classes) =
     | A.Leq     -> " <= "
     | A.Greater -> " > "
     | A.Geq     -> " >= "
+    | A.Mod     -> " % "
     | _         -> " "
   in
 
