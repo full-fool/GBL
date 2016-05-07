@@ -5,19 +5,20 @@ class UserMain:
         mygame = Gobang()
         MapS = [ None ] * 2
 
-        Map[0]=15
-        Map[1]=15
-        GridNum = (Map[0]) * (Map[1])
+        MapS[0]=15
+        MapS[1]=15
+        GridNum = (MapS[0]) * (MapS[1])
         InputPlayerNumber = 2
-        InputPlayerId = [ None ] * PlayerNumber
+        InputPlayerId = [ None ] * InputPlayerNumber
 
         InputPlayerId[0]=0
         InputPlayerId[1]=1
-        InputPlayerName[PlayerNumber]
+        InputPlayerName = [ None ] * InputPlayerNumber
+
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
         InputwithAI = True
-        mygame.initialize(MapS, PlayerNum, InputPlayerID, InputPlayerName, InputwithAI)
+        mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)
         while (not (mygame.win())):
             print("This is the turn of player")
             print(mygame.NextPlayerID)
@@ -66,10 +67,10 @@ class Gobang:
         self.NextPlayerID = None
         self.FormerPosition = [ None ] * 2
         self.FormerId = None
-        self.SpriteOwnerId = [ None ] * self.GridNum
-        self.SpriteId = [ None ] * self.GridNum
-        self.PlayerName = [ None ] * self.PlayerNumber
-        self.PlayerId = [ None ] * self.PlayerNumber
+        self.SpriteOwnerId = [ None ] * 1000
+        self.SpriteId = [ None ] * 1000
+        self.PlayerName = [ None ] * 10
+        self.PlayerId = [ None ] * 10
         self.PlayerNumber = None
         self.GridNum = None
         self.MapSize = [ None ] * 2
