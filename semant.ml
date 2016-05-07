@@ -74,9 +74,14 @@ let check (vandadecl, cdecl) =
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
     | Init(t, s, e) as init -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-    | ArrayBind((t, s, e)) as ab -> 
+    | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
+                                    in 
+                                    (match t with Int -> () 
+                                                | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
+                                    in 
+                                    let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
     in
-    stmt 
+    List.iter check_vandadecls 
   let check_cblock (globals, functions) = function
 
   
