@@ -3,7 +3,7 @@
 
 
 
-class GobangSprite::Sprite
+class GobangSprite entends Sprite
 {
   #variable in Sprite
   #int Id;
@@ -15,7 +15,7 @@ class GobangSprite::Sprite
   #printSprite();
 };
 
-class GobangPlayer::Player
+class GobangPlayer entends Player
 {
   #variable in Player
   #int Id;
@@ -41,7 +41,7 @@ class GobangPlayer::Player
 #     int NextSpriteID;
 # };
 
-class Gobang::Game
+class Gobang entends Game
 {
     #functions:
     void initialize(array<int> MapS, int PlayerNum, Player PlayerL, string Blanksignal)
@@ -251,7 +251,7 @@ class Gobang::Game
 
 
 #assume the input stream is stdin>>...
-class UserMain::Main{
+class UserMain entends Main{
   void main()
   {
       Gobang mygame;
