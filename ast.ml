@@ -1,8 +1,8 @@
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
-(* type domain = DomainOp *)
 type uop = Neg | Not
 type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
+
 
 
 type expr = Literal of int            | BoolLit of bool
@@ -10,11 +10,14 @@ type expr = Literal of int            | BoolLit of bool
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
-          | ArrayElement of string * int  | ArrayElementAssign of string * int * expr
-          (* | IdInClass of string * domain * string
-          | CallDomain of string * expr list * domain * string *)
+          | ArrayElement of string * int  | ArrayElementAssign of string * expr * expr
+          | IdInClass of string * string
+          | CallDomain of string * expr list * string
 
 type array_bind = typ * string * expr
+
+
+
 
 type init = typ * string * expr
 
@@ -87,12 +90,15 @@ let rec string_of_expr = function
   | FloatLit(f) -> string_of_float f
   | StringLit(s) -> s
   | Id(s) -> s
+  | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
   | Unop(o, e) -> string_of_uop o ^ string_of_expr e
   | Assign(v, e) -> v ^ " = " ^ string_of_expr e
+  | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
+  | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
   | Noexpr -> ""
 
 let string_of_typ = function
