@@ -30,17 +30,21 @@ class Gobang extends Game
     #functions:
     void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputwithAI)
     {
-        MapSize[2] = {MapS[0], MapS[1]};
+        MapSize[0] = MapS[0]; 
+        MapSize[1] = MapS[1];
         PlayerNumber = InputPlayerNum;
         withAI = InputwithAI;
-        for(int i = 0; i < PlayerNumber; i = i + 1)
+        int i;
+        for(i = 0; i < PlayerNumber; i = i + 1)
         {
             PlayerId[i] = InputPlayerID[i];
             PlayerName[i] = InputPlayerName[i];
         }
-        for(int i = 0; i < MapSize[0]; i = i + 1)
+        int i;
+        int j;
+        for(i = 0; i < MapSize[0]; i = i + 1)
         {
-            for(int j = 0; j < MapSize[1]; j = j + 1)
+            for(j = 0; j < MapSize[1]; j = j + 1)
             {
                 SpriteId[i * Mapsize[0] + j] = -1;
                 SpriteOwnerId[i * Mapsize[0] + j] = -1;
@@ -64,13 +68,15 @@ class Gobang extends Game
       int right = min(position[0] + 4, Mapsize[0] - 1);
       int up = max(position[1] - 4, 0);
       int down = min(position[1] + 4, Mapsize[1] - 1);
-
+      int i;
+      int j;
       int count;
 
       #check row
       int PreSprite = -1;
       count = 0;
-      for(int j = left; j <= right; j = j + 1)
+      
+      for(j = left; j <= right; j = j + 1)
       {
         int curSprite = SpriteOwnerId[position[0] * Mapsize[0] + j];
         #string curSprite = Text@SpriteList[position[0]][j];
@@ -92,7 +98,7 @@ class Gobang extends Game
       #check column
       PreSprite = -1;
       count = 0;
-      for(int i = up; i <= down; i = i + 1)
+      for(i = up; i <= down; i = i + 1)
       {
       i * Mapsize[0] + position[1]
         int curSprite = SpriteOwnerId[i * Mapsize[0] + position[1]];
@@ -126,7 +132,7 @@ class Gobang extends Game
 
       int curposition[2];
       
-      for(int i = 0; i <= (rightdown[0] - leftup[0]); i = i + 1)
+      for(i = 0; i <= (rightdown[0] - leftup[0]); i = i + 1)
       {
         curposition[0] = leftup[0] + i;
         curposition[1] = leftup[1] + i;
@@ -161,7 +167,7 @@ class Gobang extends Game
 
       int curposition[2];
       
-      for(int i = 0; i <= (rightup[0] - leftdown[0]); i = i + 1)
+      for(i = 0; i <= (rightup[0] - leftdown[0]); i = i + 1)
       {
         curposition[0] = leftdown[0] + i;
         curposition[1] = leftdown[1] - i;
@@ -185,7 +191,7 @@ class Gobang extends Game
     }
     
     #check if the move is legal
-    bool isLegal(Status GobangStatus, int position)
+    bool isLegal(int position)
     {
       if(not (position[0]>=0 and position[0]<MapSize[0] and position[1]>=0 and position[1]<MapSize[1]))
         return false;
@@ -289,7 +295,7 @@ class UserMain extends Main{
           }
           
           #update status
-          update(InputPosition)@mygame;;
+          update(InputPosition)@mygame;
 
           #print map
           #printGame()@mygame;
