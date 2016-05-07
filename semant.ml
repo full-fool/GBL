@@ -58,6 +58,9 @@ let check (globals, functions) =
      body = [] }); ("prints", { typ = Void; fname = "prints"; formals = [(String, "x")];
     body = [] }); ("printlnf", { typ = Void; fname = "printlnf"; formals = [(Float, "x")];
     body = [] }); ("printlns", { typ = Void; fname = "printlns"; formals = [(String, "x")];
+      body = [] }); ("stri", { typ = String; fname = "stri"; formals = [(Int, "x")];
+      body = [] }); ("strb", { typ = String; fname = "strb"; formals = [(Bool, "x")];
+      body = [] }); ("strf", { typ = String; fname = "strf"; formals = [(Float, "x")];
       body = [] })]
   
    in
@@ -176,14 +179,16 @@ let check (globals, functions) =
     stmt symbols (Block func.body) *)
 
 let rec expr symbol_list  = function
-  Literal _ -> Int
-      | BoolLit _ -> Bool
-      | Id s ->    let type_of_identifier s =
-                  try StringMap.find s symbol_list
-                with Not_found -> raise (Failure ("undeclared identifier " ^ s))
-                in
-            type_of_identifier s
-      | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
+    Literal _ -> Int
+  | BoolLit _ -> Bool
+  | FloatLit _ -> Float
+  | StringLit _ -> String
+  | Id s -> let type_of_identifier s =
+            try StringMap.find s symbol_list
+              with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+            in
+              type_of_identifier s
+  | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
   (match op with
         Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
         | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
@@ -207,6 +212,7 @@ let rec expr symbol_list  = function
         | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
+
       | Assign(var, e) as ex ->  let type_of_identifier s =
                         try StringMap.find s symbol_list
                     with Not_found -> raise (Failure ("undeclared identifier " ^ s))
@@ -229,13 +235,33 @@ let rec expr symbol_list  = function
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
+      | ArrayElement(var, e) as ae -> let type_of_identifier s =
+                        try StringMap.find s symbol_list
+                    with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+                      in 
+                    let lt = type_of_identifier var and rt = expr symbol_list e in
+                    (match rt with
+                     Int -> lt
+                   | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+      | ArrayElementAssign(var, e1, e2) as aea -> let type_of_identifier s =
+                        try StringMap.find s symbol_list
+                    with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+                      in 
+                    let lt = type_of_identifier var and rt = expr symbol_list e1 in
+                    (match rt with
+                     Int -> let rrt = expr symbol_list e2 in
+                     check_assign lt rrt (Failure("illegal assignment " ^ string_of_typ lt ^
+             " = " ^ string_of_typ rrt ^ " in " ^ 
+             string_of_expr aea))
+                   | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+
+
     in
 
  let check_bool_expr symbol_list e  = if expr symbol_list e != Bool
      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
      else () in
-  let print_symbol_list symbol_list = 
-    (* Verify a statement or throw an exception，更新后的stmt函数返回一个symbol_list *)
+  let print_symbol_list symbol_list = StringMap.iter 
     let rec stmt symbol_list = function
    Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
            [Return _ as s] -> stmt block_symbol_list s

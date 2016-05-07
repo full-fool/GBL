@@ -10,13 +10,9 @@ type expr = Literal of int            | BoolLit of bool
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
-          | ArrayElement of string * int  | ArrayElementAssign of string * expr * expr
-          | IdInClass of string * op * string
+          | ArrayElement of string * expr  | ArrayElementAssign of string * expr * expr
+          | IdInClass of string * string
           | CallDomain of string * expr list * op * string
-
-type array_bind = typ * string * expr
-
-
 
 
 type init = typ * string * expr
@@ -29,7 +25,7 @@ type stmt = Block of stmt list        | Expr of expr
           | While of expr * stmt      | Return of expr
           | Break                     | Continue | Init of typ * string * expr
           | Bind of bind              (* | Init of init *)
-          | ArrayBind of array_bind   
+          | ArrayBind of typ * string * expr   
 
 
 type global = Bind of bind | ArrayBind of array_bind | Init of typ * string * expr
