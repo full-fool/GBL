@@ -80,7 +80,7 @@ class Gobang extends Game
           {
             count = 1;
           }
-          else count++;
+          else count = count + 1;
           if(count == 5)
             return true;
         }
@@ -102,7 +102,7 @@ class Gobang extends Game
           {
             count = 1;
           }
-          else count++;
+          else count = count + 1;
           if(count == 5)
             return true;
         }
@@ -137,7 +137,7 @@ class Gobang extends Game
           {
             count = 1;
           }
-          else count++;
+          else count = count + 1;
           if(count == 5)
             return true;
         }
@@ -172,7 +172,7 @@ class Gobang extends Game
           {
             count = 1;
           }
-          else count++;
+          else count = count + 1;
           if(count == 5)
             return true;
         }
@@ -209,9 +209,9 @@ class Gobang extends Game
     }
     
     #void printGame();
-    #for(int i = 0; i < MapSize[0]; i++)
+    #for(int i = 0; i < MapSize[0]; i = i + 1)
     #{
-    #  for(int j = 0; j < MapSize[1]; j++)
+    #  for(int j = 0; j < MapSize[1]; j = j + 1)
     #  {
     #    print(Text@SpriteList[i][j]@mygame);
     #  }
