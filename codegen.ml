@@ -96,7 +96,7 @@ let translate (globals, classes) =
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
       | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
       | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
-      | _ as s -> s
+      | _ as s -> ""
     in
 
     (*complie global variables*)
@@ -141,19 +141,20 @@ let translate (globals, classes) =
                                     | _ -> (String.make ((pos + 1) * 4) ' ') ^ comp_local_expr e3 ^ "\n")
       | A.While (predicate, body) -> (String.make (pos * 4) ' ') ^ "while (" ^ comp_local_expr predicate ^ "):\n" ^
                                      comp_stmt (pos + 1) body
+      | _ as s -> ""
     in
 
     let comp_class_var pos vdecls = 
       (String.make (pos * 4) ' ') ^ "def __init__(self):\n" ^ 
-      String.concat "" (List.map (comp_local_var (pos + 1)) vdecls) ^ "\n" ^
-      (String.make (pos * 4) ' ') ^ "pass" ^ "\n"
+      String.concat "" (List.map (comp_local_var (pos + 1)) vdecls) ^
+      (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
     in
 
     let comp_function pos fdecl = 
       (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^
       "(" ^ String.concat "," ("self" :: (List.map comp_param fdecl.A.formals)) ^  
-      "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^ "\n" ^
-      (String.make (pos * 4) ' ') ^ "pass" ^ "\n"
+      "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^
+      (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
     in
 
     comp_class_var 1 cbody.A.vdecls ^ 
@@ -166,7 +167,7 @@ let translate (globals, classes) =
   in
 
   let find_main_class cdecl = 
-    if cdecl.A.extends == "Main" then cdecl.A.cname else ""
+    if cdecl.A.extends = "Main" then cdecl.A.cname else ""
   in
 
   let comp_main_class classes = 
