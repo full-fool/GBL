@@ -9,7 +9,7 @@
 %token BITAND BITOR BITXOR BITNEG
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
-%token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
+%token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP MAIN AI
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -30,7 +30,7 @@
 %left LANGLE RANGLE 
 %left LEQ GEQ
 %left PLUS MINUS
-%left TIMES DIVIDE
+%left TIMES DIVIDE MODULE
 %right NOT
 
 %start program
@@ -112,6 +112,8 @@ typ:
   | PLAYER      { Player      }
   | SPRITE      { Sprite      }
   | MAP         { Map         }
+  | MAIN        { Main        }
+  | AI          { Ai          }
 
 
 /*********  statement  *********/
@@ -157,8 +159,10 @@ expr:
   | ID DOMAINOP ID   { IdInClass($1,     $3)}
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
+  | MINUS expr       { Negative(Sub,    $2) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
   | expr DIVIDE expr { Binop($1, Div,   $3) }
+  | expr MODULE expr { Binop($1, Mod,   $3) }
   | expr EQ     expr { Binop($1, Is, $3) }
   | expr NEQ    expr { Binop($1, Neq,   $3) }
   | expr LT     expr { Binop($1, Less,  $3) }

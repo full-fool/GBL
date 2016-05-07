@@ -55,6 +55,8 @@ rule token = parse
 | "player" 	{PLAYER}
 | "sprite"	{SPRITE}
 | "map"		{MAP}
+| "main"    {MAIN}
+| "ai"      {AI}
 | "void"	{VOID}
 | "for"		{FOR}
 | "if"		{IF}

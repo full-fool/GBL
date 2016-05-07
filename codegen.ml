@@ -18,13 +18,14 @@ let translate (globals, classes) =
     | A.Mult    -> " * "
     | A.Div     -> " / "
     | A.And     -> " and "
-    | A.Is      -> " is "
+    | A.Is      -> " == "
     | A.Or      -> " or "
     | A.Neq     -> " != "
     | A.Less    -> " < "
     | A.Leq     -> " <= "
     | A.Greater -> " > "
     | A.Geq     -> " >= "
+    | A.Mod     -> " % "
     | _         -> " "
   in
 
@@ -44,6 +45,9 @@ let translate (globals, classes) =
       let e1' = comp_global_expr e1
       and e2' = comp_global_expr e2 in
       "(" ^ e1' ^ ")" ^ comp_sym op ^ "(" ^ e2' ^ ")"
+    | A.Negative (op, e) -> 
+      let e' = comp_global_expr e in
+      comp_sym op ^ "(" ^ e' ^ ")"
     | A.Unop(op, e) -> "not (" ^ comp_global_expr e ^ ")"
     | A.Assign (s, e) -> s ^ " = " ^ comp_global_expr e
     | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_global_expr act) ^ ")"
@@ -92,6 +96,9 @@ let translate (globals, classes) =
         let e1' = comp_local_expr e1
         and e2' = comp_local_expr e2 in
         "(" ^ e1' ^ ")" ^ comp_sym op ^ "(" ^ e2' ^ ")"
+      | A.Negative (op, e) -> 
+        let e' = comp_global_expr e in
+        comp_sym op ^ "(" ^ e' ^ ")"
       | A.Unop(op, e) -> "not (" ^ comp_local_expr e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
       | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
