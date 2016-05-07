@@ -1,4 +1,6 @@
-int main()
-{
-	return 0;  
+class UserMain extends Main{
+  void main()
+  {
+
+  }
 }
