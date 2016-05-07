@@ -64,10 +64,14 @@ class Gobang extends Game
       int position[2];
       position[0] = FormerPosition[0];
       position[1] = FormerPosition[1];
-      int left = max(position[0] - 4, 0);
-      int right = min(position[0] + 4, Mapsize[0] - 1);
-      int up = max(position[1] - 4, 0);
-      int down = min(position[1] + 4, Mapsize[1] - 1);
+      if((position[0] - 4) > 0) left = position[0] - 4;
+      else left = 0;
+      if((position[0] + 4) > (Mapsize[0] - 1)) right = Mapsize[0] - 1;
+      else right = position[0] + 4;
+      if((position[1] - 4) > 0) up = position[1] - 4;
+      else up =0;
+      if((position[1] + 4)>(Mapsize[1] - 1))down = Mapsize[1] - 1;
+      else down = position[1] + 4;
       int i;
       int j;
       int count;
@@ -120,15 +124,18 @@ class Gobang extends Game
       PreSprite = -1;
       count = 0;
       int leftup[2];
-      int leftupDistance = min(4, position[0], position[1])
-      min = 4;
-      if(position[0] < 4) min = position[0];
-      if(position[1] < 4) min = position[1];
+      int leftupDistance;
+      leftupDistance = 4;
+      if(position[0] < 4) leftupDistance = position[0];
+      if(position[1] < 4) leftupDistance = position[1];
       leftup[0] = position[0] - leftupDistance;
       leftup[1] = position[1] - leftupDistance;
 
       int rightdown[2];
-      int rightdownDistance = min(4, MapSize[0] - 1 - position[0], MapSize[1] - 1 - position[1]);
+      int rightdownDistance;
+      rightdownDistance = 4;
+      if((MapSize[0] - 1 - position[0]) < 4) rightdownDistance = MapSize[0] - 1 - position[0];
+      if((MapSize[1] - 1 - position[1]) < 4) rightdownDistance = MapSize[1] - 1 - position[1];
       rightdown[0] = position[0] + rightdownDistance;
       rightdown[1] = position[1] + rightdownDistance;
 
@@ -158,12 +165,16 @@ class Gobang extends Game
       PreSprite = -1;
       count = 0;
       int leftdown[2];
-      int leftdownDistance = min(4, position[0], MapSize[1] - 1 - position[1])
+      int leftdownDistance = 4;
+      if(position[0] < 4) leftdownDistance = position[0];
+      if((MapSize[1] - 1 - position[1]) < 4) leftdownDistance = MapSize[1] - 1 - position[1];
       leftdown[0] = position[0] - leftdownDistance;
       leftdown[1] = position[1] + leftdownDistance;
 
       int rightup[2];
-      int rightupDistance = min(4, MapSize[0] - 1 - position[0], position[1]);
+      int rightupDistance = 4;
+      if((MapSize[0] - 1 - position[0]) < 4) rightupDistance = MapSize[0] - 1 - position[0];
+      if((position[1]) < 4) rightupDistance = position[1];
       rightup[0] = position[0] + rightupDistance;
       rightup[1] = position[1] - rightupDistance;
 
