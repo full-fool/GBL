@@ -70,22 +70,24 @@ let check (vandadecl, cdecl) =
     in
 
     let rec check_vandadecls symbol_list = function
-      Bind(b) ->  let typstring = fst b and idstring = snd b in 
+    Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
+          s :: ss -> let rstsymbol_list = check_vandadecls block_symbol_list s in print_symbol_list rstsymbol_list; check_block rstsymbol_list ss; 
+         | [] -> block_symbol_list
+    in check_block symbol_list sl
+    | Bind(b) ->  let typstring = fst b and idstring = snd b in 
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
     | Init(t, s, e) as init -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
     | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
-                                    in 
+                                    in let _ =
                                     (match t with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                     in 
                                     let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
+    | _ -> symbol_list
     in
-    List.iter check_vandadecls 
-  let check_cblock (globals, functions) = function
-
-  
-   
+    let symbols = check_vandadecls StringMap.empty (Block vandadecl)
+    in 
   (**** Checking Global Variables ****)
 
   List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
@@ -138,9 +140,6 @@ let check (vandadecl, cdecl) =
       (List.map snd func.formals);
 
     (* Type of each variable (global, formal, or local *)
-    let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m)
-	StringMap.empty (globals @ func.formals)
-    in
 
 let rec expr symbol_list  = function
     Literal _ -> Int
@@ -220,8 +219,8 @@ let rec expr symbol_list  = function
       | Return e -> let t = expr symbol_list e in if t = func.typ then symbol_list else
          raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                          string_of_typ func.typ ^ " in " ^ string_of_expr e))
-           
-      | If(p, b1, b2) -> check_bool_expr symbol_list p ; stmt symbol_list b1; stmt symbol_list b2; symbol_list
+      | Ifnoelse(p, b) ->  check_bool_expr symbol_list p ; stmt symbol_list b1; symbol_list
+      | Ifelse(p, b1, b2) -> check_bool_expr symbol_list p ; stmt symbol_list b1; stmt symbol_list b2; symbol_list
       | For(e1, e2, e3, st) -> ignore (expr symbol_list e1); check_bool_expr symbol_list e2 ;
                                ignore (expr  symbol_list e3); stmt symbol_list st
       | While(p, s) -> check_bool_expr symbol_list p; stmt symbol_list s
@@ -229,6 +228,12 @@ let rec expr symbol_list  = function
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
       | Init(t, s, e) -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
+      | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
+                                      in let _ =
+                                      (match t with Int -> () 
+                                                | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
+                                      in 
+                                      let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
       | Break -> symbol_list
       | Continue -> symbol_list
 

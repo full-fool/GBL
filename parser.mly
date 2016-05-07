@@ -86,7 +86,7 @@ cdecl:
     }}
 
 cbody:
-       { { 
+    { { 
       vdecls = [];
       methods = [];
     } }
