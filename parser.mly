@@ -173,7 +173,7 @@ expr:
   | expr OR     expr { Binop($1, Or,    $3) }
   | NOT expr         { Unop(Not, $2) }
   | ID ASSIGN expr   { Assign($1, $3) }
-  | ID LBRACK LITERAL RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
+  | ID LBRACK expr RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
   | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, At, $6) }
   | LPAREN expr RPAREN { $2 }
