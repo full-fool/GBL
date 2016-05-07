@@ -49,6 +49,8 @@ let translate (globals, classes) =
       | false    -> "False" )
     | A.Noexpr -> ""
     | A.Id s -> s
+    | A.ArrayElement (s, i) -> s ^ "[" ^ comp_expr i ^ "]"
+    | A.ArrayElementAssign (s, i, v) -> s ^ "[" ^ comp_expr i ^ "]" ^ "=" ^ comp_expr v
     | A.Binop (e1, op, e2) ->
       let e1' = comp_expr e1
       and e2' = comp_expr e2 in
@@ -91,13 +93,18 @@ let translate (globals, classes) =
   let rec comp_stmt pos = function
       A.Block sl -> String.concat "" (List.map (comp_stmt pos) sl)
     | A.Expr e -> (String.make (pos * 4) ' ') ^ comp_expr e ^ "\n"
+    | A.Return A.Noexpr -> (String.make (pos * 4) ' ') ^ "return\n"
+    | A.Break -> (String.make (pos * 4) ' ') ^ "break\n"
+    | A.Continue -> (String.make (pos * 4) ' ') ^ "continue\n"
     | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_expr e ^ "\n"
     | A.Bind e -> (comp_local_decl pos e) ^ "\n"
     | A.ArrayBind e -> (comp_local_array pos e) ^ "\n"
     | A.Init (t, n, v) -> (comp_local_assign pos (t, n, v)) ^ "\n"
-    | A.If (predicate, then_stmt, else_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_expr predicate ^ "):\n" ^
+    | A.Ifelse (predicate, then_stmt, else_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_expr predicate ^ "):\n" ^
                                                 comp_stmt (pos + 1) then_stmt ^ (String.make (pos * 4) ' ') ^ "else:\n" ^ 
                                                 comp_stmt (pos + 1) else_stmt
+    | A.Ifnoelse (predicate, then_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_expr predicate ^ "):\n" ^
+                                            comp_stmt (pos + 1) then_stmt
     | A.For (e1, e2, e3, body) -> (match e1 with
                                     A.Noexpr -> ""
                                   | _ -> (String.make (pos * 4) ' ') ^ comp_expr e1 ^ "\n") ^ 
