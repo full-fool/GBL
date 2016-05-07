@@ -12,6 +12,7 @@ type expr = Literal of int            | BoolLit of bool
           | ArrayElement of string * expr  | ArrayElementAssign of string * expr * expr
           | IdInClass of string * string
           | CallDomain of string * expr list * string
+          | Negative of op * expr
 
 
 type init = typ * string * expr
