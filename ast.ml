@@ -11,8 +11,8 @@ type expr = Literal of int            | BoolLit of bool
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
           | ArrayElement of string * int  | ArrayElementAssign of string * expr * expr
-          | IdInClass of string * op * string
-          | CallDomain of string * expr list * op * string
+          | IdInClass of string * string
+          | CallDomain of string * expr list * string
 
 type array_bind = typ * string * expr
 
@@ -20,8 +20,6 @@ type array_bind = typ * string * expr
 
 
 type init = typ * string * expr
-
-
 
 type stmt = Block of stmt list        | Expr of expr
           | If of expr * stmt * stmt  
@@ -92,7 +90,7 @@ let rec string_of_expr = function
   | FloatLit(f) -> string_of_float f
   | StringLit(s) -> s
   | Id(s) -> s
-  | IdInClass(s1, o, s2) -> s1 ^ " " ^ string_of_op o ^ " " ^ s2
+  | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
   | Unop(o, e) -> string_of_uop o ^ string_of_expr e
@@ -100,7 +98,7 @@ let rec string_of_expr = function
   | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
-  | CallDomain(f, el, o, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")" ^ string_of_op o ^ " " ^ s
+  | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
   | Noexpr -> ""
 
 let string_of_typ = function
