@@ -100,7 +100,6 @@ class Gobang extends Game
       count = 0;
       for(i = up; i <= down; i = i + 1)
       {
-      i * Mapsize[0] + position[1]
         int curSprite = SpriteOwnerId[i * Mapsize[0] + position[1]];
         if(curSprite == PlayerSprite)
         {
@@ -122,6 +121,9 @@ class Gobang extends Game
       count = 0;
       int leftup[2];
       int leftupDistance = min(4, position[0], position[1])
+      min = 4;
+      if(position[0] < 4) min = position[0];
+      if(position[1] < 4) min = position[1];
       leftup[0] = position[0] - leftupDistance;
       leftup[1] = position[1] - leftupDistance;
 

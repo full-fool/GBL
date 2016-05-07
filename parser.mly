@@ -87,15 +87,15 @@ cdecl:
 
 cbody:
        { { 
-      vdecls = [];
+      vandadecls = [];
       methods = [];
     } }
   |   cbody vandadecl { { 
-      vdecls = $2 :: $1.vdecls;
+      vandadecls = $2 :: $1.vandadecls;
       methods = $1.methods;
     } }
   |   cbody fdecl { { 
-      vdecls = $1.vdecls;
+      vandadecls = $1.vandadecls;
       methods = $2 :: $1.methods;
     } }
 
