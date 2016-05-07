@@ -3,7 +3,7 @@
 
 
 
-class GobangSprite entends Sprite
+class GobangSprite extends Sprite
 {
   #variable in Sprite
   #int Id;
@@ -15,7 +15,7 @@ class GobangSprite entends Sprite
   #printSprite();
 };
 
-class GobangPlayer entends Player
+class GobangPlayer extends Player
 {
   #variable in Player
   #int Id;
@@ -41,7 +41,7 @@ class GobangPlayer entends Player
 #     int NextSpriteID;
 # };
 
-class Gobang entends Game
+class Gobang extends Game
 {
     #functions:
     void initialize(array<int> MapS, int PlayerNum, Player PlayerL, string Blanksignal)
@@ -251,7 +251,7 @@ class Gobang entends Game
 
 
 #assume the input stream is stdin>>...
-class UserMain entends Main{
+class UserMain extends Main{
   void main()
   {
       Gobang mygame;
