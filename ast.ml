@@ -26,6 +26,7 @@ type stmt = Block of stmt list        | Expr of expr
           | Break                     | Continue | Init of typ * string * expr
           | Bind of bind              (* | Init of init *)
           | ArrayBind of arraybind 
+          | Classdecl of string * string
 
 
 type global = Bind of bind | ArrayBind of arraybind | Init of typ * string * expr
