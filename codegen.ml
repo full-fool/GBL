@@ -123,6 +123,7 @@ let translate (globals, classes) =
                      (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr a ^ "\n"
                     | _ -> "") ^ "\n"
       | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr v ^ "\n"
+      | A.Classdecl (t, s) -> (String.make (pos * 4) ' ') ^ lookup s ^ s ^ " = " ^ t ^ "()\n"
       | A.Ifelse (predicate, then_stmt, else_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_local_expr predicate ^ "):\n" ^
                                                   comp_stmt (pos + 1) then_stmt ^ (String.make (pos * 4) ' ') ^ "else:\n" ^ 
                                                   comp_stmt (pos + 1) else_stmt
@@ -162,4 +163,14 @@ let translate (globals, classes) =
     "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.cbody
   in
 
-  String.concat "" (List.map comp_global_var globals) ^ String.concat "" (List.map comp_class classes) ^ "main()" 
+  let find_main_class cdecl = 
+    if cdecl.A.extends == "Main" then cdecl.A.cname else ""
+  in
+
+  let comp_main_class classes = 
+    "real_main = " ^ String.concat "" (List.map find_main_class classes) ^ "()\n" ^
+    "real_main.main()\n"
+  in
+
+  String.concat "" (List.map comp_global_var globals) ^ String.concat "" (List.map comp_class classes) ^ 
+  comp_main_class classes
