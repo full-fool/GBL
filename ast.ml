@@ -4,7 +4,6 @@ type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArra
 type bind = typ * string
 
 
-
 type expr = Literal of int            | BoolLit of bool
           | FloatLit of float         | StringLit of string
           | Id of string              | Noexpr
@@ -28,7 +27,7 @@ type stmt = Block of stmt list        | Expr of expr
           | ArrayBind of typ * string * expr   
 
 
-type global = Bind of bind | ArrayBind of array_bind | Init of typ * string * expr
+type global = Bind of bind | ArrayBind of typ * string * expr | Init of typ * string * expr
 
 type func_decl = {
 	typ      : typ;
@@ -56,7 +55,7 @@ type program = global list * class_decl list
 (* type program = Program of decl_stmt *)
 (* Pretty-printing functions *)
 
-let string_of_op = function
+(*let string_of_op = function
     Add -> "+"
   | Sub -> "-"
   | Mult -> "*"
@@ -145,4 +144,4 @@ let string_of_fdecl fdecl =
 
 let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
-  String.concat "\n" (List.map string_of_fdecl funcs)
+  String.concat "\n" (List.map string_of_fdecl funcs)*)
