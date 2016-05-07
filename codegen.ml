@@ -96,6 +96,7 @@ let translate (globals, classes) =
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
       | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
       | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
+      | _ as s -> s
     in
 
     (*complie global variables*)
