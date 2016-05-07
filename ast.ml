@@ -11,23 +11,24 @@ type expr = Literal of int            | BoolLit of bool
           | Assign of string * expr   | Call of string * expr list
           | ArrayElement of string * expr  | ArrayElementAssign of string * expr * expr
           | IdInClass of string * string
-          | CallDomain of string * expr list * op * string
+          | CallDomain of string * expr list * string
 
 
 type init = typ * string * expr
-
+type arraybind = typ * string * expr
 
 
 type stmt = Block of stmt list        | Expr of expr
-          | If of expr * stmt * stmt  
+          | Ifnoelse of expr * stmt
+          | Ifelse of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue | Init of typ * string * expr
           | Bind of bind              (* | Init of init *)
-          | ArrayBind of typ * string * expr   
+          | ArrayBind of arraybind 
 
 
-type global = Bind of bind | ArrayBind of typ * string * expr | Init of typ * string * expr
+type global = Bind of bind | ArrayBind of arraybind | Init of typ * string * expr
 
 type func_decl = {
 	typ      : typ;
