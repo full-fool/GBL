@@ -99,8 +99,8 @@ let rec string_of_expr = function
   | Call(f, el) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
   | ArrayElement(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
   | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
-  | IdInClass(s1, o, s2) -> s1 ^ " " ^ string_of_op o ^ " " ^ s2
-  | CallDomain(f, el, o, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")" ^ string_of_op o ^ " " ^ s
+  | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
+  | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
   | Negative(o, e) -> string_of_op o ^ string_of_expr e
 
 
