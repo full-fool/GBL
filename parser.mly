@@ -30,7 +30,7 @@
 %left LANGLE RANGLE 
 %left LEQ GEQ
 %left PLUS MINUS
-%left TIMES DIVIDE
+%left TIMES DIVIDE MODULE
 %right NOT
 
 %start program
