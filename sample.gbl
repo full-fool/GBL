@@ -4,7 +4,7 @@ class Gobang extends Game
     #variables:
     #Map:
     int MapSize[2];
-    int GridNum;  #GridNum = Mapsize[0] * Mapsize[1]
+    int GridNum;  #GridNum = MapSize[0] * MapSize[1]
     #Player:
     int PlayerNumber;
     int PlayerId[10];
@@ -29,8 +29,10 @@ class Gobang extends Game
     {
         MapSize[0] = MapS[0]; 
         MapSize[1] = MapS[1];
+        GridNum = MapSize[0] * MapSize[1];
         PlayerNumber = InputPlayerNum;
         withAI = InputwithAI;
+
         int i;
         for(i = 0; i < PlayerNumber; i = i + 1)
         {
@@ -43,8 +45,8 @@ class Gobang extends Game
         {
             for(j = 0; j < MapSize[1]; j = j + 1)
             {
-                SpriteId[i * Mapsize[0] + j] = -1;
-                SpriteOwnerId[i * Mapsize[0] + j] = -1;
+                SpriteId[i * MapSize[0] + j] = -1;
+                SpriteOwnerId[i * MapSize[0] + j] = -1;
             }
         }
         FormerId = -1;
@@ -63,11 +65,11 @@ class Gobang extends Game
       position[1] = FormerPosition[1];
       if((position[0] - 4) > 0) left = position[0] - 4;
       else left = 0;
-      if((position[0] + 4) > (Mapsize[0] - 1)) right = Mapsize[0] - 1;
+      if((position[0] + 4) > (MapSize[0] - 1)) right = MapSize[0] - 1;
       else right = position[0] + 4;
       if((position[1] - 4) > 0) up = position[1] - 4;
       else up =0;
-      if((position[1] + 4)>(Mapsize[1] - 1))down = Mapsize[1] - 1;
+      if((position[1] + 4)>(MapSize[1] - 1))down = MapSize[1] - 1;
       else down = position[1] + 4;
       int i;
       int j;
@@ -79,7 +81,7 @@ class Gobang extends Game
       
       for(j = left; j <= right; j = j + 1)
       {
-        int curSprite = SpriteOwnerId[position[0] * Mapsize[0] + j];
+        int curSprite = SpriteOwnerId[position[0] * MapSize[0] + j];
         #string curSprite = Text@SpriteList[position[0]][j];
         if(curSprite == PlayerSprite)
         {
@@ -101,7 +103,7 @@ class Gobang extends Game
       count = 0;
       for(i = up; i <= down; i = i + 1)
       {
-        int curSprite = SpriteOwnerId[i * Mapsize[0] + position[1]];
+        int curSprite = SpriteOwnerId[i * MapSize[0] + position[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -142,7 +144,7 @@ class Gobang extends Game
       {
         curposition[0] = leftup[0] + i;
         curposition[1] = leftup[1] + i;
-        int curSprite = SpriteOwnerId[curposition[0] * Mapsize[0] + curposition[1]];
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -181,7 +183,7 @@ class Gobang extends Game
       {
         curposition[0] = leftdown[0] + i;
         curposition[1] = leftdown[1] - i;
-        int curSprite = SpriteOwnerId[curposition[0] * Mapsize[0] + curposition[1]];
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -205,15 +207,15 @@ class Gobang extends Game
     {
       if(not (position[0]>=0 and position[0]<MapSize[0] and position[1]>=0 and position[1]<MapSize[1]))
         return false;
-      if(SpriteOwnerId[position[0] * Mapsize[0] + position[1]]@mygame == -1)
+      if(SpriteOwnerId[position[0] * MapSize[0] + position[1]]@mygame == -1)
         return true;
       else return false;
     }
     
     void update(int InputPosition)
     {
-        SpriteId[InputPosition[0] * Mapsize[0] + InputPosition[1]] = NextSpriteID;
-        SpriteOwnerId[InputPosition[0] * Mapsize[0] + InputPosition[1]] = NextPlayerID;
+        SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
+        SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
 
         FormerId = NextPlayerID;
         FormerPosition[0] = InputPosition[0];
@@ -236,25 +238,32 @@ class Gobang extends Game
 }
 
 class GobangAI extends AI{
+
   int returnposition()
   {
+  /*
     int position[2];
     int i;
     int j;
-    for(i = 0; i < Mapsize[0]; i = i + 1)
+    for(i = 0; i < MapSize[0]@mygame; i = i + 1)
     {
-      for(j = 0; j < Mapsize[1]; j = j + 1)
+      for(j = 0; j < MapSize[1]@mygame; j = j + 1)
       {
-        if(SpriteOwnerId == -1)
+        if(SpriteOwnerId[i * MapSize[0] + j] == -1)
         {
           position[0] = i;
           position[1] = j;
         }
       }
     }
-    return position[0]* Mapsize[0] + position[1];
+    int r;
+    r = position[0]* MapSize[0]@mygame + position[1];
+    return r;
+  */
+    return 0;
   }
 }
+
 
 #assume the input stream is stdin>>...
 class UserMain extends Main{
@@ -264,7 +273,7 @@ class UserMain extends Main{
       int MapS[2];
       MapS[0] = 15;
       MapS[1] = 15;
-      int GridNum = MapS[0] * MapS[1];
+      int GridNumber = MapS[0] * MapS[1];
       int InputPlayerNumber = 2;
       int InputPlayerId[InputPlayerNumber];
       InputPlayerId[0] = 0;
@@ -277,7 +286,7 @@ class UserMain extends Main{
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)@mygame;
       #printGame()@mygame;
 
-      
+      GobangAI gobanai;
       while(not win()@mygame)
       {
           print("This is the turn of player");
@@ -289,9 +298,9 @@ class UserMain extends Main{
           if(InputwithAI)
           {
             int rposition;
-            rposition = returnposition()@GobangAI;
-            InputPosition[0] = rposition / Mapsize[0];
-            InputPosition[1] = rposition % Mapsize[0];
+            rposition = returnposition()@gobanai;
+            InputPosition[0] = rposition / MapSize[0]@mygame;
+            InputPosition[1] = rposition % MapSize[0]@mygame;
           }
           else
           {

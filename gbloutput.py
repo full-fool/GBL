@@ -7,7 +7,7 @@ class UserMain:
 
         MapS[0]=15
         MapS[1]=15
-        GridNum = (MapS[0]) * (MapS[1])
+        GridNumber = (MapS[0]) * (MapS[1])
         InputPlayerNumber = 2
         InputPlayerId = [ None ] * InputPlayerNumber
 
@@ -19,6 +19,7 @@ class UserMain:
         InputPlayerName[1]="Xicao"
         InputwithAI = True
         mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)
+        gobanai = GobangAI()
         while (not (mygame.win())):
             print("This is the turn of player")
             print(mygame.NextPlayerID)
@@ -27,9 +28,9 @@ class UserMain:
             if (InputwithAI):
                 rposition = None
 
-                rposition = GobangAI.returnposition()
-                InputPosition[0]=(rposition) / (Mapsize[0])
-                InputPosition[1]=(rposition) % (Mapsize[0])
+                rposition = gobanai.returnposition()
+                InputPosition[0]=(rposition) / (mygame.MapSize[0])
+                InputPosition[1]=(rposition) % (mygame.MapSize[0])
             else:
                 legal = False
                 while (not (legal)):
@@ -43,22 +44,7 @@ class GobangAI:
     def __init__(self):
         pass
     def returnposition(self):
-        position = [ None ] * 2
-
-        i = None
-
-        j = None
-
-        i = 0
-        while ((i) < (Mapsize[0])):
-            j = 0
-            while ((j) < (Mapsize[1])):
-                if ((SpriteOwnerId) == ( - (1))):
-                    position[0]=i
-                    position[1]=j
-                j = (j) + (1)
-            i = (i) + (1)
-        return ((position[0]) * (Mapsize[0])) + (position[1])
+        return 0
         pass
 class Gobang:
     def __init__(self):
@@ -76,8 +62,8 @@ class Gobang:
         self.MapSize = [ None ] * 2
         pass
     def update(self,InputPosition):
-        self.SpriteId[((InputPosition[0]) * (Mapsize[0])) + (InputPosition[1])]=self.NextSpriteID
-        self.SpriteOwnerId[((InputPosition[0]) * (Mapsize[0])) + (InputPosition[1])]=self.NextPlayerID
+        self.SpriteId[((InputPosition[0]) * (self.MapSize[0])) + (InputPosition[1])]=self.NextSpriteID
+        self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + (InputPosition[1])]=self.NextPlayerID
         self.FormerId = self.NextPlayerID
         self.FormerPosition[0]=InputPosition[0]
         self.FormerPosition[1]=InputPosition[1]
@@ -89,7 +75,7 @@ class Gobang:
     def isLegal(self,position):
         if (not (((position[0]) >= (0)) and ((position[0]) < (((self.MapSize[0]) and ((position[1]) >= (0))) and ((position[1]) < (self.MapSize[1])))))):
             return False
-        if ((mygame.SpriteOwnerId[((position[0]) * (Mapsize[0])) + (position[1])]) == ( - (1))):
+        if ((mygame.SpriteOwnerId[((position[0]) * (self.MapSize[0])) + (position[1])]) == ( - (1))):
             return True
         else:
             return False
@@ -104,16 +90,16 @@ class Gobang:
             left = (position[0]) - (4)
         else:
             left = 0
-        if (((position[0]) + (4)) > ((Mapsize[0]) - (1))):
-            right = (Mapsize[0]) - (1)
+        if (((position[0]) + (4)) > ((self.MapSize[0]) - (1))):
+            right = (self.MapSize[0]) - (1)
         else:
             right = (position[0]) + (4)
         if (((position[1]) - (4)) > (0)):
             up = (position[1]) - (4)
         else:
             up = 0
-        if (((position[1]) + (4)) > ((Mapsize[1]) - (1))):
-            down = (Mapsize[1]) - (1)
+        if (((position[1]) + (4)) > ((self.MapSize[1]) - (1))):
+            down = (self.MapSize[1]) - (1)
         else:
             down = (position[1]) + (4)
         i = None
@@ -126,7 +112,7 @@ class Gobang:
         count = 0
         j = left
         while ((j) <= (right)):
-            curSprite = self.SpriteOwnerId[((position[0]) * (Mapsize[0])) + (j)]
+            curSprite = self.SpriteOwnerId[((position[0]) * (self.MapSize[0])) + (j)]
             if ((curSprite) == (PlayerSprite)):
                 if ((PreSprite) != (PlayerSprite)):
                     count = 1
@@ -142,7 +128,7 @@ class Gobang:
         count = 0
         i = up
         while ((i) <= (down)):
-            curSprite = self.SpriteOwnerId[((i) * (Mapsize[0])) + (position[1])]
+            curSprite = self.SpriteOwnerId[((i) * (self.MapSize[0])) + (position[1])]
             if ((curSprite) == (PlayerSprite)):
                 if ((PreSprite) != (PlayerSprite)):
                     count = 1
@@ -184,7 +170,7 @@ class Gobang:
         while ((i) <= ((rightdown[0]) - (leftup[0]))):
             curposition[0]=(leftup[0]) + (i)
             curposition[1]=(leftup[1]) + (i)
-            curSprite = self.SpriteOwnerId[((curposition[0]) * (Mapsize[0])) + (curposition[1])]
+            curSprite = self.SpriteOwnerId[((curposition[0]) * (self.MapSize[0])) + (curposition[1])]
             if ((curSprite) == (PlayerSprite)):
                 if ((PreSprite) != (PlayerSprite)):
                     count = 1
@@ -222,7 +208,7 @@ class Gobang:
         while ((i) <= ((rightup[0]) - (leftdown[0]))):
             curposition[0]=(leftdown[0]) + (i)
             curposition[1]=(leftdown[1]) - (i)
-            curSprite = self.SpriteOwnerId[((curposition[0]) * (Mapsize[0])) + (curposition[1])]
+            curSprite = self.SpriteOwnerId[((curposition[0]) * (self.MapSize[0])) + (curposition[1])]
             if ((curSprite) == (PlayerSprite)):
                 if ((PreSprite) != (PlayerSprite)):
                     count = 1
@@ -239,6 +225,7 @@ class Gobang:
     def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputwithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]
+        self.GridNum = (self.MapSize[0]) * (self.MapSize[1])
         self.PlayerNumber = InputPlayerNum
         self.withAI = InputwithAI
         i = None
@@ -256,8 +243,8 @@ class Gobang:
         while ((i) < (self.MapSize[0])):
             j = 0
             while ((j) < (self.MapSize[1])):
-                self.SpriteId[((i) * (Mapsize[0])) + (j)]= - (1)
-                self.SpriteOwnerId[((i) * (Mapsize[0])) + (j)]= - (1)
+                self.SpriteId[((i) * (self.MapSize[0])) + (j)]= - (1)
+                self.SpriteOwnerId[((i) * (self.MapSize[0])) + (j)]= - (1)
                 j = (j) + (1)
             i = (i) + (1)
         self.FormerId =  - (1)
