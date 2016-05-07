@@ -18,7 +18,7 @@ let translate (globals, classes) =
     | A.Mult    -> " * "
     | A.Div     -> " / "
     | A.And     -> " and "
-    | A.Is      -> " is "
+    | A.Is      -> " == "
     | A.Or      -> " or "
     | A.Neq     -> " != "
     | A.Less    -> " < "
