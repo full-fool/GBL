@@ -102,7 +102,7 @@ let translate (globals, classes) =
 
   let comp_function header fdecl = 
     "def " ^ header ^ fdecl.A.fname ^ "(" ^ String.concat "," (List.map comp_param fdecl.A.formals) ^  
-    ") :\n" ^ String.concat "" (List.map (comp_stmt 1) fdecl.A.body) ^ "\n"
+    "):\n" ^ String.concat "" (List.map (comp_stmt 1) fdecl.A.body) ^ "\n"
   in
 
   let comp_cbody header cbody = 
