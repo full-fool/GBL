@@ -158,7 +158,7 @@ expr:
   | FALSE            { BoolLit(false)       }
   | ID               { Id($1)               }
   | ID LBRACK LITERAL RBRACK {ArrayElement($1, $3)}
-  | ID DOMAINOP ID   { IdInClass($1, At, $3)}
+  | ID DOMAINOP ID   { IdInClass($1,     $3)}
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
@@ -175,7 +175,7 @@ expr:
   | ID ASSIGN expr   { Assign($1, $3) }
   | ID LBRACK expr RBRACK ASSIGN expr  {ArrayElementAssign($1, $3, $6)}
   | ID LPAREN actuals_opt RPAREN { Call($1, $3) }
-  | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, At, $6) }
+  | ID LPAREN actuals_opt RPAREN DOMAINOP ID { CallDomain($1, $3, $6) }
   | LPAREN expr RPAREN { $2 }
 
 init:
