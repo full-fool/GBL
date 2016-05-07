@@ -10,7 +10,6 @@
 %token NEWLINE
 %token FOR IF ELSE ELIF BREAK CONTINUE WHILE RETURN END 
 %token INT BOOL FLOAT STRING GAME PLAYER SPRITE MAP
-%token INTARRAY FLOATARRAY BOOLARRAY STRINGARRAY
 %token VOID TRUE FALSE
 %token GT LT
 
@@ -113,10 +112,6 @@ typ:
   | PLAYER      { Player      }
   | SPRITE      { Sprite      }
   | MAP         { Map         }
-  | INTARRAY    { IntArray    }
-  | BOOLARRAY   { BoolArray   }
-  | FLOATARRAY  { FloatArray  }
-  | STRINGARRAY { StringArray }
 
 
 /*********  statement  *********/
@@ -133,8 +128,8 @@ stmt:
   | BREAK SEMI {Break}
   | CONTINUE SEMI {Continue}
   | LBRACE stmt_list RBRACE { Block(List.rev $2) }
-  | IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) }
-  | IF LPAREN expr RPAREN stmt ELSE stmt    { If($3, $5, $7) }
+  | IF LPAREN expr RPAREN stmt { Ifnoelse($3, $5) }
+  | IF LPAREN expr RPAREN stmt ELSE stmt    { Ifelse($3, $5, $7) }
   | FOR LPAREN expr_opt SEMI expr SEMI expr_opt RPAREN stmt
      { For($3, $5, $7, $9) }
   | WHILE LPAREN expr RPAREN stmt { While($3, $5) }
