@@ -34,6 +34,7 @@ let check (vandadecl, cdecl) =
     try StringMap.find s symbol_list
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
   in 
+
   let rec expr symbol_list  = function
   Literal _ -> Int
   | Id s -> type_of_identifier s symbol_list
@@ -76,7 +77,7 @@ let check (vandadecl, cdecl) =
     | ArrayBind((t, s, e)) as ab -> 
     in
     stmt 
-  let check_cblock (globals, functions) =
+  let check_cblock (globals, functions) = function
 
   
    
