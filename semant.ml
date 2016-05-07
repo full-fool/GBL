@@ -34,6 +34,7 @@ let check (vandadecl, cdecl) =
     try StringMap.find s symbol_list
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
   in 
+
   let rec expr symbol_list  = function
   Literal _ -> Int
   | Id s -> type_of_identifier s symbol_list
@@ -73,10 +74,15 @@ let check (vandadecl, cdecl) =
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
     | Init(t, s, e) as init -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-    | ArrayBind((t, s, e)) as ab -> 
+    | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
+                                    in 
+                                    (match t with Int -> () 
+                                                | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
+                                    in 
+                                    let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
     in
-    stmt 
-  let check_cblock (globals, functions) =
+    List.iter check_vandadecls 
+  let check_cblock (globals, functions) = function
 
   
    
