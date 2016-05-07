@@ -1,8 +1,7 @@
 type op = Add | Sub | Mult | Div | Mod | AddEqual | SubEqual | MultEqual | DivEqual | ModEqual | Neq | Less | Leq | Greater | Geq | And | Or | Is | At
 type uop = Neg | Not
-type typ = Int | Bool | Void | Float | String | Game | Player | Sprite | Map
+type typ = Int | Bool | Void | Float | String | IntArray | BoolArray | FloatArray | StringArray | Game | Player | Sprite | Map
 type bind = typ * string
-
 
 
 type expr = Literal of int            | BoolLit of bool
@@ -10,34 +9,32 @@ type expr = Literal of int            | BoolLit of bool
           | Id of string              | Noexpr
           | Binop of expr * op * expr | Unop of uop * expr
           | Assign of string * expr   | Call of string * expr list
-          | ArrayElement of string * int  | ArrayElementAssign of string * expr * expr
+          | ArrayElement of string * expr  | ArrayElementAssign of string * expr * expr
           | IdInClass of string * string
           | CallDomain of string * expr list * string
 
-type array_bind = typ * string * expr
-
-
-
 
 type init = typ * string * expr
+type arraybind = typ * string * expr
+
 
 type stmt = Block of stmt list        | Expr of expr
           | Ifnoelse of expr * stmt
-          | Ifelse of expr * stmt * stmt
+          | Ifelse of expr * stmt * stmt  
           | For of expr * expr * expr * stmt
           | While of expr * stmt      | Return of expr
           | Break                     | Continue | Init of typ * string * expr
           | Bind of bind              (* | Init of init *)
-          | ArrayBind of array_bind   
+          | ArrayBind of arraybind 
 
 
-type global = Bind of bind | ArrayBind of array_bind | Init of typ * string * expr
+type global = Bind of bind | ArrayBind of arraybind | Init of typ * string * expr
 
 type func_decl = {
-  typ      : typ;
-  fname    : string;
-  formals  : bind list;
-  body     : stmt list;
+	typ      : typ;
+	fname    : string;
+	formals  : bind list;
+	body     : stmt list;
 }
 
 type cbody = {
@@ -59,7 +56,7 @@ type program = global list * class_decl list
 (* type program = Program of decl_stmt *)
 (* Pretty-printing functions *)
 
-let string_of_op = function
+(*let string_of_op = function
     Add -> "+"
   | Sub -> "-"
   | Mult -> "*"
@@ -91,7 +88,7 @@ let rec string_of_expr = function
   | FloatLit(f) -> string_of_float f
   | StringLit(s) -> s
   | Id(s) -> s
-  | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
+  | IdInClass(s1, o, s2) -> s1 ^ " " ^ string_of_op o ^ " " ^ s2
   | Binop(e1, o, e2) ->
       string_of_expr e1 ^ " " ^ string_of_op o ^ " " ^ string_of_expr e2
   | Unop(o, e) -> string_of_uop o ^ string_of_expr e
@@ -99,7 +96,7 @@ let rec string_of_expr = function
   | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
   | Call(f, el) ->
       f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")"
-  | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
+  | CallDomain(f, el, o, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")" ^ string_of_op o ^ " " ^ s
   | Noexpr -> ""
 
 let string_of_typ = function
@@ -108,6 +105,10 @@ let string_of_typ = function
   | Void -> "void"
   | Float -> "float"
   | String -> "string"
+  | IntArray -> "Array<int>"
+  | BoolArray -> "Array<bool>"
+  | FloatArray -> "Array<float>"
+  | StringArray -> "Array<string>"
   | Game -> "game"
   | Player -> "player"
   | Sprite -> "sprite"
@@ -118,8 +119,8 @@ let rec string_of_stmt = function
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"
   | Expr(expr) -> string_of_expr expr ^ ";\n";
   | Return(expr) -> "return " ^ string_of_expr expr ^ ";\n";
-  | Ifnoelse(e, s) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
-  | Ifelse(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
+  | If(e, s, Block([])) -> "if (" ^ string_of_expr e ^ ")\n" ^ string_of_stmt s
+  | If(e, s1, s2) ->  "if (" ^ string_of_expr e ^ ")\n" ^
       string_of_stmt s1 ^ "else\n" ^ string_of_stmt s2
   | For(e1, e2, e3, s) ->
       "for (" ^ string_of_expr e1  ^ " ; " ^ string_of_expr e2 ^ " ; " ^
@@ -144,4 +145,4 @@ let string_of_fdecl fdecl =
 
 let string_of_program (vars, funcs) =
   String.concat "" (List.map string_of_vdecl vars) ^ "\n" ^
-  String.concat "\n" (List.map string_of_fdecl funcs)
+  String.concat "\n" (List.map string_of_fdecl funcs)*)
