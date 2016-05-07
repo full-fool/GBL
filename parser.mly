@@ -157,6 +157,7 @@ expr:
   | ID DOMAINOP ID   { IdInClass($1,     $3)}
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
+  | MINUS expr       { Negative(Sub,    $2) }
   | expr TIMES  expr { Binop($1, Mult,  $3) }
   | expr DIVIDE expr { Binop($1, Div,   $3) }
   | expr MODULE expr { Binop($1, Mod,   $3) }
