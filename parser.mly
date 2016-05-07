@@ -136,6 +136,7 @@ stmt:
   | typ ID ASSIGN expr SEMI {Init($1, $2, $4)}
   | vdecl {Bind $1}
   | array_decl {ArrayBind $1}
+  | ID ID SEMI { Classdecl($1, $2) }
 
 
 
