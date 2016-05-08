@@ -76,8 +76,8 @@ formal_list:
   | formal_list COMMA formal_item { $3 :: $1 }
 
 formal_item:
-    typ ID                        { Bindinf($1,$2) }
-  | typ ID LBRACK expr RBRACK     { ArrayBindinf($1,$2, $4) }
+    typ ID                        { ($1,$2) }
+  | typ ID LBRACK expr RBRACK     { ($1,$2) }
 
 
 /********* class *********/

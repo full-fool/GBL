@@ -13,7 +13,12 @@ let check (vandadecls, cdecls) =
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
     StringMap.add key value map
+<<<<<<< HEAD
   ) StringMap.empty [] [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
+=======
+  ) StringMap.empty 
+[("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
+>>>>>>> 08476f630de93915aa80965dace76f1b6af27711
   body = [] }); ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
    body = [] }); ("printlni", { typ = Void; fname = "printlni"; formals = [(Int, "x")];
     body = [] }); ("printlnb", { typ = Void; fname = "printlnb"; formals = [(Bool, "x")];
@@ -222,14 +227,15 @@ let check (vandadecls, cdecls) =
                 | IdInClass(vid, objectname) ->  let class_name = type_of_object objectname expr_object_list in
                                                      type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
 
-                | ArrayInClass(vid, subexpr, objectname) -> let subtype = expr (expr_symbol_list, expr_object_list) subexpr in 
-                                                              match subtype with
-                                                                Int -> let class_name = type_of_object objectname expr_object_list in
-                                                                type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
-                                                              | _ -> raise (Failure("array subscript is not integer in " ^ var))                                                            
-                                                              
+                | ArrayInClass(vid, subexpr, objectname) -> let subtype = expr (expr_symbol_list, expr_object_list) subexpr in
+                                                              if subtype = Int then let class_name = type_of_object objectname expr_object_list in
+                                                                      type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
+                                                                    else raise (Failure("array subscript is not integer in " ^ vid)) 
 
-                | CallDomain(f_name, acts_opt, objectname) -> let class_name = "type_of_object objectname expr_object_list" in
+
+
+                | CallDomain(f_name, acts_opt, objectname) as calld->  
+                let class_name = type_of_object objectname expr_object_list in
                                                                 let fd = function_decl (class_name ^ "@" ^ f_name) in
                                                                   if List.length acts_opt != List.length fd.formals then
                                                                     raise (Failure ("expecting " ^ string_of_int
@@ -240,6 +246,7 @@ let check (vandadecls, cdecls) =
                                                                       (Failure ("illegal actual argument found " ^ string_of_typ et ^
                                                                                  " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
                                                                     fd.formals acts_opt;
+                                                                    fd.typ
                                                                
 
 
@@ -269,7 +276,7 @@ let check (vandadecls, cdecls) =
                                 raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                                                 string_of_typ func.typ ^ " in " ^ string_of_expr e))
 
-                | Ifnoelse(p, b) ->  check_bool_expr stmt_symbol_list p ; stmt (stmt_symbol_list, stmt_object_list) b; (stmt_symbol_list, stmt_object_list)
+                | Ifnoelse(p, b) ->  check_bool_expr stmt_symbol_list p ; ignore(stmt (stmt_symbol_list, stmt_object_list) b); (stmt_symbol_list, stmt_object_list)
 
                 | Ifelse(p, b1, b2) -> check_bool_expr stmt_symbol_list p ; stmt (stmt_symbol_list, stmt_object_list) b1; stmt (stmt_symbol_list, stmt_object_list) b2; (stmt_symbol_list, stmt_object_list)
 
