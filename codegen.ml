@@ -74,7 +74,8 @@ let translate (globals, classes) =
                               | _ -> "None")
       in
 
-      "        _root = tk.Tk()
+      "
+        _root = tk.Tk()
         _root.title(\"GBL\")
         tk.Canvas.create_circle = _create_circle
         _board = GameBoard(_root," ^ game_object_name ^ " ," ^ ai_name ^ ")
@@ -87,6 +88,14 @@ let translate (globals, classes) =
     "if __name__ == \"__main__\":\n" ^ 
     "    _main = " ^ main_class ^ "()\n" ^
     "    _main.main()\n"
+  in
+
+  let map_to_list m  = function _ as s-> StringMap.add s "self." m in
+
+  let game_var_map = 
+    List.fold_left map_to_list StringMap.empty 
+    ["WithAI";"NextSpriteID";"NextPlayerID";"FormerPosition";"FormerId";"SpriteOwnerId";
+    "SpriteId";"PlayerName";"PlayerId";"PlayerNumber";"GridNum";"MapSize";"InputPosition"]
   in
 
   (*complie function parameters*)
@@ -160,10 +169,10 @@ let translate (globals, classes) =
     in
 
     let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls in
-    let add_local_vars = StringMap.empty in
+    let ext_local_vars = StringMap.empty in
 
     let lookup n = try StringMap.find n local_vars
-                   with Not_found -> try StringMap.find n add_local_vars 
+                   with Not_found -> try StringMap.find n ext_local_vars 
                                      with Not_found -> ""
     in
 
@@ -249,8 +258,9 @@ let translate (globals, classes) =
     let comp_function pos fdecl = 
       (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^ "(" ^
       String.concat "," ("self" :: (
-        if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update") then []
-        else (List.map comp_param fdecl.A.formals))) ^  
+        if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update")
+        then let _ = (ext_local_vars = game_var_map) in []
+        else let _ = (ext_local_vars = StringMap.empty) in (List.map comp_param fdecl.A.formals))) ^  
       "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^
       (if extends = "Main" && fdecl.A.fname = "main" then game_gui_code else "") ^ 
       (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
