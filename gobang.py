@@ -7,8 +7,8 @@ class GameBoard(tk.Frame):
         '''size is the size of a square, in pixels'''
         self.mygame = mygame
         self.gobangai = gobangai
-        self.rows = mygame.MapSize[1]
-        self.columns = mygame.MapSize[0]
+        self.rows = mygame.MapSize[0]
+        self.columns = mygame.MapSize[1]
         self.size = 32
         self.colors = ["black", "white","blue","yellow","grey","pink"]
         self.color = "bisque" # board color
