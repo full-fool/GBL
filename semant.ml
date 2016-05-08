@@ -229,7 +229,7 @@ let check (vandadecls, cdecls) =
                                                               | _ -> raise (Failure("array subscript is not integer in " ^ var))                                                            
                                                               
 
-                | CallDomain(f_name, acts_opt, objectname) -> (* let class_name = "type_of_object objectname expr_object_list" in
+                | CallDomain(f_name, acts_opt, objectname) -> let class_name = "type_of_object objectname expr_object_list" in
                                                                 let fd = function_decl (class_name ^ "@" ^ f_name) in
                                                                   if List.length acts_opt != List.length fd.formals then
                                                                     raise (Failure ("expecting " ^ string_of_int
@@ -239,8 +239,8 @@ let check (vandadecls, cdecls) =
                                                                       ignore (check_assign ft et
                                                                       (Failure ("illegal actual argument found " ^ string_of_typ et ^
                                                                                  " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
-                                                                    fd.formals acts_opt; *)
-                                                               Int
+                                                                    fd.formals acts_opt;
+                                                               
 
 
                 | Negative(op, negexpr) ->  expr (expr_symbol_list, expr_object_list) negexpr
