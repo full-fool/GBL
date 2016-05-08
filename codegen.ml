@@ -5,6 +5,19 @@ module StringMap = Map.Make(String)
 
 let translate (globals, classes) =
 
+  let load_lib f = 
+    let ic = open_in f in
+    let n = in_channel_length ic in
+    let s = String.create n in
+    really_input ic s 0 n; close_in ic; (s)
+  in
+
+  let gen_game_var_code = load_lib "lib/game_vars.py"
+  in
+
+  let gen_game_init_code = load_lib "lib/game_init.py"
+  in
+
   (*complie function parameters*)
   let comp_param = function
       (t, n) -> n
@@ -65,7 +78,7 @@ let translate (globals, classes) =
   in
 
   (*complie class body*)
-  let comp_cbody cbody = 
+  let comp_cbody extends cbody = 
 
     let init_var m vdecl = 
       StringMap.add (match vdecl with 
@@ -128,10 +141,10 @@ let translate (globals, classes) =
       | A.Continue -> (String.make (pos * 4) ' ') ^ "continue\n"
       | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_local_expr e ^ "\n"
       | A.Bind e -> (match e with
-                     (t, n) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = None\n"
+                     (t, n) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = None"
                     | _ -> "") ^ "\n"
       | A.ArrayBind e -> (match e with 
-                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr a ^ "\n"
+                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr a
                     | _ -> "") ^ "\n"
       | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr v ^ "\n"
       | A.Classdecl (t, s) -> (String.make (pos * 4) ' ') ^ lookup s ^ s ^ " = " ^ t ^ "()\n"
@@ -156,7 +169,8 @@ let translate (globals, classes) =
     let comp_class_var pos vdecls = 
       (String.make (pos * 4) ' ') ^ "def __init__(self):\n" ^ 
       String.concat "" (List.map (comp_local_var (pos + 1)) vdecls) ^
-      (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
+      (if extends = "Game" then (gen_game_var_code ^ "\n") else "") ^
+      (String.make ((pos + 1) * 4) ' ')  ^ "pass" ^ "\n"
     in
 
     let comp_function pos fdecl = 
@@ -166,13 +180,16 @@ let translate (globals, classes) =
       (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
     in
 
-    comp_class_var 1 cbody.A.vandadecls ^ 
+    comp_class_var 1 cbody.A.vandadecls ^ (if extends = "Game" then (gen_game_init_code ^ "\n") else "") ^
     String.concat "" (List.map (comp_function 1) cbody.A.methods)
+  in
+
+  let gen_main_code = ""
   in
 
   let comp_class cdecl = 
     (*comp_cbody (cdecl.A.cname ^ "_" ^ cdecl.A.extends ^ "_") cdecl.A.cbody*)
-    "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.cbody
+    "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody
   in
 
   let find_main_class cdecl = 

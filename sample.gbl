@@ -21,9 +21,6 @@ class Gobang extends Game
     #AI?
     bool withAI;
 
-
-
-
     #functions:
     void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputwithAI)
     {
