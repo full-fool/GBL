@@ -33,14 +33,16 @@ type stmt = Block of stmt list        | Expr of expr
 
 type global = Bind of bind | ArrayBind of arraybind | Init of typ * string * expr
 
-type formalvora = Bindinf of typ * string | ArrayBindinf of typ * string * expr
+(* type formalvora = Bindinf of typ * string | ArrayBindinf of typ * string * expr *)
 
 type func_decl = {
 	typ      : typ;
 	fname    : string;
-	formals  : formalvora list;
+	formals  : bind list;
 	body     : stmt list;
 }
+
+
 
 type cbody = {
   vandadecls : global list;
