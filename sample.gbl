@@ -209,7 +209,7 @@ class Gobang extends Game
       else return false;
     }
     
-    void update(int InputPosition)
+    int update(int InputPosition)
     {
         SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
         SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
@@ -221,6 +221,10 @@ class Gobang extends Game
         NextPlayerID = NextPlayerID + 1;
         if(NextPlayerID == PlayerNumber)
             NextPlayerID = 0;
+        int a[2];
+        a[0] = -1;
+        a[1] = -1;
+        return a;
     }
     
     #void printGame();
