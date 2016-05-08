@@ -10,3 +10,4 @@
         self.PlayerNumber = None
         self.GridNum = None
         self.MapSize = [ None ] * 2
+        self.InputPosition = [ None ] * 2

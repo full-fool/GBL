@@ -74,7 +74,8 @@ let translate (globals, classes) =
                               | _ -> "None")
       in
 
-      "        _root = tk.Tk()
+      "
+        _root = tk.Tk()
         _root.title(\"GBL\")
         tk.Canvas.create_circle = _create_circle
         _board = GameBoard(_root," ^ game_object_name ^ " ," ^ ai_name ^ ")
@@ -89,10 +90,17 @@ let translate (globals, classes) =
     "    _main.main()\n"
   in
 
+  let map_to_list m  = function _ as s-> StringMap.add s "self." m in
+
+  let game_var_map = 
+    List.fold_left map_to_list StringMap.empty 
+    ["WithAI";"NextSpriteID";"NextPlayerID";"FormerPosition";"FormerId";"SpriteOwnerId";
+    "SpriteId";"PlayerName";"PlayerId";"PlayerNumber";"GridNum";"MapSize";"InputPosition"]
+  in
+
   (*complie function parameters*)
   let comp_param = function
-      A.Bindinf (t, n) -> n
-    | A.ArrayBindinf (t, n, e) -> n
+      (t, n) -> n
     | _ -> ""
   in
 
@@ -160,14 +168,9 @@ let translate (globals, classes) =
     in
 
     let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls in
-    let add_local_vars = StringMap.empty in
+    let ext_local_vars = StringMap.empty in
 
-    let lookup n = try StringMap.find n local_vars
-                   with Not_found -> try StringMap.find n add_local_vars 
-                                     with Not_found -> ""
-    in
-
-    let rec comp_local_expr = function
+    let rec comp_local_expr lookup = function
         A.Literal i -> string_of_int i
       | A.StringLit s -> "\"" ^ s ^ "\""
       | A.FloatLit f -> string_of_float f
@@ -176,84 +179,96 @@ let translate (globals, classes) =
         | false    -> "False" )
       | A.Noexpr -> ""
       | A.Id s -> lookup s ^ s
-      | A.ArrayElement (s, i) -> lookup s ^ s ^ "[" ^ comp_local_expr i ^ "]"
-      | A.ArrayElementAssign (s, i, v) -> lookup s ^ s ^ "[" ^ comp_local_expr i ^ "]" ^ "=" ^ comp_local_expr v
+      | A.ArrayElement (s, i) -> lookup s ^ s ^ "[" ^ comp_local_expr lookup i ^ "]"
+      | A.ArrayElementAssign (s, i, v) -> lookup s ^ s ^ "[" ^ comp_local_expr lookup i ^ "]" ^ "=" ^ comp_local_expr lookup v
       | A.Binop (e1, op, e2) ->
-        let e1' = comp_local_expr e1
-        and e2' = comp_local_expr e2 in
+        let e1' = comp_local_expr lookup e1
+        and e2' = comp_local_expr lookup e2 in
         "(" ^ e1' ^ ")" ^ comp_sym op ^ "(" ^ e2' ^ ")"
       | A.Negative (op, e) -> 
         let e' = comp_global_expr e in
         comp_sym op ^ "(" ^ e' ^ ")"
       | A.IdInClass (e, s) -> lookup s ^ s ^ "." ^ e
-      | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr i ^ "]"
-      | A.Unop(op, e) -> "not (" ^ comp_local_expr e ^ ")"
-      | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr e
-      | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
-      | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map comp_local_expr act) ^ ")"
+      | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr lookup i ^ "]"
+      | A.Unop(op, e) -> "not (" ^ comp_local_expr lookup e ^ ")"
+      | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr lookup e
+      | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
+      | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
       | _ as s -> ""
     in
 
     (*complie global variables*)
-    let comp_local_var pos = function
+    let comp_local_var pos lookup = function
         A.Bind e -> (match e with
                      (t, n) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = None\n"
                     | _ -> "")
       | A.ArrayBind e -> (match e with 
-                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr a ^ "\n"
+                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr lookup a ^ "\n"
                     | _ -> "")
-      | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr v ^ "\n"
+      | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr lookup v ^ "\n"
     in
 
     (*complie statements*)
-    let rec comp_stmt pos = function
-        A.Block sl -> String.concat "" (List.map (comp_stmt pos) sl)
-      | A.Expr e -> (String.make (pos * 4) ' ') ^ comp_local_expr e ^ "\n"
+    let rec comp_stmt pos lookup = function
+        A.Block sl -> String.concat "" (List.map (comp_stmt pos lookup) sl)
+      | A.Expr e -> (String.make (pos * 4) ' ') ^ comp_local_expr lookup e ^ "\n"
       | A.Return A.Noexpr -> (String.make (pos * 4) ' ') ^ "return\n"
       | A.Break -> (String.make (pos * 4) ' ') ^ "break\n"
       | A.Continue -> (String.make (pos * 4) ' ') ^ "continue\n"
-      | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_local_expr e ^ "\n"
+      | A.Return e -> (String.make (pos * 4) ' ') ^ "return " ^ comp_local_expr lookup e ^ "\n"
       | A.Bind e -> (match e with
                      (t, n) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = None"
                     | _ -> "") ^ "\n"
       | A.ArrayBind e -> (match e with 
-                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr a
+                     (t, n, a) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = [ None ] * " ^ comp_local_expr lookup a
                     | _ -> "") ^ "\n"
-      | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr v ^ "\n"
+      | A.Init (t, n, v) -> (String.make (pos * 4) ' ') ^ lookup n ^ n ^ " = " ^ comp_local_expr lookup v ^ "\n"
       | A.Classdecl (t, s) -> (String.make (pos * 4) ' ') ^ lookup s ^ s ^ " = " ^ t ^ "()\n"
-      | A.Ifelse (predicate, then_stmt, else_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_local_expr predicate ^ "):\n" ^
-                                                  comp_stmt (pos + 1) then_stmt ^ (String.make (pos * 4) ' ') ^ "else:\n" ^ 
-                                                  comp_stmt (pos + 1) else_stmt
-      | A.Ifnoelse (predicate, then_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_local_expr predicate ^ "):\n" ^
-                                              comp_stmt (pos + 1) then_stmt
+      | A.Ifelse (predicate, then_stmt, else_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_local_expr lookup predicate ^ "):\n" ^
+                                                  comp_stmt (pos + 1) lookup then_stmt ^ (String.make (pos * 4) ' ') ^ "else:\n" ^ 
+                                                  comp_stmt (pos + 1) lookup else_stmt
+      | A.Ifnoelse (predicate, then_stmt) -> (String.make (pos * 4) ' ') ^ "if (" ^ comp_local_expr lookup predicate ^ "):\n" ^
+                                              comp_stmt (pos + 1) lookup then_stmt
       | A.For (e1, e2, e3, body) -> (match e1 with
                                       A.Noexpr -> ""
-                                    | _ -> (String.make (pos * 4) ' ') ^ comp_local_expr e1 ^ "\n") ^ 
+                                    | _ -> (String.make (pos * 4) ' ') ^ comp_local_expr lookup e1 ^ "\n") ^ 
                                     (String.make (pos * 4) ' ') ^
-                                    "while (" ^ comp_local_expr e2 ^ "):\n" ^ comp_stmt (pos + 1) body ^ 
+                                    "while (" ^ comp_local_expr lookup e2 ^ "):\n" ^ comp_stmt (pos + 1) lookup body ^ 
                                     (match e3 with
                                       A.Noexpr -> ""
-                                    | _ -> (String.make ((pos + 1) * 4) ' ') ^ comp_local_expr e3 ^ "\n")
-      | A.While (predicate, body) -> (String.make (pos * 4) ' ') ^ "while (" ^ comp_local_expr predicate ^ "):\n" ^
-                                     comp_stmt (pos + 1) body
+                                    | _ -> (String.make ((pos + 1) * 4) ' ') ^ comp_local_expr lookup e3 ^ "\n")
+      | A.While (predicate, body) -> (String.make (pos * 4) ' ') ^ "while (" ^ comp_local_expr lookup predicate ^ "):\n" ^
+                                     comp_stmt (pos + 1) lookup body
       | _ as s -> ""
     in
 
     let comp_class_var pos vdecls = 
       (String.make (pos * 4) ' ') ^ "def __init__(self):\n" ^ 
-      String.concat "" (List.map (comp_local_var (pos + 1)) vdecls) ^
+      String.concat "" (List.map (comp_local_var (pos + 1) 
+        (fun n -> try StringMap.find n local_vars
+          with Not_found -> "")) vdecls) ^
       (if extends = "Game" then (gen_game_var_code ^ "\n") else "") ^
-      (String.make ((pos + 1) * 4) ' ')  ^ "pass" ^ "\n"
+      (String.make ((pos + 1) * 4) ' ')  ^ "pass" ^ "\n\n"
     in
 
     let comp_function pos fdecl = 
       (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^ "(" ^
       String.concat "," ("self" :: (
-        if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update") then []
-        else (List.map comp_param fdecl.A.formals))) ^  
-      "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^
+        if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update")
+        then []
+        else List.map comp_param fdecl.A.formals)) ^  
+          "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1) 
+            (if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update")
+            then
+            (fun n -> try StringMap.find n local_vars
+                    with Not_found -> try StringMap.find n game_var_map 
+                                         with Not_found -> "")
+            else
+            (fun n -> try StringMap.find n local_vars
+                    with Not_found -> ""))
+          ) fdecl.A.body) ^
       (if extends = "Main" && fdecl.A.fname = "main" then game_gui_code else "") ^ 
-      (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
+      (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n\n"
     in
 
     comp_class_var 1 cbody.A.vandadecls ^ (if extends = "Game" then (gen_game_init_code ^ "\n") else "") ^
@@ -262,8 +277,8 @@ let translate (globals, classes) =
 
   let comp_class cdecl = 
     (*comp_cbody (cdecl.A.cname ^ "_" ^ cdecl.A.extends ^ "_") cdecl.A.cbody*)
-    "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody
+    "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody ^ "\n"
   in
 
   String.concat "" (List.map comp_global_var globals) ^ gen_game_gui_code ^ String.concat "" (List.map comp_class classes) ^ 
-  gen_main_class_code
+  gen_main_class_code ^ "\n"

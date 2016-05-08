@@ -1,4 +1,5 @@
 import Tkinter as tk
+
 def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
 
@@ -7,8 +8,8 @@ class GameBoard(tk.Frame):
         '''size is the size of a square, in pixels'''
         self.mygame = mygame
         self.gobangai = gobangai
-        self.rows = mygame.MapSize[0]
-        self.columns = mygame.MapSize[1]
+        self.rows = mygame.MapSize[1]
+        self.columns = mygame.MapSize[0]
         self.size = 32
         self.colors = ["black", "white","blue","yellow","grey","pink"]
         self.color = "bisque" # board color
@@ -37,20 +38,14 @@ class GameBoard(tk.Frame):
         if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
             if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
                 #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
-                position = []
-                position.append(event.y/self.size)
-                position.append(event.x/self.size)
                 #isLegal()
-                
-                if(self.mygame.isLegal(position)):
-                    # place sprite
-                    #print "islegal"
+                self.mygame.InputPosition[0] = event.y/self.size
+                self.mygame.InputPosition[1] = event.x/self.size
+                if(self.mygame.isLegal()):
                     self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
                     self.pastPieces.append((event.y/self.size, event.x/self.size))
-                    #print "add sprite"
-                    print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
-                    dele = self.mygame.update(position)
+                    dele = self.mygame.update()
                     l = len(dele) / 2
                     for i in range(l):
                         delex = dele[2 * i]
@@ -59,13 +54,6 @@ class GameBoard(tk.Frame):
                         if delex != -1 or deley != -1:
                             Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
                             self.canvas.delete(Spritename)
-                            #delete (delex, deley)
-
-
-
-
-                    #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-                    #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
                     
                     winner = self.mygame.win();
                     if(winner != -1):
@@ -78,24 +66,19 @@ class GameBoard(tk.Frame):
                         self.turns = 0
                     
                     self.addavatar()
-            print "clicked at", position[0], position[1]
+            print "clicked at", self.mygame.InputPosition[0], self.mygame.InputPosition[1]
         else:
             position = self.gobangai.returnposition()
+            self.mygame.InputPosition[0] = position[0]
+            self.mygame.InputPosition[1] = position[1]
             self.addpiece(str((position[1], position[0])), position[1], position[0])
             self.pastPieces.append((position[1], position[0]))
-            #print "add sprite"
-            print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
-
             dele = self.mygame.update(position)
-            #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-            #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
             
             winner = self.mygame.win();
             if(winner != -1):
                 self.win(winner)
-                    #if isTie():
-                        #tie()
-                    #turn to next player
+                
             self.turns += 1
             if self.turns >= self.numPlayers:
                 self.turns = 0
@@ -174,4 +157,3 @@ class GameBoard(tk.Frame):
     def tie(self):
         self.enable = False
         self.canvas.create_text(self.columns*self.size/2, self.rows*self.size/2, text = "TIE", font=("Helvetica",50), fill = "red")
-
