@@ -66,10 +66,9 @@ class GameBoard(tk.Frame):
 
                     #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
                     #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
-                    if(self.mygame.win()):
-                        winner = self.mygame.NextPlayerID - 1
-                        if(winner == -1):
-                            winner = self.mygame.PlayerNumber - 1
+                    
+                    winner = self.mygame.win();
+                    if(winner != -1):
                         self.win(winner)
                     #if isTie():
                         #tie()
@@ -90,10 +89,9 @@ class GameBoard(tk.Frame):
             dele = self.mygame.update(position)
             #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
             #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
-            if(self.mygame.win()):
-                winner = self.mygame.NextPlayerID - 1
-                if(winner == -1):
-                    winner = self.mygame.PlayerNumber - 1
+            
+            winner = self.mygame.win();
+            if(winner != -1):
                 self.win(winner)
                     #if isTie():
                         #tie()
@@ -320,7 +318,10 @@ class Gobang:
                     count = (count) + (1)
                 print "rowcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -339,7 +340,10 @@ class Gobang:
                     count = (count) + (1)
                     print "colcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -378,7 +382,10 @@ class Gobang:
                     count = (count) + (1)
                     print "leftup-rightdowncount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -415,13 +422,16 @@ class Gobang:
                     count = (count) + (1)
                     print "leftdown-rightupcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
             i = (i) + (1)
         
-        return False
+        return -1
         pass
 
 
