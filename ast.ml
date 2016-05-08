@@ -11,6 +11,7 @@ type expr = Literal of int            | BoolLit of bool
           | Assign of string * expr   | Call of string * expr list
           | ArrayElement of string * expr  | ArrayElementAssign of string * expr * expr
           | IdInClass of string * string
+          | ArrayInClass of string * expr * string
           | CallDomain of string * expr list * string
           | Negative of op * expr
 
@@ -40,7 +41,7 @@ type func_decl = {
 }
 
 type cbody = {
-  vdecls : global list;
+  vandadecls : global list;
   methods : func_decl list;
 }
 
@@ -100,6 +101,7 @@ let rec string_of_expr = function
   | ArrayElement(v, e) -> v ^ "[" ^ string_of_expr e ^ "]"
   | ArrayElementAssign(v, e1, e2) -> v ^ "[" ^ string_of_expr e1 ^ "]" ^ " = " ^ string_of_expr e2
   | IdInClass(s1, s2) -> s1 ^ "@" ^ s2
+  | ArrayInClass(s1, e, s2) -> s1 ^ "[" ^ string_of_expr e ^ "]@" ^ s2
   | CallDomain(f, el, s) -> f ^ "(" ^ String.concat ", " (List.map string_of_expr el) ^ ")@" ^ s
   | Negative(o, e) -> string_of_op o ^ string_of_expr e
 

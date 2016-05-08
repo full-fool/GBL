@@ -2,15 +2,14 @@ import Tkinter as tk
 
 
 class GameBoard(tk.Frame):
-    def __init__(self, parent, rows=8, columns=8, size=32, players = 6, colors=["black", "white","blue","yellow","grey","pink"], color1 = "blue", color2 = "white", ai=False):
+    def __init__(self, parent, rows=18, columns=18, size=32, players = 6, colors=["black", "white","blue","yellow","grey","pink"], color = "bisque", ai=False):
         '''size is the size of a square, in pixels'''
         
         self.rows = rows
         self.columns = columns
         self.size = size
         self.colors = colors
-        self.color1 = color1 # board color 1
-        self.color2 = color2 # board color 2
+        self.color = color # board color
         self.turns = 0 # current player
         self.pastPieces = [] #sprite list
         self.numPlayers = players
@@ -82,16 +81,13 @@ class GameBoard(tk.Frame):
     # redraw whole window
     def redraw(self):
         self.canvas.delete("all")
-        color = self.color2
         for row in range(self.rows):
-            color = self.color1 if color == self.color2 else self.color2
             for col in range(self.columns):
                 x1 = (col * self.size)
                 y1 = (row * self.size)
                 x2 = x1 + self.size
                 y2 = y1 + self.size
-                self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=color, tags="square")
-                color = self.color1 if color == self.color2 else self.color2
+                self.canvas.create_rectangle(x1, y1, x2, y2, outline="black", fill=self.color, tags="square")
         i = 0
         for name in self.pastPieces:
             self.addpiece(str(name), name[0], name[1], curr=i)
@@ -126,7 +122,7 @@ class GameBoard(tk.Frame):
         self.canvas.create_text(self.columns*self.size/2, self.rows*self.size/2, text = "TIE", font=("Helvetica",50), fill = "red")
 
 def _create_circle(self, x, y, r, **kwargs):
-    return self.create_oval(x-r, y-r, x+r, y+r, **kwargs)
+    return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
 
 if __name__ == "__main__":
     root = tk.Tk()
