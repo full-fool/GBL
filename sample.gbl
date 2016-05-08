@@ -22,13 +22,13 @@ class Gobang extends Game
     bool WithAI;
 
     #functions:
-    void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputwithAI)
+    void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputWithAI)
     {
         MapSize[0] = MapS[0]; 
         MapSize[1] = MapS[1];
         GridNum = MapSize[0] * MapSize[1];
         PlayerNumber = InputPlayerNum;
-        withAI = InputwithAI;
+        WithAI = InputWithAI;
 
         int i;
         for(i = 0; i < PlayerNumber; i = i + 1)
@@ -257,7 +257,10 @@ class GobangAI extends AI{
     r = position[0]* MapSize[0]@mygame + position[1];
     return r;
   */
-    return 0;
+    int r[2];
+    r[0] = 0;
+    r[1] = 0;
+    return r;
   }
 }
 
@@ -278,12 +281,12 @@ class UserMain extends Main{
       string InputPlayerName[InputPlayerNumber];
       InputPlayerName[0] = "Cuidiao";
       InputPlayerName[1] = "Xicao";
-      InputwithAI = false;
+      InputWithAI = false;
 
-      initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)@mygame;
+      initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
       #printGame()@mygame;
 
-      GobangAI gobanai;
+      GobangAI gobangai;
       while(not win()@mygame)
       {
           print("This is the turn of player");
@@ -292,7 +295,7 @@ class UserMain extends Main{
           #input position
           int InputPosition[2];
 
-          if(InputwithAI and NextPlayerID@mygame != 0)
+          if(InputWithAI and NextPlayerID@mygame != 0)
           {
             int rposition;
             rposition = returnposition()@gobanai;

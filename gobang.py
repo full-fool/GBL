@@ -3,9 +3,10 @@ def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
 
 class GameBoard(tk.Frame):
-    def __init__(self, parent, mygame):
+    def __init__(self, parent, mygame, gobangai):
         '''size is the size of a square, in pixels'''
         self.mygame = mygame
+        self.gobangai = gobangai
         self.rows = mygame.MapSize[0]
         self.columns = mygame.MapSize[1]
         self.size = 32
@@ -16,6 +17,7 @@ class GameBoard(tk.Frame):
         self.numPlayers = mygame.PlayerNumber
         self.enable = True # win or tie makes it false
         self.AI = mygame.WithAI
+        print "AI = ", mygame.WithAI
         canvas_width = (self.columns+5) * self.size
         canvas_height = self.rows * self.size
         
@@ -32,37 +34,64 @@ class GameBoard(tk.Frame):
 
     #When mouse clicks
     def callback(self, event):
-        if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
-            #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
-            position = []
-            position.append(event.y/self.size)
-            position.append(event.x/self.size)
-            #isLegal()
-            
-            if(self.mygame.isLegal(position)):
-                # place sprite
-                #print "islegal"
-                self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
-                self.pastPieces.append((event.y/self.size, event.x/self.size))
-                #print "add sprite"
-                print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
-                self.mygame.update(position)
-                print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-                print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
-                if(self.mygame.win()):
-                    winner = self.mygame.NextPlayerID - 1
-                    if(winner == -1):
-                        winner = self.mygame.PlayerNumber - 1
-                    self.win(winner)
-                #if isTie():
-                    #tie()
-                #turn to next player
-                self.turns += 1
-                if self.turns >= self.numPlayers:
-                    self.turns = 0
+        print self.mygame.WithAI
+        if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
+            if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
+                #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
+                position = []
+                position.append(event.y/self.size)
+                position.append(event.x/self.size)
+                #isLegal()
                 
-                self.addavatar()
-        print "clicked at", position[0], position[1]
+                if(self.mygame.isLegal(position)):
+                    # place sprite
+                    #print "islegal"
+                    self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
+                    self.pastPieces.append((event.y/self.size, event.x/self.size))
+                    #print "add sprite"
+                    print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
+
+                    self.mygame.update(position)
+                    print "CurSpriteID = ", self.mygame.NextSpriteID - 1
+                    print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
+                    if(self.mygame.win()):
+                        winner = self.mygame.NextPlayerID - 1
+                        if(winner == -1):
+                            winner = self.mygame.PlayerNumber - 1
+                        self.win(winner)
+                    #if isTie():
+                        #tie()
+                    #turn to next player
+                    self.turns += 1
+                    if self.turns >= self.numPlayers:
+                        self.turns = 0
+                    
+                    self.addavatar()
+            print "clicked at", position[0], position[1]
+        else:
+            print "AI"
+            position = self.gobangai.returnposition()
+            self.addpiece(str((position[1], position[0])), position[1], position[0])
+            self.pastPieces.append((position[1], position[0]))
+            #print "add sprite"
+            print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
+
+            self.mygame.update(position)
+            print "CurSpriteID = ", self.mygame.NextSpriteID - 1
+            print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
+            if(self.mygame.win()):
+                winner = self.mygame.NextPlayerID - 1
+                if(winner == -1):
+                    winner = self.mygame.PlayerNumber - 1
+                self.win(winner)
+                    #if isTie():
+                        #tie()
+                    #turn to next player
+            self.turns += 1
+            if self.turns >= self.numPlayers:
+                self.turns = 0
+                    
+            self.addavatar()
     
     #update()
     def addpiece(self, name, row=0, column=0, curr=-1):
@@ -154,13 +183,14 @@ class UserMain:
         InputPlayerName = [ None ] * InputPlayerNumber
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
-        InputwithAI = False
-        mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)
-        gobanai = GobangAI()
+        InputWithAI = False
+        print "InputWithAI = ", InputWithAI
+        mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)
+        gobangai = GobangAI()
         root = tk.Tk()
         root.title("GBL")
         tk.Canvas.create_circle = _create_circle
-        board = GameBoard(root, mygame)
+        board = GameBoard(root, mygame, gobangai)
         board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
         
         root.mainloop()
@@ -169,7 +199,8 @@ class GobangAI:
     def __init__(self):
         pass
     def returnposition(self):
-        return 0
+        r = [0, 0]
+        return r
         pass
 class Gobang:
     def __init__(self):
@@ -186,12 +217,12 @@ class Gobang:
         self.GridNum = None
         self.MapSize = [ None ] * 2
         pass
-    def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputwithAI):
+    def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputWithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]
         self.GridNum = (self.MapSize[0]) * (self.MapSize[1])
         self.PlayerNumber = InputPlayerNum
-        self.withAI = InputwithAI
+        self.WithAI = InputWithAI
         i = None
 
         i = 0
@@ -377,34 +408,7 @@ class Gobang:
         
         return False
         pass
-    def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputwithAI):
-        self.MapSize[0]=MapS[0]
-        self.MapSize[1]=MapS[1]
-        self.GridNum = (self.MapSize[0]) * (self.MapSize[1])
-        self.PlayerNumber = InputPlayerNum
-        withAI = InputwithAI
-        i = None
-        i = 0
-        while ((i) < (self.PlayerNumber)):
-            self.PlayerId[i]=InputPlayerID[i]
-            self.PlayerName[i]=InputPlayerName[i]
-            i = (i) + (1)
-        i = None
-        j = None
-        i = 0
-        while ((i) < (self.MapSize[0])):
-            j = 0
-            while ((j) < (self.MapSize[1])):
-                self.SpriteId[((i) * (self.MapSize[0])) + (j)]= - (1)
-                self.SpriteOwnerId[((i) * (self.MapSize[0])) + (j)]= - (1)
-                j = (j) + (1)
-            i = (i) + (1)
-        self.FormerId =  - (1)
-        self.FormerPosition[0]= - (1)
-        self.FormerPosition[1]= - (1)
-        self.NextPlayerID = 0
-        self.NextSpriteID = 0
-        pass
+
 
 
 real_main = UserMain()
