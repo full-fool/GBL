@@ -281,7 +281,7 @@ class UserMain extends Main{
       string InputPlayerName[InputPlayerNumber];
       InputPlayerName[0] = "Cuidiao";
       InputPlayerName[1] = "Xicao";
-      InputwithAI = true;
+      InputwithAI = false;
 
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)@mygame;
       #printGame()@mygame;
@@ -295,7 +295,7 @@ class UserMain extends Main{
           #input position
           int InputPosition[2];
 
-          if(InputwithAI)
+          if(InputwithAI and NextPlayerID@mygame != 0)
           {
             int rposition;
             rposition = returnposition()@gobanai;
@@ -307,8 +307,8 @@ class UserMain extends Main{
             bool legal = false;
             while(not legal)
             {
-              #stdin>>InputPosition[0];
-              #stdin>>InputPosition[1];
+              InputPosition[0] = input("Please enter InputPositionX:\n");
+              InputPosition[1] = input("Please enter InputPositionY:\n");
               legal = isLegal(InputPosition)@mygame;
             }
           }

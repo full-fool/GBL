@@ -17,7 +17,7 @@ class UserMain:
 
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
-        InputwithAI = True
+        InputwithAI = False
         mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)
         gobanai = GobangAI()
         while (not (mygame.win())):
@@ -25,7 +25,7 @@ class UserMain:
             print(mygame.NextPlayerID)
             InputPosition = [ None ] * 2
 
-            if (InputwithAI):
+            if ((InputwithAI) and ((mygame.NextPlayerID) != (0))):
                 rposition = None
 
                 rposition = gobanai.returnposition()
@@ -34,6 +34,11 @@ class UserMain:
             else:
                 legal = False
                 while (not (legal)):
+                    tmp = None
+
+                    tmp = input()
+                    InputPosition[0]=input()
+                    InputPosition[1]=input()
                     legal = mygame.isLegal(InputPosition)
             mygame.update(InputPosition)
         winner = (mygame.NextPlayerID) - (1)
