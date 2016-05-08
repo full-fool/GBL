@@ -13,8 +13,8 @@ let check (vandadecls, cdecls) =
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
     StringMap.add key value map
-  ) StringMap.empty [] (* [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
-  body = [] })] *)(* ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
+  ) StringMap.empty [] [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
+  body = [] }); ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
    body = [] }); ("printlni", { typ = Void; fname = "printlni"; formals = [(Int, "x")];
     body = [] }); ("printlnb", { typ = Void; fname = "printlnb"; formals = [(Bool, "x")];
     body = [] }); ("printf", { typ = Void; fname = "printf"; formals = [(Float, "x")];
@@ -24,7 +24,7 @@ let check (vandadecls, cdecls) =
       body = [] }); ("stri", { typ = String; fname = "stri"; formals = [(Int, "x")];
       body = [] }); ("strb", { typ = String; fname = "strb"; formals = [(Bool, "x")];
       body = [] }); ("strf", { typ = String; fname = "strf"; formals = [(Float, "x")];
-      body = [] }) *)
+      body = [] })]
   
   in
 
