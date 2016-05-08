@@ -64,9 +64,9 @@ let check (vandadecls, cdecls) =
   in
   
   let check_exist s symbol_list =
-    let m = StringMap.find s symbol_list in
-    (match m with Not_found -> ()
-                | _ -> raise (Failure ("identifier " ^ s ^ "already exists")))
+    if  StringMap.mem s symbol_list then raise (Failure ("identifier " ^ s ^ "exists"))
+    else ()
+
   in
 
   let check_valid_extend s = 
@@ -79,6 +79,10 @@ let check (vandadecls, cdecls) =
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
   in 
 
+  let type_of_object s object_list =
+    try StringMap.find s object_list
+      with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+  in 
 
   let rec check_expr (expr_symbol_list, className)  = function
   Literal _ -> Int
@@ -114,22 +118,24 @@ let check (vandadecls, cdecls) =
 
     in
 
-    let check_vandadecl (symbol_list, classname) = function
+    let check_vandadecl (symbollist, classname) = function
       Bind(b) ->  check_not_void (fun n -> "illegal void global " ^ n) b;
-                  let _ = check_exist (classname ^ "@" ^ (snd b)) symbol_list in let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in 
-                    let new_symbol_list = StringMap.add idstring typstring symbol_list in
+                  check_exist (classname ^ "@" ^ (snd b)) symbollist;
+                  let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in
+                  let new_symbol_list = StringMap.add idstring typstring symbollist in
                       (new_symbol_list, classname)
-    | Init(t, s, e) as init -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (t, s) in
-                               let _ = check_exist (classname ^ "@" ^ s) symbol_list in let _ = ignore(check_expr (symbol_list, classname) e) 
-                                       in let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbol_list in (new_symbol_list, classname)
-    | ArrayBind((t, s, e)) as ab -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (t, s) in
-                                    let _ = check_exist (classname ^ "@" ^ s) symbol_list in
-                                    let t = check_expr (symbol_list, classname) e 
-                                    in let _ =
+    | Init(t, s, e) as init -> check_not_void (fun n -> "illegal void global " ^ n) (t, s);
+                               check_exist (classname ^ "@" ^ s) symbollist;
+                               check_expr (symbollist, classname) e;
+                               let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
+    | ArrayBind((t, s, e)) ->  check_not_void (fun n -> "illegal void global " ^ n) (t, s);
+                        check_exist (classname ^ "@" ^ s) symbollist;
+                        let t = check_expr (symbollist, classname) e 
+                            in let _ =
                                     (match t with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                     in 
-                                    let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbol_list in (new_symbol_list, classname)
+                                    let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
     
     in
 
@@ -138,163 +144,164 @@ let check (vandadecls, cdecls) =
 
     let check_cdecl symbol_list cdecl = 
       let _ = check_valid_extend cdecl.extends in
-      let check_class (classSymbolList, className, extendName, globals, functions) =
-        let (symbol_table, classname) = List.fold_left check_vandadecl (symbol_list, className) globals in
+        let check_class (classSymbolList, className, extendName, globals, functions) =
+          let (symbol_table, classname) = List.fold_left check_vandadecl (classSymbolList, className) globals in
     
-  (**** Checking Functions ****)
-  report_duplicate (fun n -> "duplicate function " ^ n)
-  (List.map (fun fd -> fd.fname) functions);
- 
-  (* Function declaration for a named function *)
+            (**** Checking Functions ****)
+            report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) functions);
+            (* Function declaration for a named function *)
   
+            if extendName = "Main" then ignore(function_decl "main") else (); (* Ensure "main" is defined *)
+
+            let check_function func_symbol_list func =
+
+              List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^ " in " ^ func.fname)) func.formals;
+
+              report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
+              (List.map snd func.formals);
+              (* Type of each variable (global, formal, or local *)
+              let rec expr (expr_symbol_list, expr_object_list)  = function
+                  Literal _ -> Int
+                | BoolLit _ -> Bool
+                | FloatLit _ -> Float
+                | StringLit _ -> String
+                | Id s -> type_of_identifier (className ^ "@" ^ s) expr_symbol_list
+                | Binop(e1, op, e2) as e -> let t1 = expr (expr_symbol_list, expr_object_list) e1 and t2 = expr (expr_symbol_list, expr_object_list) e2 in
+                  (match op with
+                      Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
+                    | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
+                    | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Float -> Float
+                    | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Float -> Float
+                    | Mod | ModEqual when t1 = Int && t2 = Int -> Int
+                    | Is | Neq when t1 = t2 -> Bool
+                    | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
+                    | Less | Leq | Greater | Geq when t1 = Int && t2 = Float -> Bool
+                    | Less | Leq | Greater | Geq when t1 = Float && t2 = Int -> Bool
+                    | Less | Leq | Greater | Geq when t1 = Float && t2 = Float -> Bool
+                    | And | Or when t1 = Bool && t2 = Bool -> Bool
+                    | _ -> raise (Failure ("illegal binary operator " ^
+                           string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
+                           string_of_typ t2 ^ " in " ^ string_of_expr e)))
+                | Unop(op, e) as ex -> let t = expr (expr_symbol_list, expr_object_list) e in
+                  (match op with
+                      Neg when t = Int -> Int
+                    | Neg when t = Float -> Float
+                    | Not when t = Bool -> Bool
+                    | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
+                           string_of_typ t ^ " in " ^ string_of_expr ex)))
+                | Noexpr -> Void
+
+                | Assign(var, e) as ex ->  let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list
+                                               and rt = expr (expr_symbol_list, expr_object_list) e in
+                                               check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
+                                               " = " ^ string_of_typ rt ^ " in " ^ 
+                                               string_of_expr ex))
+                | Call(fname, actuals) as call -> let fd = function_decl fname in
+                  if List.length actuals != List.length fd.formals then
+                    raise (Failure ("expecting " ^ string_of_int
+                    (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
+                  else
+                    List.iter2 (fun (ft, _) e -> let et = expr (expr_symbol_list, expr_object_list) e in
+                    ignore (check_assign ft et
+                            (Failure ("illegal actual argument found " ^ string_of_typ et ^
+                                      " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
+                    fd.formals actuals;
+                    fd.typ
+                | ArrayElement(var, e) as ae -> let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = expr (expr_symbol_list, expr_object_list) e in
+                  (match rt with
+                      Int -> lt
+                    | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+                | ArrayElementAssign(var, e1, e2) as aea -> let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = expr (expr_symbol_list, expr_object_list) e1 in
+                      (match rt with
+                          Int -> let rrt = expr (expr_symbol_list, expr_object_list) e2 in
+                                     check_assign lt rrt (Failure("illegal assignment " ^ string_of_typ lt ^
+                                                                  " = " ^ string_of_typ rrt ^ " in " ^ 
+                                                                  string_of_expr aea))
+                         | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+
+                | IdInClass(vid, objectname) ->  let class_name = type_of_object objectname expr_object_list in
+                                                     type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
+
+                | ArrayInClass(vid, subexpr, objectname) -> let subtype = expr (expr_symbol_list, expr_object_list) subexpr in 
+                                                              match subtype with
+                                                                Int -> let class_name = type_of_object objectname expr_object_list in
+                                                                type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
+                                                              | _ -> raise (Failure("array subscript is not integer in " ^ var))                                                            
+                                                              
+
+                | CallDomain(f_name, acts_opt, objectname) -> (* let class_name = "type_of_object objectname expr_object_list" in
+                                                                let fd = function_decl (class_name ^ "@" ^ f_name) in
+                                                                  if List.length acts_opt != List.length fd.formals then
+                                                                    raise (Failure ("expecting " ^ string_of_int
+                                                                      (List.length fd.formals) ^ " arguments in " ^ string_of_expr calld))
+                                                                  else
+                                                                    List.iter2 (fun (ft, _) e -> let et = expr (expr_symbol_list, expr_object_list) e in
+                                                                      ignore (check_assign ft et
+                                                                      (Failure ("illegal actual argument found " ^ string_of_typ et ^
+                                                                                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
+                                                                    fd.formals acts_opt; *)
+                                                               Int
 
 
+                | Negative(op, negexpr) ->  expr (expr_symbol_list, expr_object_list) negexpr
 
-  if extendName = "Main" then function_decl "main" else (); (* Ensure "main" is defined *)
+              in
+                let check_bool_expr (symbol_list, object_list) e = if expr (symbol_list, object_list) e != Bool
+                                                      then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
+                                                    else () in
+                let rec stmt (stmt_symbol_list, stmt_object_list) = function
+                  Block sl -> let rec check_block (block_symbol_list, block_object_list) = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
+                                   [Return _ as s] -> stmt (block_symbol_list, block_object_list) s
+                                 | Return _ :: _ -> raise (Failure "nothing may follow a return")
+                                 | Block sl :: ss -> check_block (block_symbol_list, block_object_list) sl; check_block (block_symbol_list, block_object_list) ss;
+                                 | s :: ss -> let (rstsymbol_list, rstobject_list) = stmt (block_symbol_list, block_object_list) s in check_block (rstsymbol_list, rstobject_list) ss; 
+                                 | [] -> (block_symbol_list, block_object_list)
 
-  let check_function func_symbol_list func =
+                                in check_block (stmt_symbol_list, stmt_object_list) sl
 
-    List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^
-      " in " ^ func.fname)) func.formals;
+                | Expr e -> ignore (expr (stmt_symbol_list, stmt_object_list) e); (stmt_symbol_list, stmt_object_list)
 
-    report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
-      (List.map snd func.formals);
+                | Return Noexpr -> if Void = func.typ then (stmt_symbol_list, stmt_object_list) else
+                                     raise (Failure ("return gives void expected " ^
+                                   string_of_typ func.typ ^ " in return"))
 
-    (* Type of each variable (global, formal, or local *)
+                | Return e -> let t = expr (stmt_symbol_list, stmt_object_list) e in if t = func.typ then (stmt_symbol_list, stmt_object_list) else
+                                raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
+                                                string_of_typ func.typ ^ " in " ^ string_of_expr e))
 
-    let rec expr symbol_list  = function
-    Literal _ -> Int
-  | BoolLit _ -> Bool
-  | FloatLit _ -> Float
-  | StringLit _ -> String
-  | Id s -> type_of_identifier (className ^ "@" ^ s) symbol_list
-  | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
-  (match op with
-          Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
-        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
-        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Float -> Float
-        | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Float -> Float
-        | Mod | ModEqual when t1 = Int && t2 = Int -> Int
-        | Is | Neq when t1 = t2 -> Bool
-        | Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
-        | Less | Leq | Greater | Geq when t1 = Int && t2 = Float -> Bool
-        | Less | Leq | Greater | Geq when t1 = Float && t2 = Int -> Bool
-        | Less | Leq | Greater | Geq when t1 = Float && t2 = Float -> Bool
-        | And | Or when t1 = Bool && t2 = Bool -> Bool
-        | _ -> raise (Failure ("illegal binary operator " ^
-              string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
-              string_of_typ t2 ^ " in " ^ string_of_expr e)))
-        | Unop(op, e) as ex -> let t = expr symbol_list e in
-         (match op with
-          Neg when t = Int -> Int
-        | Neg when t = Float -> Float
-        | Not when t = Bool -> Bool
-        | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
-                 string_of_typ t ^ " in " ^ string_of_expr ex)))
-      | Noexpr -> Void
+                | Ifnoelse(p, b) ->  check_bool_expr stmt_symbol_list p ; stmt (stmt_symbol_list, stmt_object_list) b; (stmt_symbol_list, stmt_object_list)
 
-      | Assign(var, e) as ex ->  let lt = type_of_identifier (className ^ "@" ^ var) symbol_list
-                                and rt = expr symbol_list e in
-        check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
-             " = " ^ string_of_typ rt ^ " in " ^ 
-             string_of_expr ex))
-      | Call(fname, actuals) as call -> let fd = function_decl fname in
-         if List.length actuals != List.length fd.formals then
-           raise (Failure ("expecting " ^ string_of_int
-             (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
-         else
-           List.iter2 (fun (ft, _) e -> let et = expr symbol_list e in
-              ignore (check_assign ft et
-                (Failure ("illegal actual argument found " ^ string_of_typ et ^
-                " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
-             fd.formals actuals;
-           fd.typ
-      | ArrayElement(var, e) as ae -> let lt = type_of_identifier (className ^ "@" ^ var) symbol_list and rt = expr symbol_list e in
-                    (match rt with
-                     Int -> lt
-                   | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
-      | ArrayElementAssign(var, e1, e2) as aea -> let lt = type_of_identifier (className ^ "@" ^ var) symbol_list and rt = expr symbol_list e1 in
-                    (match rt with
-                     Int -> let rrt = expr symbol_list e2 in
-                     check_assign lt rrt (Failure("illegal assignment " ^ string_of_typ lt ^
-             " = " ^ string_of_typ rrt ^ " in " ^ 
-             string_of_expr aea))
-                   | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+                | Ifelse(p, b1, b2) -> check_bool_expr stmt_symbol_list p ; stmt (stmt_symbol_list, stmt_object_list) b1; stmt (stmt_symbol_list, stmt_object_list) b2; (stmt_symbol_list, stmt_object_list)
 
-      | IdInClass(vid, objectname) ->  let class_name = type_of_identifier  objectname symbol_list in
-                              type_of_identifier (class_name ^ "@" ^ vid) symbol_list
+                | For(e1, e2, e3, st) -> ignore (expr (stmt_symbol_list, stmt_object_list) e1); check_bool_expr stmt_symbol_list e2;
+                                         ignore (expr  (stmt_symbol_list, stmt_object_list) e3); stmt (stmt_symbol_list, stmt_object_list) st
 
-      | ArrayInClass(vid, subexpr, objectname) -> let subtype = expr symbol_list subexpr in 
-                                                let class_name = type_of_identifier objectname symbols in
-                                                type_of_identifier (class_name ^ "@" ^ vid) symbol_list
+                | While(p, s) -> check_bool_expr stmt_symbol_list p; stmt (stmt_symbol_list, stmt_object_list) s
 
-      | CallDomain(f_name, acts_opt, objectname) -> let class_name = type_of_identifier objectname symbols in
-                                                let fd = function_decl (class_name ^ "@" ^ f_name) in
-                                                 if List.length acts_opt != List.length fd.formals then
-                                                   raise (Failure ("expecting " ^ string_of_int
-                                                     (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
-                                                else
-                                                   List.iter2 (fun (ft, _) e -> let et = expr symbol_list e in
-                                                      ignore (check_assign ft et
-                                                        (Failure ("illegal actual argument found " ^ string_of_typ et ^
-                                                        " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
-                                                    fd.formals acts_opt;
-                                                fd.typ
+                | Bind(b) ->  let typstring = fst b and idstring = snd b in 
+                                let new_symbol_list = StringMap.add idstring typstring stmt_symbol_list in
+                                  new_symbol_list
 
+                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add s t stmt_symbol_list in new_symbol_list
 
-      | Negative(op, negexpr) ->  expr symbol_list negexpr
-
-
-
-    in
-
- let check_bool_expr symbol_list e  = if expr symbol_list e != Bool
-     then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
-     else () in
-    let rec stmt symbol_list = function
-   Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
-           [Return _ as s] -> stmt block_symbol_list s
-         | Return _ :: _ -> raise (Failure "nothing may follow a return")
-         | Block sl :: ss -> check_block block_symbol_list sl; check_block block_symbol_list ss;
-         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in check_block rstsymbol_list ss; 
-         | [] -> block_symbol_list
-        in check_block symbol_list sl
-      | Expr e -> ignore (expr symbol_list e); symbol_list
-      | Return Noexpr -> if Void = func.typ then symbol_list else
-         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
-                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
-      | Return e -> let t = expr symbol_list e in if t = func.typ then symbol_list else
-         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
-                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
-      | Ifnoelse(p, b) ->  check_bool_expr symbol_list p ; stmt symbol_list b1; symbol_list
-      | Ifelse(p, b1, b2) -> check_bool_expr symbol_list p ; stmt symbol_list b1; stmt symbol_list b2; symbol_list
-      | For(e1, e2, e3, st) -> ignore (expr symbol_list e1); check_bool_expr symbol_list e2 ;
-                               ignore (expr  symbol_list e3); stmt symbol_list st
-      | While(p, s) -> check_bool_expr symbol_list p; stmt symbol_list s
-      | Bind(b) ->  let typstring = fst b and idstring = snd b in 
-                    let new_symbol_list = StringMap.add idstring typstring symbol_list in
-                      new_symbol_list
-      | Init(t, s, e) -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-      | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
+                | ArrayBind((t, s, e)) as ab -> let t = expr (stmt_symbol_list, stmt_object_list) e 
                                       in let _ =
                                       (match t with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                       in 
-                                      let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-      | Break -> symbol_list
-      | Continue -> symbol_list
+                                      let new_symbol_list = StringMap.add s t stmt_symbol_list in new_symbol_list
 
-      | Classdecl(class_name, objectname) -> let new_symbol_list = StringMap.add objectname class_name map in new_symbol_list
+                | Break -> (stmt_symbol_list, stmt_object_list)
 
+                | Continue -> (stmt_symbol_list, stmt_object_list)
 
+                | Classdecl(class_name, objectname) -> let new_object_list = StringMap.add objectname class_name stmt_object_list in (stmt_symbol_list, new_object_list)
 
-    in
-
-    stmt func_symbol_list (Block func.body);
-   
+              in
+                stmt (func_symbol_list, StringMap.empty) (Block func.body);
+            in
+        List.fold_left check_function symbol_table functions; 
+      in
+    check_class (symbol_list, cdecl.cname, cdecl.extends, cdecl.cbody.vandadecls, cdecl.cbody.methods);
   in
-  List.fold_left check_function classSymbolList functions; 
-in
-check_class (symbol_list, cdecl.cname, cdecl.extends, cdecl.cbody.vandadecls, cdecl.cbody.methods);
-in
 List.fold_left check_cdecl symbols cdecls
