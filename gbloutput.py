@@ -14,8 +14,9 @@ class UserMain:
         InputPlayerName = [ None ] * InputPlayerNumber
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
-        InputwithAI = False
+        InputwithAI = True
         mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputwithAI)
+        print "mygame.WithAI = ", mygame.WithAI
         gobanai = GobangAI()
         while (not (mygame.win())):
             print("This is the turn of player")
@@ -57,25 +58,14 @@ class Gobang:
         self.PlayerNumber = None
         self.GridNum = None
         self.MapSize = [ None ] * 2
-        self.WithAI = None
-        self.NextSpriteID = None
-        self.NextPlayerID = None
-        self.FormerPosition = [ None ] * 2
-        self.FormerId = None
-        self.SpriteOwnerId = [ None ] * 1000
-        self.SpriteId = [ None ] * 1000
-        self.PlayerName = [ None ] * 10
-        self.PlayerId = [ None ] * 10
-        self.PlayerNumber = None
-        self.GridNum = None
-        self.MapSize = [ None ] * 2
         pass
     def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputwithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]
         self.GridNum = (self.MapSize[0]) * (self.MapSize[1])
         self.PlayerNumber = InputPlayerNum
-        self.withAI = InputwithAI
+        self.WithAI = InputwithAI
+        print "InputwithAI = ", InputwithAI
         i = None
 
         i = 0
