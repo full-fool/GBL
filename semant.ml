@@ -13,12 +13,7 @@ let check (vandadecls, cdecls) =
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
     StringMap.add key value map
-<<<<<<< HEAD
-  ) StringMap.empty [] [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
-=======
-  ) StringMap.empty 
-[("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
->>>>>>> 08476f630de93915aa80965dace76f1b6af27711
+  ) StringMap.empty [("printi", { typ = Void; fname = "printi"; formals = [(Int, "x")];
   body = [] }); ("printb", { typ = Void; fname = "printb"; formals = [(Bool, "x")];
    body = [] }); ("printlni", { typ = Void; fname = "printlni"; formals = [(Int, "x")];
     body = [] }); ("printlnb", { typ = Void; fname = "printlnb"; formals = [(Bool, "x")];
@@ -41,7 +36,7 @@ let check (vandadecls, cdecls) =
   in
 
   let function_decls = List.fold_left add_function_of_class
-                         StringMap.empty cdecls 
+                         built_in_decls cdecls 
   in
 
   let function_decl s = try StringMap.find s function_decls
@@ -115,11 +110,12 @@ let check (vandadecls, cdecls) =
         | Not when t = Bool -> Bool
         | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
-  | ArrayElement(var, e) as ae -> 
+  | ArrayElement(var, e) -> 
                     let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = check_expr (expr_symbol_list, className) e in
                     (match rt with
                      Int -> lt
-                   | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
+                   | _ -> raise (Failure("array subscript is not integer in " ^ var)))
+  | _ ->  raise (Failure("Declaration not valid"))
 
     in
 
@@ -129,28 +125,28 @@ let check (vandadecls, cdecls) =
                   let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in
                   let new_symbol_list = StringMap.add idstring typstring symbollist in
                       (new_symbol_list, classname)
-    | Init(t, s, e) as init -> check_not_void (fun n -> "illegal void global " ^ n) (t, s);
-                               check_exist (classname ^ "@" ^ s) symbollist;
-                               check_expr (symbollist, classname) e;
+    | Init(t, s, e) -> ignore(check_not_void (fun n -> "illegal void global " ^ n) (t, s));
+                               ignore(check_exist (classname ^ "@" ^ s) symbollist);
+                               ignore(check_expr (symbollist, classname) e);
                                let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
-    | ArrayBind((t, s, e)) ->  check_not_void (fun n -> "illegal void global " ^ n) (t, s);
-                        check_exist (classname ^ "@" ^ s) symbollist;
-                        let t = check_expr (symbollist, classname) e 
+    | ArrayBind((t, s, e)) ->  ignore(check_not_void (fun n -> "illegal void global " ^ n) (t, s));
+                        ignore(check_exist (classname ^ "@" ^ s) symbollist);
+                        let ty = check_expr (symbollist, classname) e 
                             in let _ =
-                                    (match t with Int -> () 
+                                    (match ty with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                     in 
                                     let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
     
     in
 
-    let (symbols, classname) = List.fold_left check_vandadecl (StringMap.empty, "Global") vandadecls
+    let (symbols, _) = List.fold_left check_vandadecl (StringMap.empty, "Global") vandadecls
     in
 
     let check_cdecl symbol_list cdecl = 
       let _ = check_valid_extend cdecl.extends in
         let check_class (classSymbolList, className, extendName, globals, functions) =
-          let (symbol_table, classname) = List.fold_left check_vandadecl (classSymbolList, className) globals in
+          let (symbol_table, _) = List.fold_left check_vandadecl (classSymbolList, className) globals in
     
             (**** Checking Functions ****)
             report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) functions);
@@ -212,7 +208,7 @@ let check (vandadecls, cdecls) =
                                       " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
                     fd.formals actuals;
                     fd.typ
-                | ArrayElement(var, e) as ae -> let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = expr (expr_symbol_list, expr_object_list) e in
+                | ArrayElement(var, e) -> let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = expr (expr_symbol_list, expr_object_list) e in
                   (match rt with
                       Int -> lt
                     | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
@@ -250,7 +246,7 @@ let check (vandadecls, cdecls) =
                                                                
 
 
-                | Negative(op, negexpr) ->  expr (expr_symbol_list, expr_object_list) negexpr
+                | Negative(_, negexpr) ->  expr (expr_symbol_list, expr_object_list) negexpr
 
               in
                 let check_bool_expr (symbol_list, object_list) e = if expr (symbol_list, object_list) e != Bool
@@ -260,7 +256,7 @@ let check (vandadecls, cdecls) =
                   Block sl -> let rec check_block (block_symbol_list, block_object_list) = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
                                    [Return _ as s] -> stmt (block_symbol_list, block_object_list) s
                                  | Return _ :: _ -> raise (Failure "nothing may follow a return")
-                                 | Block sl :: ss -> check_block (block_symbol_list, block_object_list) sl; check_block (block_symbol_list, block_object_list) ss;
+                                 | Block sl :: ss -> ignore(check_block (block_symbol_list, block_object_list) sl); check_block (block_symbol_list, block_object_list) ss;
                                  | s :: ss -> let (rstsymbol_list, rstobject_list) = stmt (block_symbol_list, block_object_list) s in check_block (rstsymbol_list, rstobject_list) ss; 
                                  | [] -> (block_symbol_list, block_object_list)
 
@@ -276,27 +272,27 @@ let check (vandadecls, cdecls) =
                                 raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                                                 string_of_typ func.typ ^ " in " ^ string_of_expr e))
 
-                | Ifnoelse(p, b) ->  check_bool_expr stmt_symbol_list p ; ignore(stmt (stmt_symbol_list, stmt_object_list) b); (stmt_symbol_list, stmt_object_list)
+                | Ifnoelse(p, b) ->  check_bool_expr (stmt_symbol_list, stmt_object_list) p ; ignore(stmt (stmt_symbol_list, stmt_object_list) b); (stmt_symbol_list, stmt_object_list)
 
-                | Ifelse(p, b1, b2) -> check_bool_expr stmt_symbol_list p ; stmt (stmt_symbol_list, stmt_object_list) b1; stmt (stmt_symbol_list, stmt_object_list) b2; (stmt_symbol_list, stmt_object_list)
+                | Ifelse(p, b1, b2) -> ignore(check_bool_expr (stmt_symbol_list, stmt_object_list) p) ; ignore(stmt(stmt_symbol_list, stmt_object_list) b1); ignore(stmt (stmt_symbol_list, stmt_object_list) b2); (stmt_symbol_list, stmt_object_list)
 
-                | For(e1, e2, e3, st) -> ignore (expr (stmt_symbol_list, stmt_object_list) e1); check_bool_expr stmt_symbol_list e2;
+                | For(e1, e2, e3, st) -> ignore (expr (stmt_symbol_list, stmt_object_list) e1); check_bool_expr (stmt_symbol_list, stmt_object_list)  e2;
                                          ignore (expr  (stmt_symbol_list, stmt_object_list) e3); stmt (stmt_symbol_list, stmt_object_list) st
 
-                | While(p, s) -> check_bool_expr stmt_symbol_list p; stmt (stmt_symbol_list, stmt_object_list) s
+                | While(p, s) -> check_bool_expr (stmt_symbol_list, stmt_object_list)  p; stmt (stmt_symbol_list, stmt_object_list) s
 
                 | Bind(b) ->  let typstring = fst b and idstring = snd b in 
                                 let new_symbol_list = StringMap.add idstring typstring stmt_symbol_list in
-                                  new_symbol_list
+                                  (new_symbol_list, stmt_object_list)
 
-                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add s t stmt_symbol_list in new_symbol_list
+                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add s t stmt_symbol_list in (new_symbol_list, stmt_object_list)
 
-                | ArrayBind((t, s, e)) as ab -> let t = expr (stmt_symbol_list, stmt_object_list) e 
+                | ArrayBind((t, s, e)) -> let ty = expr (stmt_symbol_list, stmt_object_list) e 
                                       in let _ =
-                                      (match t with Int -> () 
+                                      (match ty with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                       in 
-                                      let new_symbol_list = StringMap.add s t stmt_symbol_list in new_symbol_list
+                                      let new_symbol_list = StringMap.add s t stmt_symbol_list in (new_symbol_list, stmt_object_list)
 
                 | Break -> (stmt_symbol_list, stmt_object_list)
 
@@ -305,7 +301,8 @@ let check (vandadecls, cdecls) =
                 | Classdecl(class_name, objectname) -> let new_object_list = StringMap.add objectname class_name stmt_object_list in (stmt_symbol_list, new_object_list)
 
               in
-                stmt (func_symbol_list, StringMap.empty) (Block func.body);
+              let (stmt_result_symbol_list, _) = stmt (func_symbol_list, StringMap.empty) (Block func.body) in
+              stmt_result_symbol_list
             in
         List.fold_left check_function symbol_table functions; 
       in
