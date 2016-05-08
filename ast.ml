@@ -121,6 +121,18 @@ let string_of_typ = function
   | Main -> "main"
   | Ai -> "ai"
 
+let typ_of_string = function
+    "int" -> Int
+  | "bool" -> Bool
+  | "void" -> Void
+  | "float" -> Float
+  | "string" -> String
+  | "game" -> Game
+  | "player" -> Player
+  | "sprite" -> Sprite
+  | "map" -> Map
+  | "main" -> Main
+  | "ai" -> Ai
 (* let rec string_of_stmt = function
     Block(stmts) ->
       "{\n" ^ String.concat "" (List.map string_of_stmt stmts) ^ "}\n"

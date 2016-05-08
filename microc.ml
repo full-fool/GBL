@@ -11,8 +11,13 @@ let _ =
   else Compile in
   let lexbuf = Lexing.from_channel stdin in
   let ast = Parser.program Scanner.token lexbuf in
+
+  Semant.check ast;
+  (*match action with
+=======
   
   match action with
+>>>>>>> 614f09a7fa8e35b8f8b436004ed08eaa354eb13b
   LLVM_IR -> print_string (Codegen.translate ast)
   | Compile -> let m = Codegen.translate ast in
-    print_string m
+    print_string m*)
