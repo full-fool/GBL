@@ -19,7 +19,7 @@ class Gobang extends Game
     int NextPlayerID;
     int NextSpriteID;
     #AI?
-    bool withAI;
+    bool WithAI;
 
     #functions:
     void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputwithAI)
