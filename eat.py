@@ -37,18 +37,20 @@ class GameBoard(tk.Frame):
         if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
             if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
                 #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
+                position = []
+                position.append(event.y/self.size)
+                position.append(event.x/self.size)
                 #isLegal()
-                self.mygame.InputPosition[0] = event.y/self.size
-                self.mygame.InputPosition[1] = event.x/self.size
-                if(self.mygame.isLegal()):
+                
+                if(self.mygame.isLegal(position)):
                     # place sprite
                     #print "islegal"
                     self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
                     self.pastPieces.append((event.y/self.size, event.x/self.size))
                     #print "add sprite"
-                    #print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
+                    print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
-                    dele = self.mygame.update()
+                    dele = self.mygame.update(position)
                     l = len(dele) / 2
                     for i in range(l):
                         delex = dele[2 * i]
@@ -76,15 +78,13 @@ class GameBoard(tk.Frame):
                         self.turns = 0
                     
                     self.addavatar()
-            print "clicked at", self.mygame.InputPosition[0], self.mygame.InputPosition[1]
+            print "clicked at", position[0], position[1]
         else:
             position = self.gobangai.returnposition()
-            self.mygame.InputPosition[0] = position[0]
-            self.mygame.InputPosition[1] = position[1]
             self.addpiece(str((position[1], position[0])), position[1], position[0])
             self.pastPieces.append((position[1], position[0]))
             #print "add sprite"
-            #print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
+            print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
             dele = self.mygame.update(position)
             #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
@@ -195,7 +195,6 @@ class UserMain:
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
         InputWithAI = False
-
         print "InputWithAI = ", InputWithAI
         mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)
         gobangai = GobangAI()
@@ -207,12 +206,13 @@ class UserMain:
         
         root.mainloop()
         pass
-        
 class GobangAI:
     def __init__(self):
         pass
     def returnposition(self):
-        r = [0, 0]
+        r = [ None ] * 2
+        r[0]=0
+        r[1]=0
         return r
         pass
 class Gobang:
@@ -229,14 +229,13 @@ class Gobang:
         self.PlayerNumber = None
         self.GridNum = None
         self.MapSize = [ None ] * 2
-        self.InputPosition = [ None ] * 2
         pass
-    def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputWithAI):
+    def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputwithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]
         self.GridNum = (self.MapSize[0]) * (self.MapSize[1])
         self.PlayerNumber = InputPlayerNum
-        self.WithAI = InputWithAI
+        self.withAI = InputwithAI
         i = None
 
         i = 0
@@ -262,178 +261,54 @@ class Gobang:
         self.NextPlayerID = 0
         self.NextSpriteID = 0
         pass
-    def update(self):
-        self.SpriteId[((self.InputPosition[0]) * (self.MapSize[0])) + (self.InputPosition[1])]=self.NextSpriteID
-        self.SpriteOwnerId[((self.InputPosition[0]) * (self.MapSize[0])) + (self.InputPosition[1])]=self.NextPlayerID
+    def update(self,InputPosition):
+        CurSpriteID = None
+        CurPlayerID = self.NextPlayerID
+        self.SpriteId[((InputPosition[0]) * (self.MapSize[0])) + (InputPosition[1])]=self.NextSpriteID
+        self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + (InputPosition[1])]=self.NextPlayerID
         self.FormerId = self.NextPlayerID
-        self.FormerPosition[0]=self.InputPosition[0]
-        self.FormerPosition[1]=self.InputPosition[1]
+        self.FormerPosition[0]=InputPosition[0]
+        self.FormerPosition[1]=InputPosition[1]
         self.NextSpriteID = (self.NextSpriteID) + (1)
         self.NextPlayerID = (self.NextPlayerID) + (1)
         if ((self.NextPlayerID) == (self.PlayerNumber)):
             self.NextPlayerID = 0
-        return [-1, -1]
+        a = [ None ] * 8
+        t = None
+        curr = 0
+        t = 0
+        while ((t) < (8)):
+            a[t]= - (1)
+            t = (t) + (1)
+        print "up down: ", ((((InputPosition[0]) >= (2)) and ((self.SpriteOwnerId[(((InputPosition[0]) - (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) - (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID)))
+        if ((((InputPosition[0]) >= (2)) and ((self.SpriteOwnerId[(((InputPosition[0]) - (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) - (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID))):
+            a[curr]=(InputPosition[0]) - (2)
+            a[(curr) + (1)]=InputPosition[1]
+            curr = (curr) + (2)
+        if ((((InputPosition[0]) <= ((self.MapSize[0]) - (3))) and ((self.SpriteOwnerId[(((InputPosition[0]) + (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) + (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID))):
+            a[curr]=(InputPosition[0]) + (2)
+            a[(curr) + (1)]=InputPosition[1]
+            curr = (curr) + (2)
+        if ((((InputPosition[1]) >= (2)) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (2))]) == (self.NextPlayerID))):
+            a[curr]=InputPosition[0]
+            a[(curr) + (1)]=(InputPosition[1]) - (2)
+            curr = (curr) + (2)
+        if ((((InputPosition[1]) <= ((self.MapSize[1]) - (3))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (2))]) == (self.NextPlayerID))):
+            a[curr]=InputPosition[0]
+            a[(curr) + (1)]=(InputPosition[1]) + (2)
+            curr = (curr) + (2)
+        return a
         pass
-    def isLegal(self):
-        if (not (self.InputPosition[0] >= (0) and (self.InputPosition[0]) < (self.MapSize[0]) and (self.InputPosition[1]) >= (0) and (self.InputPosition[1]) < (self.MapSize[1]))):
+    def isLegal(self,position):
+        if (not ((((position[0]) >= (0)) and ((position[0]) < (self.MapSize[0]))) and (((position[1]) >= (0)) and ((position[1]) < (self.MapSize[1]))))):
             return False
-        if ((self.SpriteOwnerId[((self.InputPosition[0]) * (self.MapSize[0])) + (self.InputPosition[1])]) == ( - (1))):
+        if ((self.SpriteOwnerId[((position[0]) * (self.MapSize[0])) + (position[1])]) == ( - (1))):
             return True
         else:
             return False
         pass
     def win(self):
-        PlayerSprite = self.FormerId
-        position = [ None ] * 2
-        position[0]=self.FormerPosition[0]
-        position[1]=self.FormerPosition[1]
-        if (((position[0]) - (4)) > (0)):
-            up = (position[0]) - (4)
-        else:
-            up = 0
-        if (((position[0]) + (4)) > ((self.MapSize[0]) - (1))):
-            down = (self.MapSize[0]) - (1)
-        else:
-            down = (position[0]) + (4)
-        if (((position[1]) - (4)) > (0)):
-            left = (position[1]) - (4)
-        else:
-            left = 0
-        if (((position[1]) + (4)) > ((self.MapSize[1]) - (1))):
-            right = (self.MapSize[1]) - (1)
-        else:
-            right = (position[1]) + (4)
-        print "position[0] = ", position[0], " position[1] = ", position [1]
-        print "left = ", left, " right = ", right, "up = ", up, "down = ", down 
-        i = None
-        j = None
-        count = None
-        PreSprite =  - (1)
-        count = 0
-        j = left
-        while ((j) <= (right)):
-            curSprite = self.SpriteOwnerId[((position[0]) * (self.MapSize[0])) + (j)]
-            if ((curSprite) == (PlayerSprite)):
-                if ((PreSprite) != (PlayerSprite)):
-                    count = 1
-                else:
-                    count = (count) + (1)
-                print "rowcount = ", count
-                if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
-            else:
-                count = 0
-            PreSprite = curSprite
-            j = (j) + (1)
-        
-        PreSprite =  - (1)
-        count = 0
-        i = up
-
-        while ((i) <= (down)):
-            curSprite = self.SpriteOwnerId[((i) * (self.MapSize[0])) + (position[1])]
-            if ((curSprite) == (PlayerSprite)):
-                if ((PreSprite) != (PlayerSprite)):
-                    count = 1
-                else:
-                    count = (count) + (1)
-                    print "colcount = ", count
-                if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
-            else:
-                count = 0
-            PreSprite = curSprite
-            i = (i) + (1)
-        
-        PreSprite =  - (1)
-        count = 0
-        leftup = [ None ] * 2
-        leftupDistance = None
-        leftupDistance = 4
-        if ((position[0]) < (4)):
-            leftupDistance = position[0]
-        if ((position[1]) < (4)):
-            leftupDistance = position[1]
-        leftup[0]=(position[0]) - (leftupDistance)
-        leftup[1]=(position[1]) - (leftupDistance)
-        rightdown = [ None ] * 2
-        rightdownDistance = None
-        rightdownDistance = 4
-        if ((((self.MapSize[0]) - (1)) - (position[0])) < (4)):
-            rightdownDistance = ((self.MapSize[0]) - (1)) - (position[0])
-        if ((((self.MapSize[1]) - (1)) - (position[1])) < (4)):
-            rightdownDistance = ((self.MapSize[1]) - (1)) - (position[1])
-        rightdown[0]=(position[0]) + (rightdownDistance)
-        rightdown[1]=(position[1]) + (rightdownDistance)
-        curposition = [ None ] * 2
-        i = 0
-        while ((i) <= ((rightdown[0]) - (leftup[0]))):
-            curposition[0]=(leftup[0]) + (i)
-            curposition[1]=(leftup[1]) + (i)
-            curSprite = self.SpriteOwnerId[((curposition[0]) * (self.MapSize[0])) + (curposition[1])]
-            if ((curSprite) == (PlayerSprite)):
-                if ((PreSprite) != (PlayerSprite)):
-                    count = 1
-                else:
-                    count = (count) + (1)
-                    print "leftup-rightdowncount = ", count
-                if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
-            else:
-                count = 0
-            PreSprite = curSprite
-            i = (i) + (1)
-        
-        PreSprite =  - (1)
-        count = 0
-        leftdown = [ None ] * 2
-        leftdownDistance = 4
-        if ((position[0]) < (4)):
-            leftdownDistance = position[0]
-        if ((((self.MapSize[1]) - (1)) - (position[1])) < (4)):
-            leftdownDistance = ((self.MapSize[1]) - (1)) - (position[1])
-        leftdown[0]=(position[0]) - (leftdownDistance)
-        leftdown[1]=(position[1]) + (leftdownDistance)
-        rightup = [ None ] * 2
-        rightupDistance = 4
-        if ((((self.MapSize[0]) - (1)) - (position[0])) < (4)):
-            rightupDistance = ((self.MapSize[0]) - (1)) - (position[0])
-        if ((position[1]) < (4)):
-            rightupDistance = position[1]
-        rightup[0]=(position[0]) + (rightupDistance)
-        rightup[1]=(position[1]) - (rightupDistance)
-        curposition = [ None ] * 2
-        i = 0
-        while ((i) <= ((rightup[0]) - (leftdown[0]))):
-            curposition[0]=(leftdown[0]) + (i)
-            curposition[1]=(leftdown[1]) - (i)
-            curSprite = self.SpriteOwnerId[((curposition[0]) * (self.MapSize[0])) + (curposition[1])]
-            if ((curSprite) == (PlayerSprite)):
-                if ((PreSprite) != (PlayerSprite)):
-                    count = 1
-                else:
-                    count = (count) + (1)
-                    print "leftdown-rightupcount = ", count
-                if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
-            else:
-                count = 0
-            PreSprite = curSprite
-            i = (i) + (1)
-        
-        return -1
+        return  - (1)
         pass
 
 

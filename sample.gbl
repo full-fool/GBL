@@ -1,0 +1,318 @@
+### gloabl variables including array, initialization
+class Gobang extends Game
+{
+    #variables:
+    #Map:
+    /*
+    int MapSize[2];
+    int GridNum;  #GridNum = MapSize[0] * MapSize[1]
+    #Player:
+    int PlayerNumber;
+    int PlayerId[10];
+    string PlayerName[10];
+    #Sprite:
+    int SpriteId[1000];
+    int SpriteOwnerId[1000];
+    #LastMove:
+    int FormerId; #the ID of former player
+    int FormerPosition[2];
+    #Next Turn:
+    int NextPlayerID;
+    int NextSpriteID;
+    #AI?
+    bool WithAI;
+    int InputPosition[2];
+    */
+    #functions:
+
+
+    int win(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    {
+      #string PlayerSprite = PlayerSpriteName[FormerId];
+      int PlayerSprite = FormerId;
+      int position[2];
+      position[0] = FormerPosition[0];
+      position[1] = FormerPosition[1];
+      if((position[0] - 4) > 0) up = position[0] - 4;
+      else up = 0;
+      if((position[0] + 4) > (MapSize[0] - 1)) down = MapSize[0] - 1;
+      else down = position[0] + 4;
+      if((position[1] - 4) > 0) left = position[1] - 4;
+      else left =0;
+      if((position[1] + 4)>(MapSize[1] - 1))right = MapSize[1] - 1;
+      else right = position[1] + 4;
+      int i;
+      int j;
+      int count;
+      int ret;
+      #check row
+      int PreSprite = -1;
+      count = 0;
+      
+      for(j = left; j <= right; j = j + 1)
+      {
+        int curSprite = SpriteOwnerId[position[0] * MapSize[0] + j];
+        #string curSprite = Text@SpriteList[position[0]][j];
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite != PlayerSprite)
+          {
+            count = 1;
+          }
+          else count = count + 1;
+          if(count == 5)
+            ret = NextPlayerID - 1;
+            if(ret == -1)
+              ret = PlayerNumber - 1;
+            return ret;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      #check column
+      PreSprite = -1;
+      count = 0;
+      for(i = up; i <= down; i = i + 1)
+      {
+        int curSprite = SpriteOwnerId[i * MapSize[0] + position[1]];
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite != PlayerSprite)
+          {
+            count = 1;
+          }
+          else count = count + 1;
+          if(count == 5)
+            ret = NextPlayerID - 1;
+            if(ret == -1)
+              ret = PlayerNumber - 1;
+            return ret;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      #check diagonal left-up to right-down
+      PreSprite = -1;
+      count = 0;
+      int leftup[2];
+      int leftupDistance;
+      leftupDistance = 4;
+      if(position[0] < 4) leftupDistance = position[0];
+      if(position[1] < 4) leftupDistance = position[1];
+      leftup[0] = position[0] - leftupDistance;
+      leftup[1] = position[1] - leftupDistance;
+
+      int rightdown[2];
+      int rightdownDistance;
+      rightdownDistance = 4;
+      if((MapSize[0] - 1 - position[0]) < 4) rightdownDistance = MapSize[0] - 1 - position[0];
+      if((MapSize[1] - 1 - position[1]) < 4) rightdownDistance = MapSize[1] - 1 - position[1];
+      rightdown[0] = position[0] + rightdownDistance;
+      rightdown[1] = position[1] + rightdownDistance;
+
+      int curposition[2];
+      
+      for(i = 0; i <= (rightdown[0] - leftup[0]); i = i + 1)
+      {
+        curposition[0] = leftup[0] + i;
+        curposition[1] = leftup[1] + i;
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite != PlayerSprite)
+          {
+            count = 1;
+          }
+          else count = count + 1;
+          if(count == 5)
+            ret = NextPlayerID - 1;
+            if(ret == -1)
+              ret = PlayerNumber - 1;
+            return ret;
+        }
+        else count = 0;
+
+        PreSprite = curSprite;
+      }
+
+      #check diagonal left-down to right-up
+      PreSprite = -1;
+      count = 0;
+      int leftdown[2];
+      int leftdownDistance = 4;
+      if(position[0] < 4) leftdownDistance = position[0];
+      if((MapSize[1] - 1 - position[1]) < 4) leftdownDistance = MapSize[1] - 1 - position[1];
+      leftdown[0] = position[0] - leftdownDistance;
+      leftdown[1] = position[1] + leftdownDistance;
+
+      int rightup[2];
+      int rightupDistance = 4;
+      if((MapSize[0] - 1 - position[0]) < 4) rightupDistance = MapSize[0] - 1 - position[0];
+      if((position[1]) < 4) rightupDistance = position[1];
+      rightup[0] = position[0] + rightupDistance;
+      rightup[1] = position[1] - rightupDistance;
+
+      int curposition[2];
+      
+      for(i = 0; i <= (rightup[0] - leftdown[0]); i = i + 1)
+      {
+        curposition[0] = leftdown[0] + i;
+        curposition[1] = leftdown[1] - i;
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
+        if(curSprite == PlayerSprite)
+        {
+          if(PreSprite != PlayerSprite)
+          {
+            count = 1;
+          }
+          else count = count + 1;
+          if(count == 5)
+            ret = NextPlayerID - 1;
+            if(ret == -1)
+              ret = PlayerNumber - 1;
+            return ret;
+        }
+        else count = 0;
+        
+        PreSprite = curSprite;
+      }
+      
+      return -1;
+    }
+    
+    #check if the move is legal
+    bool isLegal(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    {
+      if(not (((InputPosition[0]>=0) and (InputPosition[0]<MapSize[0])) and ((InputPosition[1]>=0) and (InputPosition[1]<MapSize[1]))))
+        return false;
+      if(SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] == -1)
+        return true;
+      else return false;
+    }
+    
+    int update(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    {
+        SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
+        SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
+
+        FormerId = NextPlayerID;
+        FormerPosition[0] = InputPosition[0];
+        FormerPosition[1] = InputPosition[1];
+        NextSpriteID = NextSpriteID + 1;
+        NextPlayerID = NextPlayerID + 1;
+        if(NextPlayerID == PlayerNumber)
+            NextPlayerID = 0;
+        int a[2];
+        a[0] = -1;
+        a[1] = -1;
+        return a;
+    }
+    
+    #void printGame();
+    #for(int i = 0; i < MapSize[0]; i = i + 1)
+    #{
+    #  for(int j = 0; j < MapSize[1]; j = j + 1)
+    #  {
+    #    print(Text@SpriteList[i][j]@Gobang);
+    #  }
+    #  print("\n");
+    #}
+}
+
+class GobangAI extends AI{
+
+  int returnposition()
+  {
+  /*
+    int position[2];
+    int i;
+    int j;
+    for(i = 0; i < MapSize[0]@mygame; i = i + 1)
+    {
+      for(j = 0; j < MapSize[1]@mygame; j = j + 1)
+      {
+        if(SpriteOwnerId[i * MapSize[0] + j] == -1)
+        {
+          position[0] = i;
+          position[1] = j;
+        }
+      }
+    }
+    int r;
+    r = position[0]* MapSize[0]@mygame + position[1];
+    return r;
+  */
+    int r[2];
+    r[0] = 0;
+    r[1] = 0;
+    return r;
+  }
+}
+
+
+#assume the input stream is stdin>>...
+class UserMain extends Main{
+  void main()
+  {
+      Gobang mygame;
+      int MapS[2];
+      MapS[0] = 15;
+      MapS[1] = 15;
+      int GridNumber = MapS[0] * MapS[1];
+      int InputPlayerNumber = 2;
+      int InputPlayerId[InputPlayerNumber];
+      InputPlayerId[0] = 0;
+      InputPlayerId[1] = 1;
+      string InputPlayerName[InputPlayerNumber];
+      InputPlayerName[0] = "Cuidiao";
+      InputPlayerName[1] = "Xicao";
+      InputWithAI = false;
+
+      initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
+      #printGame()@mygame;
+
+      GobangAI gobangai;
+      /*
+      while(not win()@mygame)
+      {
+          print("This is the turn of player");
+          print(NextPlayerID@mygame);
+          
+          #input position
+          int InputPosition[2];
+
+          if(InputWithAI and NextPlayerID@mygame != 0)
+          {
+            int rposition;
+            rposition = returnposition()@gobanai;
+            InputPosition[0] = rposition / MapSize[0]@mygame;
+            InputPosition[1] = rposition % MapSize[0]@mygame;
+          }
+          else
+          {
+            bool legal = false;
+            while(not legal)
+            {
+              InputPosition[0] = input();
+              InputPosition[1] = input();
+              legal = isLegal(InputPosition)@mygame;
+            }
+          }
+          
+          #update status
+          update(InputPosition)@mygame;
+
+          #print map
+          #printGame()@mygame;
+      }
+      #print
+      int winner = NextPlayerID@mygame - 1;
+      print("Winner is: ");
+      print(winner);
+      */
+  }
+}
