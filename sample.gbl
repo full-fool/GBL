@@ -204,7 +204,7 @@ class Gobang extends Game
     {
       if(not (position[0]>=0 and position[0]<MapSize[0] and position[1]>=0 and position[1]<MapSize[1]))
         return false;
-      if(SpriteOwnerId[position[0] * MapSize[0] + position[1]]@Gobang == -1)
+      if(SpriteOwnerId[position[0] * MapSize[0] + position[1]] == -1)
         return true;
       else return false;
     }
