@@ -208,6 +208,7 @@ class UserMain:
         
         root.mainloop()
         pass
+        
 class GobangAI:
     def __init__(self):
         pass

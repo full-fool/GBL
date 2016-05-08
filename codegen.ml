@@ -12,11 +12,9 @@ let translate (globals, classes) =
     really_input ic s 0 n; close_in ic; (s)
   in
 
-  let gen_game_var_code = load_lib "lib/game_vars.py"
-  in
+  let gen_game_var_code = load_lib "lib/game_vars.py" in
 
-  let gen_game_init_code = load_lib "lib/game_init.py"
-  in
+  let gen_game_init_code = load_lib "lib/game_init.py" in
 
   (*complie function parameters*)
   let comp_param = function
@@ -192,12 +190,71 @@ let translate (globals, classes) =
     "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody
   in
 
-  let find_main_class cdecl = 
-    if cdecl.A.extends = "Main" then cdecl.A.cname else ""
+  let find_var vname m = function
+      A.Classdecl (t, s) -> if t = vname then (StringMap.add s "" m) else m
+    | _ as s -> m
   in
 
+  let find_fun vname m = function
+      A.Expr e -> (match e with
+                A.CallDomain (f, act, s) -> if f = vname then (StringMap.add s "" m) else m
+              | _ -> m)
+    | _ as s -> m
+  in
+
+  let find_in_fun fname vname m ty fdecl = 
+    if ty = "var" then (
+      if fdecl.A.fname = fname then
+      (List.fold_left (find_var vname m) fdecl.A.body)
+      else m )
+    else
+      (if fdecl.A.fname = fname then
+      (List.fold_left (find_fun vname m) fdecl.A.body)
+      else m )
+  in
+
+  let find_in_class fname cname vname m ty cdecl = 
+    if cdecl.A.extends = cname then 
+    (List.fold_left (find_var_in_fun fname vname m ty) cdecl.A.cbody.A.methods)
+    else m
+  in
+
+  let find_class name cdecl = 
+    if cdecl.A.extends = name then cdecl.A.cname else ""
+  in
+
+  let main_class = String.concat "" (List.map (find_class "Main") classes) in
+  let game_class = String.concat "" (List.map (find_class "Game") classes) in
+  let ai_class = String.concat "" (List.map (find_class "AI") classes) in
+
+  let ai_vars = StringMap.bindings (if ai_class = "" then StringMap.empty 
+                else List.fold_left (find_var_in_class "main" "Main" game_class "var" StringMap.empty) classes) in
+  let game_vars = List.fold_left (find_var_in_class "main" "Main" game_class "var" StringMap.empty) classes in
+  let init_vars = List.fold_left (find_var_in_class "main" "Main" "initialize" "fun" StringMap.empty) classes in
+  let game_object_vars = StringMap.bindings (StringMap.merge (fun k xo yo -> k) game_vars init_vars) in
+
+  let gen_game_gui_code = 
+    let ai_name = 
+      if (List.length ai_vars) = 1 then (match ai_vars with 
+                                          (k, v) :: tl -> k
+                                        | _ -> "None")
+      else "None"
+    in
+    if (List.length game_object_vars) = 1 then
+      let game_object_name = (match game_object_vars with 
+                                (k, v) :: tl -> k
+                              | _ -> "None")
+      in
+      "_root = tk.Tk()
+        _root.title(\"GBL\")
+        tk.Canvas.create_circle = _create_circle
+        _board = GameBoard(_root, mygame)
+        _board.pack(side=\"top\", fill=\"both\", expand=\"true\", padx=4, pady=4)
+        _root.mainloop()"
+    else ""
+
   let comp_main_class classes = 
-    "real_main = " ^ String.concat "" (List.map find_main_class classes) ^ "()\n" ^
+    "real_main = " ^ main_class ^ "()\n" ^
     "real_main.main()\n"
   in
 
