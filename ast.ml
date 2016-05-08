@@ -43,7 +43,6 @@ type func_decl = {
 }
 
 
-
 type cbody = {
   vandadecls : global list;
   methods : func_decl list;

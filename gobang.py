@@ -264,6 +264,7 @@ class Gobang:
         else:
             return False
         pass
+        
     def win(self):
         PlayerSprite = self.FormerId
         position = [ None ] * 2
