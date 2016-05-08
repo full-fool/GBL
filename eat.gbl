@@ -1,0 +1,224 @@
+### gloabl variables including array, initialization
+class Gobang extends Game
+{
+    #variables:
+    #Map:
+    int MapSize[2];
+    int GridNum;  #GridNum = MapSize[0] * MapSize[1]
+    #Player:
+    int PlayerNumber;
+    int PlayerId[10];
+    string PlayerName[10];
+    #Sprite:
+    int SpriteId[1000];
+    int SpriteOwnerId[1000];
+    #LastMove:
+    int FormerId; #the ID of former player
+    int FormerPosition[2];
+    #Next Turn:
+    int NextPlayerID;
+    int NextSpriteID;
+    #AI?
+    bool WithAI;
+
+    #functions:
+    void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputWithAI)
+    {
+        MapSize[0] = MapS[0]; 
+        MapSize[1] = MapS[1];
+        GridNum = MapSize[0] * MapSize[1];
+        PlayerNumber = InputPlayerNum;
+        WithAI = InputWithAI;
+
+        int i;
+        for(i = 0; i < PlayerNumber; i = i + 1)
+        {
+            PlayerId[i] = InputPlayerID[i];
+            PlayerName[i] = InputPlayerName[i];
+        }
+        int i;
+        int j;
+        for(i = 0; i < MapSize[0]; i = i + 1)
+        {
+            for(j = 0; j < MapSize[1]; j = j + 1)
+            {
+                SpriteId[i * MapSize[0] + j] = -1;
+                SpriteOwnerId[i * MapSize[0] + j] = -1;
+            }
+        }
+        FormerId = -1;
+        FormerPosition[0] = -1;
+        FormerPosition[1] = -1;
+        NextPlayerID = 0;
+        NextSpriteID = 0;
+    }
+
+    int win()
+    {
+      return -1;
+    }
+    
+    #check if the move is legal
+    bool isLegal(int position)
+    {
+      if(not (((position[0]>=0) and (position[0]<MapSize[0])) and ((position[1]>=0) and (position[1]<MapSize[1]))))
+        return false;
+      if(SpriteOwnerId[position[0] * MapSize[0] + position[1]] == -1)
+        return true;
+      else return false;
+    }
+    
+    int update(int InputPosition)
+    {
+        int CurSpriteID;
+        CurPlayerID = NextPlayerID;
+        SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
+        SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
+        FormerId = NextPlayerID;
+        FormerPosition[0] = InputPosition[0];
+        FormerPosition[1] = InputPosition[1];
+        NextSpriteID = NextSpriteID + 1;
+        NextPlayerID = NextPlayerID + 1;
+        if(NextPlayerID == PlayerNumber)
+            NextPlayerID = 0;
+        
+
+        int a[8];
+        int t;
+        int curr = 0;
+        for(t = 0; t < 8; t = t + 1)a[t] = -1;
+        if(((InputPosition[0]>=2) and (SpriteOwnerId[(InputPosition[0] - 2) * MapSize[0] + InputPosition[1]] == CurPlayerID)) and (SpriteOwnerId[(InputPosition[0] - 1) * MapSize[0] + InputPosition[1]] == (NextPlayerID)))
+        {
+          a[curr] = InputPosition[0] - 2;
+          a[curr + 1] = InputPosition[1];
+          curr = curr + 2;
+        }
+
+        if(((InputPosition[0]<=(MapSize[0]-3)) and (SpriteOwnerId[(InputPosition[0] + 2) * MapSize[0] + InputPosition[1]] == CurPlayerID)) and (SpriteOwnerId[(InputPosition[0] + 1) * MapSize[0] + InputPosition[1]] == (NextPlayerID)))
+        {
+          a[curr] = InputPosition[0] + 2;
+          a[curr + 1] = InputPosition[1];
+          curr = curr + 2;
+        }
+
+        if(((InputPosition[1]>=2) and (SpriteOwnerId[InputPosition[0] * MapSize[0] + (InputPosition[1] - 2)] == CurPlayerID)) and (SpriteOwnerId[InputPosition[0] * MapSize[0] + (InputPosition[1] - 2)] == (NextPlayerID)))
+        {
+          a[curr] = InputPosition[0];
+          a[curr + 1] = InputPosition[1] - 2;
+          curr = curr + 2;
+        }
+
+        if(((InputPosition[1]<=(MapSize[1]-3)) and (SpriteOwnerId[InputPosition[0] * MapSize[0] + (InputPosition[1] + 2)] == CurPlayerID)) and (SpriteOwnerId[InputPosition[0] * MapSize[0] + (InputPosition[1] + 2)] == (NextPlayerID)))
+        {
+          a[curr] = InputPosition[0];
+          a[curr + 1] = InputPosition[1] + 2;
+          curr = curr + 2;
+        }
+
+
+        
+        return a;
+    }
+    
+    #void printGame();
+    #for(int i = 0; i < MapSize[0]; i = i + 1)
+    #{
+    #  for(int j = 0; j < MapSize[1]; j = j + 1)
+    #  {
+    #    print(Text@SpriteList[i][j]@Gobang);
+    #  }
+    #  print("\n");
+    #}
+}
+
+class GobangAI extends AI{
+
+  int returnposition()
+  {
+  /*
+    int position[2];
+    int i;
+    int j;
+    for(i = 0; i < MapSize[0]@mygame; i = i + 1)
+    {
+      for(j = 0; j < MapSize[1]@mygame; j = j + 1)
+      {
+        if(SpriteOwnerId[i * MapSize[0] + j] == -1)
+        {
+          position[0] = i;
+          position[1] = j;
+        }
+      }
+    }
+    int r;
+    r = position[0]* MapSize[0]@mygame + position[1];
+    return r;
+  */
+    int r[2];
+    r[0] = 0;
+    r[1] = 0;
+    return r;
+  }
+}
+
+
+#assume the input stream is stdin>>...
+class UserMain extends Main{
+  void main()
+  {
+      Gobang mygame;
+      int MapS[2];
+      MapS[0] = 15;
+      MapS[1] = 15;
+      int GridNumber = MapS[0] * MapS[1];
+      int InputPlayerNumber = 2;
+      int InputPlayerId[InputPlayerNumber];
+      InputPlayerId[0] = 0;
+      InputPlayerId[1] = 1;
+      string InputPlayerName[InputPlayerNumber];
+      InputPlayerName[0] = "Cuidiao";
+      InputPlayerName[1] = "Xicao";
+      InputWithAI = false;
+
+      initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
+      #printGame()@mygame;
+
+      GobangAI gobangai;
+      while(not win()@mygame)
+      {
+          print("This is the turn of player");
+          print(NextPlayerID@mygame);
+          
+          #input position
+          int InputPosition[2];
+
+          if(InputWithAI and NextPlayerID@mygame != 0)
+          {
+            int rposition;
+            rposition = returnposition()@gobanai;
+            InputPosition[0] = rposition / MapSize[0]@mygame;
+            InputPosition[1] = rposition % MapSize[0]@mygame;
+          }
+          else
+          {
+            bool legal = false;
+            while(not legal)
+            {
+              InputPosition[0] = input();
+              InputPosition[1] = input();
+              legal = isLegal(InputPosition)@mygame;
+            }
+          }
+          
+          #update status
+          update(InputPosition)@mygame;
+
+          #print map
+          #printGame()@mygame;
+      }
+      #print
+      int winner = NextPlayerID@mygame - 1;
+      print("Winner is: ");
+      print(winner);
+  }
+}
