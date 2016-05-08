@@ -17,7 +17,6 @@ class GameBoard(tk.Frame):
         self.numPlayers = mygame.PlayerNumber
         self.enable = True # win or tie makes it false
         self.AI = mygame.WithAI
-        print "AI = ", mygame.WithAI
         canvas_width = (self.columns+5) * self.size
         canvas_height = self.rows * self.size
         
@@ -51,13 +50,25 @@ class GameBoard(tk.Frame):
                     #print "add sprite"
                     print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
-                    self.mygame.update(position)
-                    print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-                    print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
-                    if(self.mygame.win()):
-                        winner = self.mygame.NextPlayerID - 1
-                        if(winner == -1):
-                            winner = self.mygame.PlayerNumber - 1
+                    dele = self.mygame.update(position)
+                    l = len(dele) / 2
+                    for i in range(l):
+                        delex = dele[2 * i]
+                        deley = dele[2 * i + 1]
+                        print "delex = ", delex, " deley = ", deley
+                        if delex != -1 or deley != -1:
+                            Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
+                            self.canvas.delete(Spritename)
+                            #delete (delex, deley)
+
+
+
+
+                    #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
+                    #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
+                    
+                    winner = self.mygame.win();
+                    if(winner != -1):
                         self.win(winner)
                     #if isTie():
                         #tie()
@@ -69,20 +80,18 @@ class GameBoard(tk.Frame):
                     self.addavatar()
             print "clicked at", position[0], position[1]
         else:
-            print "AI"
             position = self.gobangai.returnposition()
             self.addpiece(str((position[1], position[0])), position[1], position[0])
             self.pastPieces.append((position[1], position[0]))
             #print "add sprite"
             print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
-            self.mygame.update(position)
-            print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-            print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
-            if(self.mygame.win()):
-                winner = self.mygame.NextPlayerID - 1
-                if(winner == -1):
-                    winner = self.mygame.PlayerNumber - 1
+            dele = self.mygame.update(position)
+            #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
+            #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
+            
+            winner = self.mygame.win();
+            if(winner != -1):
                 self.win(winner)
                     #if isTie():
                         #tie()
@@ -98,10 +107,12 @@ class GameBoard(tk.Frame):
         '''Add a piece to the playing board'''
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
+        Sname = "Sprite" + str(row * self.mygame.MapSize[0] + column)
+        print "addname = ", Sname
         if curr==-1:
-            self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[self.turns])
+            self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[self.turns], tag = Sname)
         else:
-            self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[curr])
+            self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[curr], tag = Sname)
         self.canvas.coords(name, x0, y0)
 
     #draw avatars
@@ -258,6 +269,7 @@ class Gobang:
         self.NextPlayerID = (self.NextPlayerID) + (1)
         if ((self.NextPlayerID) == (self.PlayerNumber)):
             self.NextPlayerID = 0
+        return [-1, -1]
         pass
     def isLegal(self,position):
         if (not (position[0] >= (0) and (position[0]) < (self.MapSize[0]) and (position[1]) >= (0) and (position[1]) < (self.MapSize[1]))):
@@ -305,7 +317,10 @@ class Gobang:
                     count = (count) + (1)
                 print "rowcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -324,7 +339,10 @@ class Gobang:
                     count = (count) + (1)
                     print "colcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -363,7 +381,10 @@ class Gobang:
                     count = (count) + (1)
                     print "leftup-rightdowncount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
@@ -400,13 +421,16 @@ class Gobang:
                     count = (count) + (1)
                     print "leftdown-rightupcount = ", count
                 if ((count) == (5)):
-                    return True
+                    ret = self.NextPlayerID - 1
+                    if(ret == -1):
+                        ret = self.PlayerNumber - 1
+                    return ret;
             else:
                 count = 0
             PreSprite = curSprite
             i = (i) + (1)
         
-        return False
+        return -1
         pass
 
 
