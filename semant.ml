@@ -10,9 +10,6 @@ module StringMap = Map.Make(String)
    Check each global variable, then check each function *)
 let check (vandadecls, cdecls) =
   (* Raise an exception if the given list has a duplicate *)
-
-
-
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
     StringMap.add key value map
@@ -29,7 +26,7 @@ let check (vandadecls, cdecls) =
       body = [] }); ("strf", { typ = String; fname = "strf"; formals = [(Float, "x")];
       body = [] })]
   
-   in
+  in
 
 
   let add_function_of_class crr_func_list cdecl = 
@@ -37,9 +34,6 @@ let check (vandadecls, cdecls) =
       let tmpAddFunction m fd = StringMap.add (class_name ^ "@" ^ fd.fname) fd m in
         List.fold_left tmpAddFunction crr_func_list cdecl.cbody.methods
   in
-
-
-
 
   let function_decls = List.fold_left add_function_of_class
                          StringMap.empty cdecls 
@@ -49,10 +43,9 @@ let check (vandadecls, cdecls) =
        with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
-
   let report_duplicate exceptf list =
     let rec helper = function
-  n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
+        n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
       | _ :: t -> helper t
       | [] -> ()
     in helper (List.sort compare list)
@@ -60,19 +53,19 @@ let check (vandadecls, cdecls) =
   
   (* Raise an exception if a given binding is to a void type *)
   let check_not_void exceptf = function
-      (Void, n) -> raise (Failure (exceptf n))
+    (Void, n) -> raise (Failure (exceptf n))
     | _ -> ()
   in
   
   (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
   let check_assign lvaluet rvaluet err =
-     if lvaluet == rvaluet then lvaluet else raise err
+    if lvaluet == rvaluet then lvaluet else raise err
   in
   
   let check_exist s symbol_list =
-     let m = StringMap.find s symbol_list in
-     (match m with Not_found -> ()
+    let m = StringMap.find s symbol_list in
+    (match m with Not_found -> ()
                 | _ -> raise (Failure ("identifier " ^ s ^ "already exists")))
   in
 
@@ -89,7 +82,7 @@ let check (vandadecls, cdecls) =
 
   let rec check_expr (expr_symbol_list, className)  = function
   Literal _ -> Int
-  | Id s -> type_of_identifier className ^ "@" ^ s expr_symbol_list
+  | Id s -> type_of_identifier (className ^ "@" ^ s) expr_symbol_list
   | Binop(e1, op, e2) as e -> let t1 = check_expr (expr_symbol_list, className) e1 and t2 = check_expr (expr_symbol_list, className) e2 in
   (match op with
         Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
@@ -114,7 +107,7 @@ let check (vandadecls, cdecls) =
         | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
   | ArrayElement(var, e) as ae -> 
-                    let lt = type_of_identifier className ^ "@" ^ var expr_symbol_list and rt = check_expr (expr_symbol_list, className) e in
+                    let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list and rt = check_expr (expr_symbol_list, className) e in
                     (match rt with
                      Int -> lt
                    | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
@@ -122,21 +115,21 @@ let check (vandadecls, cdecls) =
     in
 
     let check_vandadecl (symbol_list, classname) = function
-      Bind(b) ->  let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
-                  let _ = check_exist classname ^ "@" ^ (snd b) symbol_list in let typstring = fst b and idstring = classname ^ "@" ^ (snd b) in 
+      Bind(b) ->  check_not_void (fun n -> "illegal void global " ^ n) b;
+                  let _ = check_exist (classname ^ "@" ^ (snd b)) symbol_list in let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in 
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       (new_symbol_list, classname)
-    | Init(t, s, e) as init -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
-                               let _ = check_exist classname ^ "@" ^ s symbol_list in let _ = ignore(check_expr (symbol_list, classname) e) 
-                                       in let new_symbol_list = StringMap.add classname ^ "@" ^ s t symbol_list in (new_symbol_list, classname)
-    | ArrayBind((t, s, e)) as ab -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
-                                    let _ = check_exist classname ^ "@" ^ s symbol_list in
+    | Init(t, s, e) as init -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (t, s) in
+                               let _ = check_exist (classname ^ "@" ^ s) symbol_list in let _ = ignore(check_expr (symbol_list, classname) e) 
+                                       in let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbol_list in (new_symbol_list, classname)
+    | ArrayBind((t, s, e)) as ab -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (t, s) in
+                                    let _ = check_exist (classname ^ "@" ^ s) symbol_list in
                                     let t = check_expr (symbol_list, classname) e 
                                     in let _ =
                                     (match t with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                     in 
-                                    let new_symbol_list = StringMap.add classname ^ "@" ^ s t symbol_list in (new_symbol_list, classname)
+                                    let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbol_list in (new_symbol_list, classname)
     
     in
 
@@ -174,7 +167,7 @@ let check (vandadecls, cdecls) =
   | BoolLit _ -> Bool
   | FloatLit _ -> Float
   | StringLit _ -> String
-  | Id s -> type_of_identifier className ^ "@" ^ s symbol_list
+  | Id s -> type_of_identifier (className ^ "@" ^ s) symbol_list
   | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
   (match op with
           Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
@@ -200,7 +193,7 @@ let check (vandadecls, cdecls) =
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
       | Noexpr -> Void
 
-      | Assign(var, e) as ex ->  let lt = type_of_identifier className ^ "@" ^ var symbol_list
+      | Assign(var, e) as ex ->  let lt = type_of_identifier (className ^ "@" ^ var) symbol_list
                                 and rt = expr symbol_list e in
         check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
              " = " ^ string_of_typ rt ^ " in " ^ 
@@ -216,11 +209,11 @@ let check (vandadecls, cdecls) =
                 " expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
              fd.formals actuals;
            fd.typ
-      | ArrayElement(var, e) as ae -> let lt = type_of_identifier className ^ "@" ^ var symbol_list and rt = expr symbol_list e in
+      | ArrayElement(var, e) as ae -> let lt = type_of_identifier (className ^ "@" ^ var) symbol_list and rt = expr symbol_list e in
                     (match rt with
                      Int -> lt
                    | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
-      | ArrayElementAssign(var, e1, e2) as aea -> let lt = type_of_identifier className ^ "@" ^ var symbol_list and rt = expr symbol_list e1 in
+      | ArrayElementAssign(var, e1, e2) as aea -> let lt = type_of_identifier (className ^ "@" ^ var) symbol_list and rt = expr symbol_list e1 in
                     (match rt with
                      Int -> let rrt = expr symbol_list e2 in
                      check_assign lt rrt (Failure("illegal assignment " ^ string_of_typ lt ^
