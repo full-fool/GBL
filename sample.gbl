@@ -3,6 +3,7 @@ class Gobang extends Game
 {
     #variables:
     #Map:
+    /*
     int MapSize[2];
     int GridNum;  #GridNum = MapSize[0] * MapSize[1]
     #Player:
@@ -20,40 +21,12 @@ class Gobang extends Game
     int NextSpriteID;
     #AI?
     bool WithAI;
-
+    int InputPosition[2];
+    */
     #functions:
-    void initialize(int MapS, int InputPlayerNum, int InputPlayerID, string InputPlayerName, bool InputWithAI)
-    {
-        MapSize[0] = MapS[0]; 
-        MapSize[1] = MapS[1];
-        GridNum = MapSize[0] * MapSize[1];
-        PlayerNumber = InputPlayerNum;
-        WithAI = InputWithAI;
 
-        int i;
-        for(i = 0; i < PlayerNumber; i = i + 1)
-        {
-            PlayerId[i] = InputPlayerID[i];
-            PlayerName[i] = InputPlayerName[i];
-        }
-        int i;
-        int j;
-        for(i = 0; i < MapSize[0]; i = i + 1)
-        {
-            for(j = 0; j < MapSize[1]; j = j + 1)
-            {
-                SpriteId[i * MapSize[0] + j] = -1;
-                SpriteOwnerId[i * MapSize[0] + j] = -1;
-            }
-        }
-        FormerId = -1;
-        FormerPosition[0] = -1;
-        FormerPosition[1] = -1;
-        NextPlayerID = 0;
-        NextSpriteID = 0;
-    }
 
-    int win()
+    int win(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
       #string PlayerSprite = PlayerSpriteName[FormerId];
       int PlayerSprite = FormerId;
@@ -212,16 +185,16 @@ class Gobang extends Game
     }
     
     #check if the move is legal
-    bool isLegal(int position)
+    bool isLegal(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
-      if(not (((position[0]>=0) and (position[0]<MapSize[0])) and ((position[1]>=0) and (position[1]<MapSize[1]))))
+      if(not (((InputPosition[0]>=0) and (InputPosition[0]<MapSize[0])) and ((InputPosition[1]>=0) and (InputPosition[1]<MapSize[1]))))
         return false;
-      if(SpriteOwnerId[position[0] * MapSize[0] + position[1]] == -1)
+      if(SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] == -1)
         return true;
       else return false;
     }
     
-    int update(int InputPosition)
+    int update(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
         SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
         SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
@@ -303,6 +276,7 @@ class UserMain extends Main{
       #printGame()@mygame;
 
       GobangAI gobangai;
+      /*
       while(not win()@mygame)
       {
           print("This is the turn of player");
@@ -339,5 +313,6 @@ class UserMain extends Main{
       int winner = NextPlayerID@mygame - 1;
       print("Winner is: ");
       print(winner);
+      */
   }
 }
