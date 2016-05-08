@@ -100,17 +100,14 @@ let check (vandadecls, cdecls) =
 
     let (symbols, classname) = List.fold_left check_vandadecl (StringMap.empty, "Global") vandadecls
     in
+    let _ = report_duplicate 
     let rec check_cdecl symbol_list cdecl = 
     check_valid_extend cdecl.extends;
     let check (classname, globals, functions) =
     let _ = check_exist cdecl.cname ^ "@" ^ (snd b) symbol_list in let typstring = fst b and idstring = snd b in 
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
                       new_symbol_list
-  (**** Checking Global Variables ****)
 
-  List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
-   
-  report_duplicate (fun n -> "duplicate global " ^ n) (List.map snd globals);
 
   (**** Checking Functions ****)
 
