@@ -86,16 +86,16 @@ cdecl:
     }}
 
 cbody:
-    { { 
-      vdecls = [];
+       { { 
+      vandadecls = [];
       methods = [];
     } }
   |   cbody vandadecl { { 
-      vdecls = $2 :: $1.vdecls;
+      vandadecls = $2 :: $1.vandadecls;
       methods = $1.methods;
     } }
   |   cbody fdecl { { 
-      vdecls = $1.vdecls;
+      vandadecls = $1.vandadecls;
       methods = $2 :: $1.methods;
     } }
 
@@ -157,6 +157,7 @@ expr:
   | ID               { Id($1)               }
   | ID LBRACK expr RBRACK {ArrayElement($1, $3)}
   | ID DOMAINOP ID   { IdInClass($1,     $3)}
+  | ID LBRACK expr RBRACK DOMAINOP ID { ArrayInClass($1, $3, $6) }
   | expr PLUS   expr { Binop($1, Add,   $3) }
   | expr MINUS  expr { Binop($1, Sub,   $3) }
   | MINUS expr       { Negative(Sub,    $2) }
