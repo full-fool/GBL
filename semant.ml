@@ -8,7 +8,7 @@ module StringMap = Map.Make(String)
    throws an exception if something is wrong.
 
    Check each global variable, then check each function *)
-let check (vandadecl, cdecl) =
+let check (vandadecls, cdecls) =
   (* Raise an exception if the given list has a duplicate *)
   let report_duplicate exceptf list =
     let rec helper = function
@@ -29,16 +29,27 @@ let check (vandadecl, cdecl) =
   let check_assign lvaluet rvaluet err =
      if lvaluet == rvaluet then lvaluet else raise err
   in
+  
+  let check_exist s symbol_list =
+     let m = StringMap.find s symbol_list in
+     (match m with Not_found -> ()
+                | _ -> raise (Failure ("identifier " ^ s ^ "already exists")))
+  in
+
+  let check_valid_extend s = 
+     try List.find s ["Game";"AI";"Main"]
+       with Not_found -> raise(Failure ("invalid base class " ^ s))
+  in
 
   let type_of_identifier s symbol_list =
     try StringMap.find s symbol_list
       with Not_found -> raise (Failure ("undeclared identifier " ^ s))
   in 
 
-  let rec expr symbol_list  = function
+  let rec check_expr symbol_list  = function
   Literal _ -> Int
   | Id s -> type_of_identifier s symbol_list
-  | Binop(e1, op, e2) as e -> let t1 = expr symbol_list e1 and t2 = expr symbol_list e2 in
+  | Binop(e1, op, e2) as e -> let t1 = check_expr symbol_list e1 and t2 = check_expr symbol_list e2 in
   (match op with
         Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Int && t2 = Int -> Int
         | Add | Sub | Mult | Div | AddEqual | SubEqual | MultEqual | DivEqual when t1 = Float && t2 = Int -> Float
@@ -54,7 +65,7 @@ let check (vandadecl, cdecl) =
         | _ -> raise (Failure ("illegal binary operator " ^
               string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
               string_of_typ t2 ^ " in " ^ string_of_expr e)))
-  | Unop(op, e) as ex -> let t = expr symbol_list e in
+  | Unop(op, e) as ex -> let t = check_expr symbol_list e in
          (match op with
           Neg when t = Int -> Int
         | Neg when t = Float -> Float
@@ -62,32 +73,39 @@ let check (vandadecl, cdecl) =
         | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                  string_of_typ t ^ " in " ^ string_of_expr ex)))
   | ArrayElement(var, e) as ae -> 
-                    let lt = type_of_identifier var symbol_list and rt = expr symbol_list e in
+                    let lt = type_of_identifier var symbol_list and rt = check_expr symbol_list e in
                     (match rt with
                      Int -> lt
                    | _ -> raise (Failure("array subscript is not integer in " ^ var))) 
 
     in
 
-    let rec check_vandadecls symbol_list = function
-    Block sl -> let rec check_block block_symbol_list = function  (* block里是一个stmt list，所以此处check_block的参数就是一个list。函数结构和产生式定义结构类似 *)
-          s :: ss -> let rstsymbol_list = check_vandadecls block_symbol_list s in print_symbol_list rstsymbol_list; check_block rstsymbol_list ss; 
-         | [] -> block_symbol_list
-    in check_block symbol_list sl
-    | Bind(b) ->  let typstring = fst b and idstring = snd b in 
+    let rec check_vandadecl (symbol_list, classname) = function
+      Bind(b) ->  let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
+                  let _ = check_exist classname ^ "@" ^ (snd b) symbol_list in let typstring = fst b and idstring = snd b in 
                     let new_symbol_list = StringMap.add idstring typstring symbol_list in
-                      new_symbol_list
-    | Init(t, s, e) as init -> ignore(expr symbol_list e); let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-    | ArrayBind((t, s, e)) as ab -> let t = expr symbol_list e 
+                      (new_symbol_list, classname)
+    | Init(t, s, e) as init -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
+                               let _ = check_exist classname ^ "@" ^ s symbol_list in let _ = ignore(check_expr symbol_list e) in let new_symbol_list = StringMap.add s t symbol_list in (new_symbol_list, classname)
+    | ArrayBind((t, s, e)) as ab -> let _ = check_not_void (fun n -> "illegal void global " ^ n) (fst b) in
+                                    let _ = check_exist classname ^ "@" ^ s symbol_list in
+                                    let t = check_expr symbol_list e 
                                     in let _ =
                                     (match t with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                     in 
-                                    let new_symbol_list = StringMap.add s t symbol_list in new_symbol_list
-    | _ -> symbol_list
+                                    let new_symbol_list = StringMap.add s t symbol_list in (new_symbol_list, classname)
+    
     in
-    let symbols = check_vandadecls StringMap.empty (Block vandadecl)
-    in 
+
+    let (symbols, classname) = List.fold_left check_vandadecl (StringMap.empty, "Global") vandadecls
+    in
+    let rec check_cdecl symbol_list cdecl = 
+    check_valid_extend cdecl.extends;
+    let check (classname, globals, functions) =
+    let _ = check_exist cdecl.cname ^ "@" ^ (snd b) symbol_list in let typstring = fst b and idstring = snd b in 
+                    let new_symbol_list = StringMap.add idstring typstring symbol_list in
+                      new_symbol_list
   (**** Checking Global Variables ****)
 
   List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
@@ -100,8 +118,8 @@ let check (vandadecl, cdecl) =
   then raise (Failure ("function print may not be defined")) else ();
 
   report_duplicate (fun n -> "duplicate function " ^ n)
-    (List.map (fun fd -> fd.fname) functions);
-
+  (List.map (fun fd -> fd.fname) functions);
+ 
   (* Function declaration for a named function *)
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
@@ -212,10 +230,13 @@ let rec expr symbol_list  = function
            [Return _ as s] -> stmt block_symbol_list s
          | Return _ :: _ -> raise (Failure "nothing may follow a return")
          | Block sl :: ss -> check_block block_symbol_list sl; check_block block_symbol_list ss;
-         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in print_symbol_list rstsymbol_list; check_block rstsymbol_list ss; 
+         | s :: ss -> let rstsymbol_list = stmt block_symbol_list s in check_block rstsymbol_list ss; 
          | [] -> block_symbol_list
         in check_block symbol_list sl
       | Expr e -> ignore (expr symbol_list e); symbol_list
+      | Return Noexpr -> if Void = func.typ then symbol_list else
+         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
+                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
       | Return e -> let t = expr symbol_list e in if t = func.typ then symbol_list else
          raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
                          string_of_typ func.typ ^ " in " ^ string_of_expr e))
