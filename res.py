@@ -1,4 +1,5 @@
 import Tkinter as tk
+
 def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
 
@@ -7,8 +8,8 @@ class GameBoard(tk.Frame):
         '''size is the size of a square, in pixels'''
         self.mygame = mygame
         self.gobangai = gobangai
-        self.rows = mygame.MapSize[0]
-        self.columns = mygame.MapSize[1]
+        self.rows = mygame.MapSize[1]
+        self.columns = mygame.MapSize[0]
         self.size = 32
         self.colors = ["black", "white","blue","yellow","grey","pink"]
         self.color = "bisque" # board color
@@ -33,7 +34,6 @@ class GameBoard(tk.Frame):
 
     #When mouse clicks
     def callback(self, event):
-        print self.mygame.WithAI
         if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
             if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
                 #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
@@ -49,7 +49,6 @@ class GameBoard(tk.Frame):
                     for i in range(l):
                         delex = dele[2 * i]
                         deley = dele[2 * i + 1]
-                        print "delex = ", delex, " deley = ", deley
                         if delex != -1 or deley != -1:
                             Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
                             self.canvas.delete(Spritename)
@@ -66,6 +65,7 @@ class GameBoard(tk.Frame):
                     
                     self.addavatar()
             print "clicked at", self.mygame.InputPosition[0], self.mygame.InputPosition[1]
+
         else:
             position = self.gobangai.returnposition()
             self.mygame.InputPosition[0] = position[0]
@@ -90,7 +90,6 @@ class GameBoard(tk.Frame):
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
         Sname = "Sprite" + str(row * self.mygame.MapSize[0] + column)
-        print "addname = ", Sname
         if curr==-1:
             self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[self.turns], tag = Sname)
         else:
@@ -156,13 +155,10 @@ class GameBoard(tk.Frame):
     def tie(self):
         self.enable = False
         self.canvas.create_text(self.columns*self.size/2, self.rows*self.size/2, text = "TIE", font=("Helvetica",50), fill = "red")
-
-
-
-
 class UserMain:
     def __init__(self):
         pass
+
     def main(self):
         mygame = Gobang()
         MapS = [ None ] * 2
@@ -177,26 +173,29 @@ class UserMain:
         InputPlayerName[0]="Cuidiao"
         InputPlayerName[1]="Xicao"
         InputWithAI = False
-
-        print "InputWithAI = ", InputWithAI
         mygame.initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)
-        gobangai = GobangAI()
-        root = tk.Tk()
-        root.title("GBL")
+
+        _root = tk.Tk()
+        _root.title("GBL")
         tk.Canvas.create_circle = _create_circle
-        board = GameBoard(root, mygame, gobangai)
-        board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-        
-        root.mainloop()
+        _board = GameBoard(_root, mygame , None)
+        _board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+        _root.mainloop()
         pass
-        
+
+
 class GobangAI:
     def __init__(self):
         pass
+
     def returnposition(self):
-        r = [0, 0]
+        r = [ None ] * 2
+        r[0]=0
+        r[1]=0
         return r
         pass
+
+
 class Gobang:
     def __init__(self):
         self.WithAI = None
@@ -213,6 +212,7 @@ class Gobang:
         self.MapSize = [ None ] * 2
         self.InputPosition = [ None ] * 2
         pass
+
     def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputWithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]
@@ -220,16 +220,13 @@ class Gobang:
         self.PlayerNumber = InputPlayerNum
         self.WithAI = InputWithAI
         i = None
-
         i = 0
         while ((i) < (self.PlayerNumber)):
             self.PlayerId[i]=InputPlayerID[i]
             self.PlayerName[i]=InputPlayerName[i]
             i = (i) + (1)
         i = None
-
         j = None
-
         i = 0
         while ((i) < (self.MapSize[0])):
             j = 0
@@ -254,17 +251,21 @@ class Gobang:
         self.NextPlayerID = (self.NextPlayerID) + (1)
         if ((self.NextPlayerID) == (self.PlayerNumber)):
             self.NextPlayerID = 0
-        return [-1, -1]
+        a = [ None ] * 2
+        a[0]= - (1)
+        a[1]= - (1)
+        return a
         pass
+
     def isLegal(self):
-        if (not (self.InputPosition[0] >= (0) and (self.InputPosition[0]) < (self.MapSize[0]) and (self.InputPosition[1]) >= (0) and (self.InputPosition[1]) < (self.MapSize[1]))):
+        if (not ((((self.InputPosition[0]) >= (0)) and ((self.InputPosition[0]) < (self.MapSize[0]))) and (((self.InputPosition[1]) >= (0)) and ((self.InputPosition[1]) < (self.MapSize[1]))))):
             return False
         if ((self.SpriteOwnerId[((self.InputPosition[0]) * (self.MapSize[0])) + (self.InputPosition[1])]) == ( - (1))):
             return True
         else:
             return False
         pass
-        
+
     def win(self):
         PlayerSprite = self.FormerId
         position = [ None ] * 2
@@ -286,11 +287,10 @@ class Gobang:
             right = (self.MapSize[1]) - (1)
         else:
             right = (position[1]) + (4)
-        print "position[0] = ", position[0], " position[1] = ", position [1]
-        print "left = ", left, " right = ", right, "up = ", up, "down = ", down 
         i = None
         j = None
         count = None
+        ret = None
         PreSprite =  - (1)
         count = 0
         j = left
@@ -301,21 +301,18 @@ class Gobang:
                     count = 1
                 else:
                     count = (count) + (1)
-                print "rowcount = ", count
                 if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
+                    ret = (self.NextPlayerID) - (1)
+                    if ((ret) == ( - (1))):
+                        ret = (self.PlayerNumber) - (1)
+                    return ret
             else:
                 count = 0
             PreSprite = curSprite
             j = (j) + (1)
-        
         PreSprite =  - (1)
         count = 0
         i = up
-
         while ((i) <= (down)):
             curSprite = self.SpriteOwnerId[((i) * (self.MapSize[0])) + (position[1])]
             if ((curSprite) == (PlayerSprite)):
@@ -323,17 +320,15 @@ class Gobang:
                     count = 1
                 else:
                     count = (count) + (1)
-                    print "colcount = ", count
                 if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
+                    ret = (self.NextPlayerID) - (1)
+                    if ((ret) == ( - (1))):
+                        ret = (self.PlayerNumber) - (1)
+                    return ret
             else:
                 count = 0
             PreSprite = curSprite
             i = (i) + (1)
-        
         PreSprite =  - (1)
         count = 0
         leftup = [ None ] * 2
@@ -365,17 +360,15 @@ class Gobang:
                     count = 1
                 else:
                     count = (count) + (1)
-                    print "leftup-rightdowncount = ", count
                 if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
+                    ret = (self.NextPlayerID) - (1)
+                    if ((ret) == ( - (1))):
+                        ret = (self.PlayerNumber) - (1)
+                    return ret
             else:
                 count = 0
             PreSprite = curSprite
             i = (i) + (1)
-        
         PreSprite =  - (1)
         count = 0
         leftdown = [ None ] * 2
@@ -405,32 +398,20 @@ class Gobang:
                     count = 1
                 else:
                     count = (count) + (1)
-                    print "leftdown-rightupcount = ", count
                 if ((count) == (5)):
-                    ret = self.NextPlayerID - 1
-                    if(ret == -1):
-                        ret = self.PlayerNumber - 1
-                    return ret;
+                    ret = (self.NextPlayerID) - (1)
+                    if ((ret) == ( - (1))):
+                        ret = (self.PlayerNumber) - (1)
+                    return ret
             else:
                 count = 0
             PreSprite = curSprite
             i = (i) + (1)
-        
-        return -1
+        return  - (1)
         pass
 
 
-
-real_main = UserMain()
-real_main.main()
-
-
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    _main = UserMain()
+    _main.main()
 

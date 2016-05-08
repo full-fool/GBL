@@ -1,31 +1,6 @@
 ### gloabl variables including array, initialization
 class Gobang extends Game
 {
-    #variables:
-    #Map:
-    /*
-    int MapSize[2];
-    int GridNum;  #GridNum = MapSize[0] * MapSize[1]
-    #Player:
-    int PlayerNumber;
-    int PlayerId[10];
-    string PlayerName[10];
-    #Sprite:
-    int SpriteId[1000];
-    int SpriteOwnerId[1000];
-    #LastMove:
-    int FormerId; #the ID of former player
-    int FormerPosition[2];
-    #Next Turn:
-    int NextPlayerID;
-    int NextSpriteID;
-    #AI?
-    bool WithAI;
-    int InputPosition[2];
-    */
-    #functions:
-
-
     int win(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
       #string PlayerSprite = PlayerSpriteName[FormerId];
@@ -61,10 +36,12 @@ class Gobang extends Game
           }
           else count = count + 1;
           if(count == 5)
+          {
             ret = NextPlayerID - 1;
             if(ret == -1)
               ret = PlayerNumber - 1;
             return ret;
+          }
         }
         else count = 0;
 
@@ -85,10 +62,12 @@ class Gobang extends Game
           }
           else count = count + 1;
           if(count == 5)
+          {
             ret = NextPlayerID - 1;
             if(ret == -1)
               ret = PlayerNumber - 1;
             return ret;
+          }
         }
         else count = 0;
 
@@ -129,10 +108,12 @@ class Gobang extends Game
           }
           else count = count + 1;
           if(count == 5)
+          {
             ret = NextPlayerID - 1;
             if(ret == -1)
               ret = PlayerNumber - 1;
             return ret;
+          }
         }
         else count = 0;
 
@@ -171,10 +152,12 @@ class Gobang extends Game
           }
           else count = count + 1;
           if(count == 5)
+          {
             ret = NextPlayerID - 1;
             if(ret == -1)
               ret = PlayerNumber - 1;
             return ret;
+          }
         }
         else count = 0;
         
@@ -275,44 +258,6 @@ class UserMain extends Main{
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
       #printGame()@mygame;
 
-      GobangAI gobangai;
-      /*
-      while(not win()@mygame)
-      {
-          print("This is the turn of player");
-          print(NextPlayerID@mygame);
-          
-          #input position
-          int InputPosition[2];
-
-          if(InputWithAI and NextPlayerID@mygame != 0)
-          {
-            int rposition;
-            rposition = returnposition()@gobanai;
-            InputPosition[0] = rposition / MapSize[0]@mygame;
-            InputPosition[1] = rposition % MapSize[0]@mygame;
-          }
-          else
-          {
-            bool legal = false;
-            while(not legal)
-            {
-              InputPosition[0] = input();
-              InputPosition[1] = input();
-              legal = isLegal(InputPosition)@mygame;
-            }
-          }
-          
-          #update status
-          update(InputPosition)@mygame;
-
-          #print map
-          #printGame()@mygame;
-      }
-      #print
-      int winner = NextPlayerID@mygame - 1;
-      print("Winner is: ");
-      print(winner);
-      */
+      #GobangAI gobangai;
   }
 }

@@ -72,10 +72,10 @@ formals_opt:
 
 
 formal_list:
-    typ ID                        { Bindinf($1,$2) }
-  | typ ID LBRACK expr RBRACK     { ArrayBindinf($1,$2, $4) }
-  | formal_list COMMA typ ID { ($3,$4) :: $1 }
-
+    typ ID                        { [($1,$2)] }
+  | typ ID LBRACK RBRACK     { [($1,$2)] }
+  | formal_list COMMA typ ID LBRACK RBRACK { ($3, $4) :: $1 }
+  | formal_list COMMA typ ID {($3, $4) :: $1 }
 
 /********* class *********/
 
