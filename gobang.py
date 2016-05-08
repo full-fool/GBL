@@ -41,12 +41,8 @@ class GameBoard(tk.Frame):
                 self.mygame.InputPosition[0] = event.y/self.size
                 self.mygame.InputPosition[1] = event.x/self.size
                 if(self.mygame.isLegal()):
-                    # place sprite
-                    #print "islegal"
                     self.addpiece(str((event.y/self.size, event.x/self.size)), event.y/self.size, event.x/self.size)
                     self.pastPieces.append((event.y/self.size, event.x/self.size))
-                    #print "add sprite"
-                    #print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
 
                     dele = self.mygame.update()
                     l = len(dele) / 2
@@ -57,13 +53,6 @@ class GameBoard(tk.Frame):
                         if delex != -1 or deley != -1:
                             Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
                             self.canvas.delete(Spritename)
-                            #delete (delex, deley)
-
-
-
-
-                    #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-                    #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
                     
                     winner = self.mygame.win();
                     if(winner != -1):
@@ -83,19 +72,12 @@ class GameBoard(tk.Frame):
             self.mygame.InputPosition[1] = position[1]
             self.addpiece(str((position[1], position[0])), position[1], position[0])
             self.pastPieces.append((position[1], position[0]))
-            #print "add sprite"
-            #print self.mygame.SpriteOwnerId[self.mygame.NextSpriteID]
-
             dele = self.mygame.update(position)
-            #print "CurSpriteID = ", self.mygame.NextSpriteID - 1
-            #print "SpriteOwnerId = ", self.mygame.SpriteOwnerId[position[0] * self.mygame.MapSize[0] + position[1]]
             
             winner = self.mygame.win();
             if(winner != -1):
                 self.win(winner)
-                    #if isTie():
-                        #tie()
-                    #turn to next player
+                
             self.turns += 1
             if self.turns >= self.numPlayers:
                 self.turns = 0

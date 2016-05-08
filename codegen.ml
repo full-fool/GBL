@@ -83,9 +83,16 @@ let translate (globals, classes) =
     else ""
   in
 
+  let gen_main_class_code = 
+    "if __name__ == \"__main__\":\n" ^ 
+    "    _main = " ^ main_class ^ "()\n" ^
+    "    _main.main()\n"
+  in
+
   (*complie function parameters*)
   let comp_param = function
-      (t, n) -> n
+      A.Bindinf (t, n) -> n
+    | A.ArrayBindinf (t, n, e) -> n
     | _ -> ""
   in
 
@@ -152,11 +159,12 @@ let translate (globals, classes) =
                     | A.Init (t, n, v) -> n) "self." m
     in
 
-    let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls
-    in
+    let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls in
+    let add_local_vars = StringMap.empty in
 
     let lookup n = try StringMap.find n local_vars
-                   with Not_found -> ""
+                   with Not_found -> try StringMap.find n add_local_vars 
+                                     with Not_found -> ""
     in
 
     let rec comp_local_expr = function
@@ -239,8 +247,10 @@ let translate (globals, classes) =
     in
 
     let comp_function pos fdecl = 
-      (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^
-      "(" ^ String.concat "," ("self" :: (List.map comp_param fdecl.A.formals)) ^  
+      (String.make (pos * 4) ' ') ^ "def " ^ fdecl.A.fname ^ "(" ^
+      String.concat "," ("self" :: (
+        if extends = "Game" && (fdecl.A.fname = "win" || fdecl.A.fname = "isLegal" || fdecl.A.fname = "update") then []
+        else (List.map comp_param fdecl.A.formals))) ^  
       "):\n" ^ String.concat "" (List.map (comp_stmt (pos + 1)) fdecl.A.body) ^
       (if extends = "Main" && fdecl.A.fname = "main" then game_gui_code else "") ^ 
       (String.make ((pos + 1) * 4) ' ') ^ "pass" ^ "\n"
@@ -255,11 +265,5 @@ let translate (globals, classes) =
     "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody
   in
 
-  let comp_main_class classes = 
-    "if __name__ == \"__main__\":\n" ^ 
-    "    _main = " ^ main_class ^ "()\n" ^
-    "    _main.main()\n"
-  in
-
   String.concat "" (List.map comp_global_var globals) ^ gen_game_gui_code ^ String.concat "" (List.map comp_class classes) ^ 
-  comp_main_class classes
+  gen_main_class_code
