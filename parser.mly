@@ -72,9 +72,12 @@ formals_opt:
 
 
 formal_list:
+    /* nothing */  { [] }
+  | formal_list COMMA formal_item { $3 :: $1 }
+
+formal_item:
     typ ID                        { Bindinf($1,$2) }
   | typ ID LBRACK expr RBRACK     { ArrayBindinf($1,$2, $4) }
-  | formal_list COMMA typ ID { ($3,$4) :: $1 }
 
 
 /********* class *********/
