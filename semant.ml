@@ -26,9 +26,7 @@ let check (vandadecls, revcdecls) =
      body = [] }); ("prints", { typ = Void; fname = "prints"; formals = [(String, "x")];
     body = [] }); ("printlnf", { typ = Void; fname = "printlnf"; formals = [(Float, "x")];
     body = [] }); ("printlns", { typ = Void; fname = "printlns"; formals = [(String, "x")];
-      body = [] }); ("stri", { typ = String; fname = "stri"; formals = [(Int, "x")];
-      body = [] }); ("strb", { typ = String; fname = "strb"; formals = [(Bool, "x")];
-      body = [] }); ("strf", { typ = String; fname = "strf"; formals = [(Float, "x")];
+      body = [] }); ("initialize@Game", { typ = Void; fname = "initialize"; formals = [(Int, "x");(Int, "x");(Int, "x");(String, "x");(Bool, "x")];
       body = [] })]
   
   in
