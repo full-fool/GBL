@@ -1,13 +1,22 @@
-int foo() {}
+class myMain extends Main{
 
-int bar() {}
+int foo() {
+return 1;
+}
 
-int baz() {}
+int bar() {
+return 1;
+}
 
-void bar() {} #Error: duplicate function bar
+int baz() {
+return 1;
+}
 
 int main()
 {
-  int m;
+  
+  bool i;
+  i = foo();
   return 0;
+}
 }

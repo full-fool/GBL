@@ -1,3 +1,4 @@
+class myMain extends Main{
 int main()
 {
   int i;
@@ -9,5 +10,6 @@ int main()
   while (42) { #Should be boolean
     i = i + 1;
   }
+}
 
 }

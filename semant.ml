@@ -8,7 +8,12 @@ module StringMap = Map.Make(String)
    throws an exception if something is wrong.
 
    Check each global variable, then check each function *)
-let check (vandadecls, cdecls) =
+let check (vandadecls, revcdecls) =
+  let cdecls = List.rev revcdecls in
+  let print_cdecl cdecl =
+    print_string (cdecl.cname ^ "@" ^ cdecl.extends)
+  in
+  List.iter print_cdecl cdecls;
   (* Raise an exception if the given list has a duplicate *)
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
@@ -30,7 +35,7 @@ let check (vandadecls, cdecls) =
 
 
   let add_function_of_class crr_func_list cdecl = 
-      let class_name = cdecl.cname in
+      let class_name = cdecl.extends in
       let tmpAddFunction m fd = StringMap.add (class_name ^ "@" ^ fd.fname) fd m in
         List.fold_left tmpAddFunction crr_func_list cdecl.cbody.methods
   in
@@ -39,8 +44,25 @@ let check (vandadecls, cdecls) =
                          built_in_decls cdecls 
   in
 
-  let function_decl s = try StringMap.find s function_decls
-       with Not_found -> raise (Failure ("unrecognized function " ^ s))
+  let print_funcdecl key value =
+      print_string ((string_of_typ value.typ) ^ " " ^ key)
+  in
+  
+  let mapChildtoParentClass classmap cdecl =
+    StringMap.add cdecl.cname cdecl.extends classmap
+  in
+
+  let class_decls = List.fold_left mapChildtoParentClass StringMap.empty cdecls
+  in
+
+  let class_decl child = try StringMap.find child class_decls
+        with Not_found -> raise (Failure ("unrecognized class " ^ child))
+  in
+
+  (*StringMap.iter print_funcdecl function_decls;*)
+  let function_decl scope s = try StringMap.find s function_decls
+       with Not_found -> try StringMap.find (scope ^ "@" ^ s) function_decls
+     with Not_found -> raise (Failure ("unrecognized function " ^ s))
   in
 
   let report_duplicate exceptf list =
@@ -57,6 +79,9 @@ let check (vandadecls, cdecls) =
     | _ -> ()
   in
   
+  let print_symbolList key value =
+    print_string(key ^ " " ^ (string_of_typ value) ^ "\n")
+  in
   (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
   let check_assign lvaluet rvaluet err =
@@ -81,8 +106,12 @@ let check (vandadecls, cdecls) =
 
   let type_of_object s object_list =
     try StringMap.find s object_list
-      with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+      with Not_found -> raise (Failure ("undeclared object " ^ s))
   in 
+  
+  let print_object key value =
+    print_string(key ^ " " ^ value ^ "\n")
+  in
 
   let rec check_expr (expr_symbol_list, className)  = function
   Literal _ -> Int
@@ -120,16 +149,18 @@ let check (vandadecls, cdecls) =
     in
 
     let check_vandadecl (symbollist, classname) = function
-      Bind(b) ->  check_not_void (fun n -> "illegal void global " ^ n) b;
+      Bind(b) ->  print_string ((string_of_typ (fst b)) ^ " " ^ (snd b) ^ "\n"); check_not_void (fun n -> "illegal void " ^ n) b;
                   check_exist (classname ^ "@" ^ (snd b)) symbollist;
                   let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in
                   let new_symbol_list = StringMap.add idstring typstring symbollist in
+                  (*ignore(StringMap.iter print_symbolList new_symbol_list);*)
                       (new_symbol_list, classname)
-    | Init(t, s, e) -> ignore(check_not_void (fun n -> "illegal void global " ^ n) (t, s));
+    | Init(t, s, e) -> ignore(check_not_void (fun n -> "illegal void " ^ n) (t, s));
                                ignore(check_exist (classname ^ "@" ^ s) symbollist);
                                ignore(check_expr (symbollist, classname) e);
+
                                let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
-    | ArrayBind((t, s, e)) ->  ignore(check_not_void (fun n -> "illegal void global " ^ n) (t, s));
+    | ArrayBind((t, s, e)) ->  ignore(check_not_void (fun n -> "illegal void" ^ n) (t, s));
                         ignore(check_exist (classname ^ "@" ^ s) symbollist);
                         let ty = check_expr (symbollist, classname) e 
                             in let _ =
@@ -145,21 +176,29 @@ let check (vandadecls, cdecls) =
 
     let check_cdecl symbol_list cdecl = 
       let _ = check_valid_extend cdecl.extends in
-        let check_class (classSymbolList, className, extendName, globals, functions) =
+        let check_class (classSymbolList, className, globals, functions) =
+          
           let (symbol_table, _) = List.fold_left check_vandadecl (classSymbolList, className) globals in
     
             (**** Checking Functions ****)
             report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) functions);
             (* Function declaration for a named function *)
   
-            if extendName = "Main" then ignore(function_decl "main") else (); (* Ensure "main" is defined *)
-
-            let check_function func_symbol_list func =
+            ignore(function_decl "Main" "main"); (* Ensure "main" is defined *)
+            let symbol_table_temp = symbol_table in
+            let check_function func =
 
               List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^ " in " ^ func.fname)) func.formals;
 
               report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
               (List.map snd func.formals);
+              
+              let addToMap stringmap (key, value) =
+                StringMap.add (className ^ "@" ^ value) key stringmap
+              in
+
+              let formal_symbol_list = List.fold_left addToMap symbol_table_temp func.formals in
+
               (* Type of each variable (global, formal, or local *)
               let rec expr (expr_symbol_list, expr_object_list)  = function
                   Literal _ -> Int
@@ -183,6 +222,7 @@ let check (vandadecls, cdecls) =
                     | _ -> raise (Failure ("illegal binary operator " ^
                            string_of_typ t1 ^ " " ^ string_of_op op ^ " " ^
                            string_of_typ t2 ^ " in " ^ string_of_expr e)))
+
                 | Unop(op, e) as ex -> let t = expr (expr_symbol_list, expr_object_list) e in
                   (match op with
                       Neg when t = Int -> Int
@@ -190,6 +230,7 @@ let check (vandadecls, cdecls) =
                     | Not when t = Bool -> Bool
                     | _ -> raise (Failure ("illegal unary operator " ^ string_of_uop op ^
                            string_of_typ t ^ " in " ^ string_of_expr ex)))
+
                 | Noexpr -> Void
 
                 | Assign(var, e) as ex ->  let lt = type_of_identifier (className ^ "@" ^ var) expr_symbol_list
@@ -197,7 +238,8 @@ let check (vandadecls, cdecls) =
                                                check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
                                                " = " ^ string_of_typ rt ^ " in " ^ 
                                                string_of_expr ex))
-                | Call(fname, actuals) as call -> let fd = function_decl fname in
+                | Call(fname, actuals) as call -> (*print_string (className ^ "@" ^ fname); *)
+                                                let fd = function_decl className fname in
                   if List.length actuals != List.length fd.formals then
                     raise (Failure ("expecting " ^ string_of_int
                     (List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
@@ -228,11 +270,9 @@ let check (vandadecls, cdecls) =
                                                                       type_of_identifier (class_name ^ "@" ^ vid) expr_symbol_list
                                                                     else raise (Failure("array subscript is not integer in " ^ vid)) 
 
-
-
                 | CallDomain(f_name, acts_opt, objectname) as calld->  
                 let class_name = type_of_object objectname expr_object_list in
-                                                                let fd = function_decl (class_name ^ "@" ^ f_name) in
+                                                                let fd = function_decl class_name f_name in
                                                                   if List.length acts_opt != List.length fd.formals then
                                                                     raise (Failure ("expecting " ^ string_of_int
                                                                       (List.length fd.formals) ^ " arguments in " ^ string_of_expr calld))
@@ -262,7 +302,8 @@ let check (vandadecls, cdecls) =
 
                                 in check_block (stmt_symbol_list, stmt_object_list) sl
 
-                | Expr e -> ignore (expr (stmt_symbol_list, stmt_object_list) e); (stmt_symbol_list, stmt_object_list)
+                | Expr e -> (*print_string (string_of_expr e); *)
+                           ignore (expr (stmt_symbol_list, stmt_object_list) e); (stmt_symbol_list, stmt_object_list)
 
                 | Return Noexpr -> if Void = func.typ then (stmt_symbol_list, stmt_object_list) else
                                      raise (Failure ("return gives void expected " ^
@@ -277,35 +318,40 @@ let check (vandadecls, cdecls) =
                 | Ifelse(p, b1, b2) -> ignore(check_bool_expr (stmt_symbol_list, stmt_object_list) p) ; ignore(stmt(stmt_symbol_list, stmt_object_list) b1); ignore(stmt (stmt_symbol_list, stmt_object_list) b2); (stmt_symbol_list, stmt_object_list)
 
                 | For(e1, e2, e3, st) -> ignore (expr (stmt_symbol_list, stmt_object_list) e1); check_bool_expr (stmt_symbol_list, stmt_object_list)  e2;
-                                         ignore (expr  (stmt_symbol_list, stmt_object_list) e3); stmt (stmt_symbol_list, stmt_object_list) st
+                                         ignore (expr (stmt_symbol_list, stmt_object_list) e3); stmt (stmt_symbol_list, stmt_object_list) st
 
                 | While(p, s) -> check_bool_expr (stmt_symbol_list, stmt_object_list)  p; stmt (stmt_symbol_list, stmt_object_list) s
 
-                | Bind(b) ->  let typstring = fst b and idstring = snd b in 
+                | Bind(b) ->  let typstring = fst b and idstring = (className ^ "@" ^ (snd b)) in
+                                (*print_string (string_of_typ typstring);
+                                print_string idstring;*)
                                 let new_symbol_list = StringMap.add idstring typstring stmt_symbol_list in
+                                (*ignore(StringMap.iter print_symbolList new_symbol_list);*)
                                   (new_symbol_list, stmt_object_list)
 
-                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add s t stmt_symbol_list in (new_symbol_list, stmt_object_list)
+                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list in ignore(StringMap.iter print_symbolList new_symbol_list); (new_symbol_list, stmt_object_list)
 
                 | ArrayBind((t, s, e)) -> let ty = expr (stmt_symbol_list, stmt_object_list) e 
                                       in let _ =
                                       (match ty with Int -> () 
                                                 | _ -> raise (Failure("array subscript is not integer in " ^ s))) 
                                       in 
-                                      let new_symbol_list = StringMap.add s t stmt_symbol_list in (new_symbol_list, stmt_object_list)
+                                      let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list in (new_symbol_list, stmt_object_list)
 
                 | Break -> (stmt_symbol_list, stmt_object_list)
 
                 | Continue -> (stmt_symbol_list, stmt_object_list)
 
-                | Classdecl(class_name, objectname) -> let new_object_list = StringMap.add objectname class_name stmt_object_list in (stmt_symbol_list, new_object_list)
+                | Classdecl(class_name, objectname) -> (*print_string (class_decl class_name); print_string objectname;*) let new_object_list = StringMap.add objectname (class_decl class_name) stmt_object_list in (*StringMap.iter print_object new_object_list; *)(stmt_symbol_list, new_object_list)
 
               in
-              let (stmt_result_symbol_list, _) = stmt (func_symbol_list, StringMap.empty) (Block func.body) in
-              stmt_result_symbol_list
+              let (stmt_result_symbol_list, _) = stmt (formal_symbol_list, StringMap.empty) (Block func.body) in
+              ()
             in
-        List.fold_left check_function symbol_table functions; 
+
+        List.iter check_function (List.rev functions);
+        symbol_table;
       in
-    check_class (symbol_list, cdecl.cname, cdecl.extends, cdecl.cbody.vandadecls, cdecl.cbody.methods);
+    check_class (symbol_list, cdecl.extends, cdecl.cbody.vandadecls, cdecl.cbody.methods);
   in
 List.fold_left check_cdecl symbols cdecls

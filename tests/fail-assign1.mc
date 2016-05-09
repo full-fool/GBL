@@ -1,3 +1,5 @@
+class myMain extends Main{
+
 int main()
 {
   float i;
@@ -8,4 +10,7 @@ int main()
   b = false;
   i = false;
   return 0;
+}
+
+
 }
