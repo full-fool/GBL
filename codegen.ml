@@ -170,8 +170,16 @@ let translate (globals, classes) =
                     | A.Init (t, n, v) -> n) "self." m
     in
 
+    let init_fun m fdecl = 
+      StringMap.add fdecl.A.fname "self." m
+    in
+
     let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls in
-    let ext_local_vars = StringMap.empty in
+    let local_funs = List.fold_left init_fun StringMap.empty cbody.A.methods in
+
+    let lookup_fun f = try StringMap.find f local_funs
+                    with Not_found -> ""
+    in
 
     let rec comp_local_expr lookup = function
         A.Literal i -> string_of_int i
@@ -195,7 +203,7 @@ let translate (globals, classes) =
       | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr lookup i ^ "]"
       | A.Unop(op, e) -> "not (" ^ comp_local_expr lookup e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr lookup e
-      | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
+      | A.Call (f, act) -> lookup_fun f ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
       | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
       | _ as s -> ""
     in
