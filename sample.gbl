@@ -9,6 +9,9 @@ class Gobang extends Game
       position[0] = FormerPosition[0];
       position[1] = FormerPosition[1];
       int up;
+      int down;
+      int left;
+      int right;
       if((position[0] - 4) > 0) up = position[0] - 4;
       else up = 0;
       if((position[0] + 4) > (MapSize[0] - 1)) down = MapSize[0] - 1;
@@ -254,7 +257,7 @@ class UserMain extends Main{
       string InputPlayerName[InputPlayerNumber];
       InputPlayerName[0] = "Cuidiao";
       InputPlayerName[1] = "Xicao";
-      InputWithAI = false;
+      int InputWithAI = false;
 
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
       #printGame()@mygame;
