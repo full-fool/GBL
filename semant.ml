@@ -10,10 +10,10 @@ module StringMap = Map.Make(String)
    Check each global variable, then check each function *)
 let check (vandadecls, revcdecls) =
   let cdecls = List.rev revcdecls in
-  let print_cdecl cdecl =
+  (*let print_cdecl cdecl =
     print_string (cdecl.cname ^ "@" ^ cdecl.extends)
   in
-  List.iter print_cdecl cdecls;
+  List.iter print_cdecl cdecls;*)
   (* Raise an exception if the given list has a duplicate *)
   let built_in_decls =
   List.fold_left (fun map (key, value) ->
@@ -26,7 +26,7 @@ let check (vandadecls, revcdecls) =
      body = [] }); ("prints", { typ = Void; fname = "prints"; formals = [(String, "x")];
     body = [] }); ("printlnf", { typ = Void; fname = "printlnf"; formals = [(Float, "x")];
     body = [] }); ("printlns", { typ = Void; fname = "printlns"; formals = [(String, "x")];
-      body = [] }); ("initialize@Game", { typ = Void; fname = "initialize"; formals = [(Int, "x");(Int, "x");(Int, "x");(String, "x");(Bool, "x")];
+      body = [] }); ("Game@initialize", { typ = Void; fname = "initialize"; formals = [(Int, "x");(Int, "x");(Int, "x");(String, "x");(Bool, "x")];
       body = [] })]
   
   in
@@ -43,7 +43,7 @@ let check (vandadecls, revcdecls) =
   in
 
   let print_funcdecl key value =
-      print_string ((string_of_typ value.typ) ^ " " ^ key)
+      print_string ((string_of_typ value.typ) ^ " " ^ key ^ "\n")
   in
   
   let mapChildtoParentClass classmap cdecl =
@@ -57,7 +57,7 @@ let check (vandadecls, revcdecls) =
         with Not_found -> raise (Failure ("unrecognized class " ^ child))
   in
 
-  (*StringMap.iter print_funcdecl function_decls;*)
+  StringMap.iter print_funcdecl function_decls;
   let function_decl scope s = try StringMap.find s function_decls
        with Not_found -> try StringMap.find (scope ^ "@" ^ s) function_decls
      with Not_found -> raise (Failure ("unrecognized function " ^ s))
