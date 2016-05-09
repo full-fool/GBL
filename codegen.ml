@@ -59,7 +59,10 @@ let translate (globals, classes) =
                 else List.fold_left (find_in_class "main" "Main" ai_class "var") StringMap.empty classes) in
   let game_vars = List.fold_left (find_in_class "main" "Main" game_class "var") StringMap.empty classes in
   let init_vars = List.fold_left (find_in_class "main" "Main" "initialize" "fun") StringMap.empty classes in
-  let game_object_vars = StringMap.bindings (StringMap.merge (fun k xo yo -> xo) game_vars init_vars) in
+  let game_object_vars = StringMap.bindings (StringMap.merge (fun k xo yo -> match xo, yo with
+                                                                              Some x, Some y -> xo
+                                                                            | _ -> None) game_vars init_vars)
+  in
 
   let game_gui_code = 
     let ai_name = 
@@ -78,7 +81,7 @@ let translate (globals, classes) =
         _root = tk.Tk()
         _root.title(\"GBL\")
         tk.Canvas.create_circle = _create_circle
-        _board = GameBoard(_root," ^ game_object_name ^ " ," ^ ai_name ^ ")
+        _board = GameBoard(_root, " ^ game_object_name ^" , " ^ ai_name ^ ")
         _board.pack(side=\"top\", fill=\"both\", expand=\"true\", padx=4, pady=4)
         _root.mainloop()\n"
     else ""

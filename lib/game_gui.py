@@ -34,7 +34,6 @@ class GameBoard(tk.Frame):
 
     #When mouse clicks
     def callback(self, event):
-        print self.mygame.WithAI
         if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
             if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
                 #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
@@ -50,7 +49,6 @@ class GameBoard(tk.Frame):
                     for i in range(l):
                         delex = dele[2 * i]
                         deley = dele[2 * i + 1]
-                        print "delex = ", delex, " deley = ", deley
                         if delex != -1 or deley != -1:
                             Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
                             self.canvas.delete(Spritename)
@@ -67,6 +65,7 @@ class GameBoard(tk.Frame):
                     
                     self.addavatar()
             print "clicked at", self.mygame.InputPosition[0], self.mygame.InputPosition[1]
+
         else:
             position = self.gobangai.returnposition()
             self.mygame.InputPosition[0] = position[0]
@@ -91,7 +90,6 @@ class GameBoard(tk.Frame):
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
         Sname = "Sprite" + str(row * self.mygame.MapSize[0] + column)
-        print "addname = ", Sname
         if curr==-1:
             self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[self.turns], tag = Sname)
         else:
