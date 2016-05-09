@@ -57,7 +57,7 @@ let check (vandadecls, revcdecls) =
         with Not_found -> raise (Failure ("unrecognized class " ^ child))
   in
 
-  StringMap.iter print_funcdecl function_decls;
+  (*StringMap.iter print_funcdecl function_decls;*)
   let function_decl scope s = try StringMap.find s function_decls
        with Not_found -> try StringMap.find (scope ^ "@" ^ s) function_decls
      with Not_found -> raise (Failure ("unrecognized function " ^ s))
@@ -147,7 +147,7 @@ let check (vandadecls, revcdecls) =
     in
 
     let check_vandadecl (symbollist, classname) = function
-      Bind(b) ->  print_string ((string_of_typ (fst b)) ^ " " ^ (snd b) ^ "\n"); check_not_void (fun n -> "illegal void " ^ n) b;
+      Bind(b) ->  (*print_string ((string_of_typ (fst b)) ^ " " ^ (snd b) ^ "\n");*) check_not_void (fun n -> "illegal void " ^ n) b;
                   check_exist (classname ^ "@" ^ (snd b)) symbollist;
                   let typstring = (fst b) and idstring = (classname ^ "@" ^ (snd b)) in
                   let new_symbol_list = StringMap.add idstring typstring symbollist in
@@ -327,7 +327,7 @@ let check (vandadecls, revcdecls) =
                                 (*ignore(StringMap.iter print_symbolList new_symbol_list);*)
                                   (new_symbol_list, stmt_object_list)
 
-                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list in ignore(StringMap.iter print_symbolList new_symbol_list); (new_symbol_list, stmt_object_list)
+                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e); let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list in (*ignore(StringMap.iter print_symbolList new_symbol_list);*) (new_symbol_list, stmt_object_list)
 
                 | ArrayBind((t, s, e)) -> let ty = expr (stmt_symbol_list, stmt_object_list) e 
                                       in let _ =
