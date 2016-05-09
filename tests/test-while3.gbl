@@ -2,13 +2,13 @@ class mymain extends Main{
 int foo(int a)
 {
   int j;
-  continue;
+  
   j = 0;
   while (a > 0) {
     j = j + 2;
     a = a - 1;
     if(a == 5) {
-      
+      continue;
     }
   }
   return j;
