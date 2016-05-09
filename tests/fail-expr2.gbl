@@ -12,7 +12,7 @@ int e;
 int f;
 }
 class myMain extends Main{
-int a;
+int a=5.2;
 bool b;
 
 void foo(int c, bool d)    

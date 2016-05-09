@@ -1,1 +1,1 @@
-Fatal error: exception Failure("illegal assignment int = float in d = 9.5")
+Fatal error: exception Failure("illegal init int = float in declaration int a = 5.2")
