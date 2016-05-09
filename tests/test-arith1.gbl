@@ -1,0 +1,7 @@
+class mymain extends Main{
+int main()
+{
+  printlni(39 + 3);
+  return 0;
+}
+}

@@ -1,0 +1,13 @@
+class mymain extends Main{
+int i;
+bool b;
+int j;
+
+int main()
+{
+  i = 42;
+  j = 10;
+  printlni(i + j);
+  return 0;
+}
+}

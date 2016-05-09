@@ -1,0 +1,19 @@
+class mymain extends Main{
+int main()
+{
+  printlnb(true);
+  printlnb(false);
+  printlnb(true and true);
+  printlnb(true and false);
+  printlnb(false and true);
+  printlnb(false and false);
+  printlnb(true or true);
+  printlnb(true or false);
+  printlnb(false or true);
+  printlnb(false or false);
+  printlnb(not false);
+  printlnb(not true);
+  printlni(-10);
+  printlni(-42);
+}
+}

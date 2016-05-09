@@ -1,0 +1,8 @@
+class mymain extends Main{
+int main()
+{
+  if (true) printlni(42); else printlni(8);
+  printlni(17);
+  return 0;
+}
+}

@@ -1,0 +1,14 @@
+class mymain extends Main{
+int add(int a, int b)
+{
+  return a + b;
+}
+
+int main()
+{
+  int a;
+  a = add(39, 3);
+  printlni(a);
+  return 0;
+}
+}
