@@ -1,0 +1,13 @@
+class mymain extends Main{
+int main()
+{
+  int i;
+  i = 5;
+  while (i > 0) {
+    printlni(i);
+    i = i - 1;
+  }
+  printlni(42);
+  return 0;
+}
+}

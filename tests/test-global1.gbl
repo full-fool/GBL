@@ -1,0 +1,32 @@
+class mymain extends Main{
+int a;
+int c;
+
+void printa()
+{
+  printlni(a);
+}
+
+void printc()
+{
+  printlni(c);
+}
+
+void incab()
+{
+  a = a + 1;
+  c = c + 1;
+}
+
+int main()
+{
+  a = 42;
+  c = 21;
+  printa();
+  printc();
+  incab();
+  printa();
+  printc();
+  return 0;
+}
+}

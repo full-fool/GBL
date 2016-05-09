@@ -1,1 +1,1 @@
-Fatal error: exception Failure(“print function need exactly one argument”)
+Fatal error: exception Failure("expecting 1 arguments in prints()")

@@ -1,0 +1,30 @@
+class mymain extends Main{
+int main()
+{
+  printlni(1 + 2);
+  printlni(1 - 2);
+  printlni(1 * 2);
+  printlni(100 / 2);
+  printlni(99);
+  printlnb(1 == 2);
+  printlnb(1 == 1);
+  printlni(99);
+  printlnb(1 != 2);
+  printlnb(1 != 1);
+  printlni(99);
+  printlnb(1 < 2);
+  printlnb(2 < 1);
+  printlni(99);
+  printlnb(1 <= 2);
+  printlnb(1 <= 1);
+  printlnb(2 <= 1);
+  printlni(99);
+  printlnb(1 > 2);
+  printlnb(2 > 1);
+  printlni(99);
+  printlnb(1 >= 2);
+  printlnb(1 >= 1);
+  printlnb(2 >= 1); 
+  return 0;
+}
+}

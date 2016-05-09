@@ -1,1 +1,1 @@
-Fatal error: exception Failure("duplicate function bar")
+Fatal error: exception Failure("illegal assignment bool = int in i = foo()")

@@ -1,1 +1,1 @@
-Fatal error: exception Failure("illegal binary operator bool + string in b + “Hello World””)
+Fatal error: exception Failure("illegal binary operator bool + string in b + Hello World")

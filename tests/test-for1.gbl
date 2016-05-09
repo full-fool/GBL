@@ -1,0 +1,11 @@
+class mymain extends Main{
+int main()
+{
+  int i;
+  for (i = 0 ; i < 5 ; i = i + 1) {
+    printlni(i);
+  }
+  printlni(42);
+  return 0;
+}
+}

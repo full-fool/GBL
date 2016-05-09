@@ -1,1 +1,1 @@
-Fatal error: exception Failure("illegal binary operator bool + int in b + a")
+Fatal error: exception Failure("illegal assignment int = float in d = 9.5")

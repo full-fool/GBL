@@ -1,0 +1,18 @@
+class mymain extends Main{
+int fib(int x)
+{
+  if (x < 2) return 1;
+  return fib(x-1) + fib(x-2);
+}
+
+int main()
+{
+  printlni(fib(0));
+  printlni(fib(1));
+  printlni(fib(2));
+  printlni(fib(3));
+  printlni(fib(4));
+  printlni(fib(5));
+  return 0;
+}
+}
