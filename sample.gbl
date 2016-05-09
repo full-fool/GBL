@@ -257,7 +257,7 @@ class UserMain extends Main{
       string InputPlayerName[InputPlayerNumber];
       InputPlayerName[0] = "Cuidiao";
       InputPlayerName[1] = "Xicao";
-      int InputWithAI = false;
+      bool InputWithAI = false;
 
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
       #printGame()@mygame;

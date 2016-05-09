@@ -42,7 +42,7 @@ class Gobang extends Game
     int update(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
         int CurSpriteID;
-        CurPlayerID = NextPlayerID;
+        int CurPlayerID = NextPlayerID;
         SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
         SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
         FormerId = NextPlayerID;
@@ -153,47 +153,10 @@ class UserMain extends Main{
       string InputPlayerName[InputPlayerNumber];
       InputPlayerName[0] = "Cuidiao";
       InputPlayerName[1] = "Xicao";
-      InputWithAI = false;
+      bool InputWithAI = false;
+      GobangAI gobangai;
 
       initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
-      #printGame()@mygame;
-
-      GobangAI gobangai;
-      while(not win()@mygame)
-      {
-          print("This is the turn of player");
-          print(NextPlayerID@mygame);
-          
-          #input position
-          int InputPosition[2];
-
-          if(InputWithAI and NextPlayerID@mygame != 0)
-          {
-            int rposition;
-            rposition = returnposition()@gobanai;
-            InputPosition[0] = rposition / MapSize[0]@mygame;
-            InputPosition[1] = rposition % MapSize[0]@mygame;
-          }
-          else
-          {
-            bool legal = false;
-            while(not legal)
-            {
-              InputPosition[0] = input();
-              InputPosition[1] = input();
-              legal = isLegal(InputPosition)@mygame;
-            }
-          }
-          
-          #update status
-          update(InputPosition)@mygame;
-
-          #print map
-          #printGame()@mygame;
-      }
-      #print
-      int winner = NextPlayerID@mygame - 1;
-      print("Winner is: ");
-      print(winner);
+     
   }
 }
