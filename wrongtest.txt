@@ -1,16 +1,17 @@
+class mygame extends Game{
+int c;
+int d;
+}
 class myMain extends Main{
 int a;
 bool b;
 
 void foo(int c, bool d)    
 {
-  int dd;
+  int d;
   bool e;
-  a + c;
-  c - a;
-  a * 3;
-  c / 2;
-  d + a; #Error: bool + int
+  e = d@game;
+  b + a; #Error: bool + int
 }
 
 int main()

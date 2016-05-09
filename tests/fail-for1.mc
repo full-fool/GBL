@@ -1,3 +1,5 @@
+class myMain extends Main{
+
 int main()
 {
   int i;
@@ -10,4 +12,6 @@ int main()
   for (j = 0; i < 10 ; i = i + 1) {} #j undefined
 
   return 0;
+}
+
 }

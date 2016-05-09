@@ -282,20 +282,24 @@ class Gobang:
             t = (t) + (1)
         print "up down: ", ((((InputPosition[0]) >= (2)) and ((self.SpriteOwnerId[(((InputPosition[0]) - (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) - (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID)))
         if ((((InputPosition[0]) >= (2)) and ((self.SpriteOwnerId[(((InputPosition[0]) - (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) - (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID))):
-            a[curr]=(InputPosition[0]) - (2)
+            (self.SpriteOwnerId[(((InputPosition[0]) - (1)) * (self.MapSize[0])) + (InputPosition[1])]) = - (1)
+            a[curr]=(InputPosition[0]) - (1)
             a[(curr) + (1)]=InputPosition[1]
             curr = (curr) + (2)
         if ((((InputPosition[0]) <= ((self.MapSize[0]) - (3))) and ((self.SpriteOwnerId[(((InputPosition[0]) + (2)) * (self.MapSize[0])) + (InputPosition[1])]) == (CurPlayerID))) and ((self.SpriteOwnerId[(((InputPosition[0]) + (1)) * (self.MapSize[0])) + (InputPosition[1])]) == (self.NextPlayerID))):
-            a[curr]=(InputPosition[0]) + (2)
+            (self.SpriteOwnerId[(((InputPosition[0]) + (1)) * (self.MapSize[0])) + (InputPosition[1])]) = - (1)
+            a[curr]=(InputPosition[0]) + (1)
             a[(curr) + (1)]=InputPosition[1]
             curr = (curr) + (2)
-        if ((((InputPosition[1]) >= (2)) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (2))]) == (self.NextPlayerID))):
+        if ((((InputPosition[1]) >= (2)) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (1))]) == (self.NextPlayerID))):
+            (self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) - (1))]) = - (1)
             a[curr]=InputPosition[0]
-            a[(curr) + (1)]=(InputPosition[1]) - (2)
+            a[(curr) + (1)]=(InputPosition[1]) - (1)
             curr = (curr) + (2)
-        if ((((InputPosition[1]) <= ((self.MapSize[1]) - (3))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (2))]) == (self.NextPlayerID))):
+        if ((((InputPosition[1]) <= ((self.MapSize[1]) - (3))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (2))]) == (CurPlayerID))) and ((self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (1))]) == (self.NextPlayerID))):
+            (self.SpriteOwnerId[((InputPosition[0]) * (self.MapSize[0])) + ((InputPosition[1]) + (1))]) = - (1)
             a[curr]=InputPosition[0]
-            a[(curr) + (1)]=(InputPosition[1]) + (2)
+            a[(curr) + (1)]=(InputPosition[1]) + (1)
             curr = (curr) + (2)
         return a
         pass
