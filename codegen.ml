@@ -203,7 +203,12 @@ let translate (globals, classes) =
       | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr lookup i ^ "]"
       | A.Unop(op, e) -> "not (" ^ comp_local_expr lookup e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr lookup e
-      | A.Call (f, act) -> lookup_fun f ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
+      | A.Call ("printi", [e]) | A.Call ("printb", [e]) | A.Call ("printf", [e]) | A.Call ("prints", [e]) -> 
+        "sys.stdout.write " ^ "(str(" ^ comp_local_expr lookup e ^ "))"
+      | A.Call ("printlni", [e]) | A.Call ("printlnb", [e]) | A.Call ("printlnf", [e]) | A.Call ("printlns", [e]) -> 
+        "print " ^ "(" ^ comp_local_expr lookup e ^ ")"
+      | A.Call (f, act) -> lookup_fun f ^ f ^ "(" ^ String.concat ", " (List.map (
+    comp_local_expr lookup) act) ^ ")"
       | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
       | _ as s -> ""
     in
@@ -291,5 +296,7 @@ let translate (globals, classes) =
     "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody ^ "\n"
   in
 
-  String.concat "" (List.map comp_global_var globals) ^ gen_game_gui_code ^ String.concat "" (List.map comp_class classes) ^ 
+  "import sys\n" ^ String.concat "" (List.map comp_global_var globals) ^ 
+  (if (String.length game_gui_code) > 0 then gen_game_gui_code else "") ^ 
+  String.concat "" (List.map comp_class classes) ^ 
   gen_main_class_code ^ "\n"
