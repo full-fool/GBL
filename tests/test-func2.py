@@ -6,7 +6,7 @@ class mymain:
     def main(self):
         i = None
         i = 1
-        self.fun(i = 2, i = (i) + (1))
+        self.fun(2, (i) + (1))
         print (i)
         return 0
         pass
