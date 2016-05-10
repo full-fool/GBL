@@ -1,3 +1,0 @@
-class myMain extends Main{
-
-}

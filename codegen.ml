@@ -170,8 +170,16 @@ let translate (globals, classes) =
                     | A.Init (t, n, v) -> n) "self." m
     in
 
+    let init_fun m fdecl = 
+      StringMap.add fdecl.A.fname "self." m
+    in
+
     let local_vars = List.fold_left init_var StringMap.empty cbody.A.vandadecls in
-    let ext_local_vars = StringMap.empty in
+    let local_funs = List.fold_left init_fun StringMap.empty cbody.A.methods in
+
+    let lookup_fun f = try StringMap.find f local_funs
+                    with Not_found -> ""
+    in
 
     let rec comp_local_expr lookup = function
         A.Literal i -> string_of_int i
@@ -195,7 +203,12 @@ let translate (globals, classes) =
       | A.ArrayInClass (e, i, s) -> lookup s ^ s ^ "." ^ e ^ "[" ^ comp_local_expr lookup i ^ "]"
       | A.Unop(op, e) -> "not (" ^ comp_local_expr lookup e ^ ")"
       | A.Assign (s, e) -> lookup s ^ s ^ " = " ^ comp_local_expr lookup e
-      | A.Call (f, act) -> f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
+      | A.Call ("printi", [e]) | A.Call ("printb", [e]) | A.Call ("printf", [e]) | A.Call ("prints", [e]) -> 
+        "sys.stdout.write " ^ "(str(" ^ comp_local_expr lookup e ^ "))"
+      | A.Call ("printlni", [e]) | A.Call ("printlnb", [e]) | A.Call ("printlnf", [e]) | A.Call ("printlns", [e]) -> 
+        "print " ^ "(" ^ comp_local_expr lookup e ^ ")"
+      | A.Call (f, act) -> lookup_fun f ^ f ^ "(" ^ String.concat ", " (List.map (
+    comp_local_expr lookup) act) ^ ")"
       | A.CallDomain (f, act, s) -> lookup s ^ s ^ "." ^ f ^ "(" ^ String.concat ", " (List.map (comp_local_expr lookup) act) ^ ")"
       | _ as s -> ""
     in
@@ -283,5 +296,7 @@ let translate (globals, classes) =
     "class "^ cdecl.A.cname ^ ":\n" ^ comp_cbody cdecl.A.extends cdecl.A.cbody ^ "\n"
   in
 
-  String.concat "" (List.map comp_global_var globals) ^ gen_game_gui_code ^ String.concat "" (List.map comp_class classes) ^ 
+  "import sys\n" ^ String.concat "" (List.map comp_global_var globals) ^ 
+  (if (String.length game_gui_code) > 0 then gen_game_gui_code else "") ^ 
+  String.concat "" (List.map comp_class classes) ^ 
   gen_main_class_code ^ "\n"

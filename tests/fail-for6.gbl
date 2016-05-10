@@ -1,0 +1,11 @@
+class mymain extends Main{
+int main()
+{
+  int i;
+  break;
+  for (i = 0; i < 10 ; i = i + 1) {
+  }
+
+  return 0;
+}
+}

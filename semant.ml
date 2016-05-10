@@ -87,7 +87,7 @@ let check (vandadecls, revcdecls) =
   in
   
   let check_exist s symbol_list =
-    if  StringMap.mem s symbol_list then raise (Failure ("identifier " ^ s ^ "exists"))
+    if  StringMap.mem s symbol_list then raise (Failure ("identifier " ^ s ^ " exists"))
     else ()
 
   in
@@ -112,8 +112,10 @@ let check (vandadecls, revcdecls) =
   in
 
   let rec check_expr (expr_symbol_list, className)  = function
-  Literal _ -> Int
-
+    Literal _ -> Int
+  | BoolLit _ -> Bool
+  | FloatLit _ -> Float
+  | StringLit _ -> String
   | Id s -> type_of_identifier (className ^ "@" ^ s) expr_symbol_list
 
   | Binop(e1, op, e2) as e -> let t1 = check_expr (expr_symbol_list, className) e1 
@@ -160,7 +162,12 @@ let check (vandadecls, revcdecls) =
                   (*ignore(StringMap.iter print_symbolList new_symbol_list);*)
                       (new_symbol_list, classname)
 
-    | Init(t, s, e) -> ignore(check_not_void (fun n -> "illegal void " ^ n) (t, s));
+    | Init(t, s, e) -> let rt = check_expr (symbollist, classname) e in
+                                               check_assign t rt (Failure ("illegal init " ^ string_of_typ t ^
+                                               " = " ^ string_of_typ rt ^ " in declaration " ^ (string_of_typ t)
+                                               ^ " " ^ s ^ " = " ^ 
+                                               string_of_expr e));
+                       ignore(check_not_void (fun n -> "illegal void " ^ n) (t, s));
                        ignore(check_exist (classname ^ "@" ^ s) symbollist);
                        ignore(check_expr (symbollist, classname) e);
                        let new_symbol_list = StringMap.add (classname ^ "@" ^ s) t symbollist in (new_symbol_list, classname)
@@ -302,13 +309,13 @@ let check (vandadecls, revcdecls) =
                                                       then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
                                                     else () in
 
-                let rec stmt (stmt_symbol_list, stmt_object_list) = function
+                let rec stmt (stmt_symbol_list, stmt_object_list, for_while_flag) = function
                   Block sl -> let rec check_block (block_symbol_list, block_object_list) = function
-                                   [Return _ as s] -> stmt (block_symbol_list, block_object_list) s
+                                   [Return _ as s] -> stmt (block_symbol_list, block_object_list, for_while_flag) s
                                  | Return _ :: _ -> raise (Failure "nothing may follow a return")
                                  | Block sl :: ss -> ignore(check_block (block_symbol_list, block_object_list) sl);
                                                      check_block (block_symbol_list, block_object_list) ss;
-                                 | s :: ss -> let (rstsymbol_list, rstobject_list) = stmt (block_symbol_list, block_object_list) s 
+                                 | s :: ss -> let (rstsymbol_list, rstobject_list) = stmt (block_symbol_list, block_object_list, for_while_flag) s 
                                                 in check_block (rstsymbol_list, rstobject_list) ss; 
                                  | [] -> (block_symbol_list, block_object_list)
 
@@ -329,21 +336,21 @@ let check (vandadecls, revcdecls) =
                                                     string_of_typ func.typ ^ " in " ^ string_of_expr e))
 
                 | Ifnoelse(p, b) ->  check_bool_expr (stmt_symbol_list, stmt_object_list) p;
-                                     ignore(stmt (stmt_symbol_list, stmt_object_list) b);
+                                     ignore(stmt (stmt_symbol_list, stmt_object_list, for_while_flag) b);
                                      (stmt_symbol_list, stmt_object_list)
 
                 | Ifelse(p, b1, b2) -> ignore(check_bool_expr (stmt_symbol_list, stmt_object_list) p);
-                                       ignore(stmt(stmt_symbol_list, stmt_object_list) b1);
-                                       ignore(stmt (stmt_symbol_list, stmt_object_list) b2);
+                                       ignore(stmt (stmt_symbol_list, stmt_object_list, for_while_flag) b1);
+                                       ignore(stmt (stmt_symbol_list, stmt_object_list, for_while_flag) b2);
                                        (stmt_symbol_list, stmt_object_list)
 
                 | For(e1, e2, e3, st) -> ignore (expr (stmt_symbol_list, stmt_object_list) e1);
                                          check_bool_expr (stmt_symbol_list, stmt_object_list)  e2;
                                          ignore (expr (stmt_symbol_list, stmt_object_list) e3);
-                                         stmt (stmt_symbol_list, stmt_object_list) st
+                                         stmt (stmt_symbol_list, stmt_object_list, true) st
 
                 | While(p, s) -> check_bool_expr (stmt_symbol_list, stmt_object_list) p;
-                                 stmt (stmt_symbol_list, stmt_object_list) s
+                                 stmt (stmt_symbol_list, stmt_object_list, true) s
 
                 | Bind(b) ->  let typstring = fst b and idstring = (className ^ "@" ^ (snd b)) in
                                 (*print_string (string_of_typ typstring);
@@ -352,7 +359,12 @@ let check (vandadecls, revcdecls) =
                                 (*ignore(StringMap.iter print_symbolList new_symbol_list);*)
                                   (new_symbol_list, stmt_object_list)
 
-                | Init(t, s, e) -> ignore(expr (stmt_symbol_list, stmt_object_list) e);
+                | Init(t, s, e) -> let rt = expr (stmt_symbol_list, stmt_object_list) e in
+                                               check_assign t rt (Failure ("illegal init " ^ string_of_typ t ^
+                                               " = " ^ string_of_typ rt ^ " in " ^ 
+                                               string_of_expr e));
+                                    ignore(expr (stmt_symbol_list, stmt_object_list) e);
+
                                    let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list
                                      in (*ignore(StringMap.iter print_symbolList new_symbol_list);*) 
                                     (new_symbol_list, stmt_object_list)
@@ -365,9 +377,11 @@ let check (vandadecls, revcdecls) =
                                       let new_symbol_list = StringMap.add (className ^ "@" ^ s) t stmt_symbol_list
                                         in (new_symbol_list, stmt_object_list)
 
-                | Break -> (stmt_symbol_list, stmt_object_list)
+                | Break -> if for_while_flag then (stmt_symbol_list, stmt_object_list)
+                              else raise (Failure ("break is out of for or while loop"))
 
-                | Continue -> (stmt_symbol_list, stmt_object_list)
+                | Continue -> if for_while_flag then (stmt_symbol_list, stmt_object_list)
+                              else raise (Failure ("continue is out of for or while loop"))
 
                 | Classdecl(class_name, objectname) -> (*print_string (class_decl class_name); print_string objectname;*)
                                                        let new_object_list = StringMap.add objectname (class_decl class_name) stmt_object_list 
@@ -375,7 +389,7 @@ let check (vandadecls, revcdecls) =
                                                          (stmt_symbol_list, new_object_list)
 
               in
-              let (stmt_result_symbol_list, _) = stmt (formal_symbol_list, StringMap.empty) (Block func.body) in
+              let (stmt_result_symbol_list, _) = stmt (formal_symbol_list, StringMap.empty, false) (Block func.body) in
               ()
             in
 
