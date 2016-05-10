@@ -1,0 +1,59 @@
+### gloabl variables including array, initialization
+class Gobang extends Game
+{
+    int win(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    { 
+      return -1;
+    }
+    
+    #check if the move is legal
+    bool isLegal(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    {
+       return true;
+    }
+    
+    int update(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
+    {
+        int a[2];
+        a[0] = -1;
+        a[1] = -1;
+        return a;
+    }
+}
+
+class GobangAI extends AI{
+
+  int returnposition()
+  {
+    int r[2];
+    r[0] = 0;
+    r[1] = 0;
+    return r;
+  }
+}
+
+
+#assume the input stream is stdin>>...
+class UserMain extends Main{
+  void main()
+  {
+      Gobang mygame;
+      #initalize
+      int MapS[2];
+      MapS[0] = 15;
+      MapS[1] = 15;
+      int GridNumber = MapS[0] * MapS[1];
+      int InputPlayerNumber = 2;
+      int InputPlayerId[InputPlayerNumber];
+      InputPlayerId[0] = 0;
+      InputPlayerId[1] = 1;
+      string InputPlayerName[InputPlayerNumber];
+      InputPlayerName[0] = "Alice";
+      InputPlayerName[1] = "Bob";
+      bool InputWithAI = false;
+
+      initialize(MapS, InputPlayerNumber, InputPlayerId, InputPlayerName, InputWithAI)@mygame;
+
+      #GobangAI gobangai;
+  }
+}
