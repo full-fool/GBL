@@ -241,7 +241,6 @@ class GobangAI extends AI{
 }
 
 
-#assume the input stream is stdin>>...
 class UserMain extends Main{
   void main()
   {
