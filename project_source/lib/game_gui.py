@@ -67,17 +67,28 @@ class GameBoard(tk.Frame):
             print "clicked at", self.mygame.InputPosition[0], self.mygame.InputPosition[1]
 
         else:
-            position = self.gobangai.returnposition()
+            position = self.gobangai.returnposition(self.mygame.MapSize, self.mygame.SpriteOwnerId)
             self.mygame.InputPosition[0] = position[0]
             self.mygame.InputPosition[1] = position[1]
-            self.addpiece(str((position[1], position[0])), position[1], position[0])
-            self.pastPieces.append((position[1], position[0]))
-            dele = self.mygame.update(position)
             
+            self.addpiece(str((position[0], position[1])), position[0], position[1])
+            self.pastPieces.append((position[0], position[1]))
+
+            dele = self.mygame.update()
+            l = len(dele) / 2
+            for i in range(l):
+                delex = dele[2 * i]
+                deley = dele[2 * i + 1]
+                if delex != -1 or deley != -1:
+                    Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
+                    self.canvas.delete(Spritename)
+                    
             winner = self.mygame.win();
             if(winner != -1):
                 self.win(winner)
-                
+                    #if isTie():
+                        #tie()
+                    #turn to next player
             self.turns += 1
             if self.turns >= self.numPlayers:
                 self.turns = 0
