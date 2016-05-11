@@ -1,1 +1,6 @@
-Fatal error: exception Failure("illegal assignment int = void in i = myvoid()")
+1c1
+< Fatal error: exception Failure("illegal assignment float = bool in i = false")
+\ No newline at end of file
+---
+> Fatal error: exception Failure("illegal assignment bool = int in b = 48")
+\ No newline at end of file
