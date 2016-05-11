@@ -151,8 +151,8 @@ class UserMain extends Main{
       InputPlayerId[0] = 0;
       InputPlayerId[1] = 1;
       string InputPlayerName[InputPlayerNumber];
-      InputPlayerName[0] = "Cuidiao";
-      InputPlayerName[1] = "Xicao";
+      InputPlayerName[0] = "Alice";
+      InputPlayerName[1] = "Bob";
       bool InputWithAI = false;
       GobangAI gobangai;
 
