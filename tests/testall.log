@@ -1,0 +1,13 @@
+/usr/bin/python
+
+###### Testing test-*
+./gbl.native < tests/test-*.gbl > test-add1.py test-arith1.py test-arith2.py test-arith3.py test-arith4.py test-array1.py test-array2.py test-fib.py test-for1.py test-for2.py test-func1.py test-func2.py test-func3.py test-func4.py test-func5.py test-gcd.py test-gcd2.py test-global1.py test-global2.py test-global3.py test-hello.py test-if1.py test-if2.py test-local1.py test-local2.py test-ops1.py test-ops2.py test-var1.py test-var2.py test-while1.py test-while2.py test-while3.py test-while4.py
+testall.sh: line 55: tests/test-*.gbl: No such file or directory
+###### FAILED
+
+###### Testing fail-*
+./gbl.native < tests/fail-*.gbl 2> fail-assign1.err fail-assign2.err fail-assign3.err fail-assign4.err fail-assign5.err fail-assign6.err fail-dead1.err fail-expr1.err fail-expr2.err fail-expr3.err fail-expr4.err fail-expr5.err fail-expr6.err fail-for1.err fail-for2.err fail-for3.err fail-for4.err fail-for5.err fail-for6.err fail-func1.err fail-func2.err fail-func3.err fail-func4.err fail-func5.err fail-func6.err fail-func7.err fail-global1.err fail-global2.err fail-if1.err fail-if2.err fail-if3.err fail-nomain.err fail-print1.err fail-return1.err fail-return2.err fail-while1.err fail-while2.err fail-while3.err fail-while4.err >> testall.log
+testall.sh: line 65: tests/fail-*.gbl: No such file or directory
+diff -b fail-assign1.err fail-assign2.err > fail-assign3.err
+FAILED fail-assign1.err differs from fail-assign2.err
+###### FAILED
