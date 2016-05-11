@@ -1,4 +1,5 @@
-(* Semantic checking for the MicroC compiler *)
+(* Author: Sihao Zhang(sz2558), Yiqing Cui(yc3121) *)
+(* Semantic checking for the GBL compiler *)
 
 open Ast
 

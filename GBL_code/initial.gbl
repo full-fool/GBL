@@ -1,3 +1,4 @@
+# Author: Shengtong Zhang(sz2539)
 ### gloabl variables including array, initialization
 class Gobang extends Game
 {

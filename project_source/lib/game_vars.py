@@ -1,3 +1,4 @@
+# Auto generated
         self.WithAI = None
         self.NextSpriteID = None
         self.NextPlayerID = None

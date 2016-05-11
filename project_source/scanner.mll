@@ -1,3 +1,4 @@
+(* Author: Yiqing Cui(yc3121) *)
 { open Parser 
 let strip str =
   Scanf.sscanf str "%S" (fun s -> s)

@@ -1,3 +1,4 @@
+# Author: Sihao Zhang(sz2558)
 import Tkinter as tk
 
 def _create_circle(self, x, y, r, **kwargs):

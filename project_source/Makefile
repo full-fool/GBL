@@ -1,3 +1,4 @@
+# Credit to MicroC
 # Make sure ocamlbuild can find opam-managed packages: first run
 #
 # eval `opam config env`
