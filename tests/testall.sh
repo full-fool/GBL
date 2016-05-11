@@ -1,17 +1,16 @@
 #!/bin/sh
 
-# Regression testing script for MicroC
+# Regression testing script for GBL
 # Step through a list of files
 #  Compile, run, and check the output of each expected-to-work test
 #  Compile and check the error of each expected-to-fail test
 
-# Path to the LLVM interpreter
+# Path to the python interpreter
 PYTHON="python"
 
-# Path to the microc compiler.  Usually "./microc.native"
-# Try "_build/microc.native" if ocamlbuild was unable to create a symbolic link.
-MICROC="./microc.native"
-#MICROC="_build/microc.native"
+# Path to the gbl compiler.  Usually "./gbl.native"
+# Try "_build/gbl.native" if ocamlbuild was unable to create a symbolic link.
+GBL="../project_source/gbl.native"
 
 # Set time limit for all operations
 ulimit -t 30
@@ -85,8 +84,8 @@ Check() {
     generatedfiles=""
 
     generatedfiles="$generatedfiles ${basename}.py ${basename}.out" &&
-    Run "$MICROC" "<" $1 ">" "${basename}.py" &&
-    Run "$LLI" "${basename}.py" ">" "${basename}.out" &&
+    Run "$GBL" "<" $1 ">" "${basename}.py" &&
+    Run "$PYTHON" "${basename}.py" ">" "${basename}.out" &&
     Compare ${basename}.out ${reffile}.out ${basename}.diff
 
     # Report the status and clean up the generated files
@@ -118,7 +117,7 @@ CheckFail() {
     generatedfiles=""
 
     generatedfiles="$generatedfiles ${basename}.err ${basename}.diff" &&
-    RunFail "$MICROC" "<" $1 "2>" "${basename}.err" ">>" $globallog &&
+    RunFail "$GBL" "<" $1 "2>" "${basename}.err" ">>" $globallog &&
     Compare ${basename}.err ${reffile}.err ${basename}.diff
 
     # Report the status and clean up the generated files
@@ -148,13 +147,13 @@ done
 
 shift `expr $OPTIND - 1`
 
-LLIFail() {
-  echo "Could not find the LLVM interpreter \"$LLI\"."
-  echo "Check your LLVM installation and/or modify the LLI variable in testall.sh"
+PYTHONFail() {
+  echo "Could not find the PYTHON interpreter \"$PYTHON\"."
+  echo "Check your PYTHON installation and/or modify the PYTHON variable in testall.sh"
   exit 1
 }
 
-which "$LLI" >> $globallog || LLIFail
+which "$PYTHON" >> $globallog || PYTHONFail
 
 
 if [ $# -ge 1 ]
