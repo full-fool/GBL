@@ -1,3 +1,4 @@
+# Automatic generated
     def initialize(self,MapS,InputPlayerNum,InputPlayerID,InputPlayerName,InputWithAI):
         self.MapSize[0]=MapS[0]
         self.MapSize[1]=MapS[1]

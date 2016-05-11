@@ -1,4 +1,4 @@
-
+(* Credit to microC *)
 type action = Ast | Compile
 
 let _ =
