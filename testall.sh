@@ -6,8 +6,7 @@
 #  Compile and check the error of each expected-to-fail test
 
 # Path to the LLVM interpreter
-LLI="python"
-#LLI="/usr/local/opt/llvm/bin/lli"
+PYTHON="python"
 
 # Path to the microc compiler.  Usually "./microc.native"
 # Try "_build/microc.native" if ocamlbuild was unable to create a symbolic link.
