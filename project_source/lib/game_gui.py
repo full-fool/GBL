@@ -9,8 +9,8 @@ class GameBoard(tk.Frame):
         '''size is the size of a square, in pixels'''
         self.mygame = mygame
         self.gobangai = gobangai
-        self.rows = mygame.MapSize[1]
-        self.columns = mygame.MapSize[0]
+        self.rows = mygame.MapSize[0]
+        self.columns = mygame.MapSize[1]
         self.size = 32
         self.colors = ["black", "white","blue","yellow","grey","pink"]
         self.color = "bisque" # board color
@@ -36,7 +36,7 @@ class GameBoard(tk.Frame):
     #When mouse clicks
     def callback(self, event):
         if self.mygame.NextPlayerID != 1 or not self.mygame.WithAI:
-            if event.x < self.size*self.rows and event.y < self.size*self.columns and self.enable: # inside the board and hasn't finished the game yet 
+            if event.x < self.size*self.columns and event.y < self.size*self.rows and self.enable: # inside the board and hasn't finished the game yet 
                 #if (event.y/self.size, event.x/self.size) not in self.pastPieces:
                 #isLegal()
                 self.mygame.InputPosition[0] = event.y/self.size
@@ -51,7 +51,7 @@ class GameBoard(tk.Frame):
                         delex = dele[2 * i]
                         deley = dele[2 * i + 1]
                         if delex != -1 or deley != -1:
-                            Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
+                            Spritename = "Sprite" + str(delex*self.mygame.MapSize[1] + deley)
                             self.canvas.delete(Spritename)
                     
                     winner = self.mygame.win();
@@ -81,7 +81,7 @@ class GameBoard(tk.Frame):
                 delex = dele[2 * i]
                 deley = dele[2 * i + 1]
                 if delex != -1 or deley != -1:
-                    Spritename = "Sprite" + str(delex*self.mygame.MapSize[0] + deley)
+                    Spritename = "Sprite" + str(delex*self.mygame.MapSize[1] + deley)
                     self.canvas.delete(Spritename)
                     
             winner = self.mygame.win();
@@ -101,7 +101,8 @@ class GameBoard(tk.Frame):
         '''Add a piece to the playing board'''
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
-        Sname = "Sprite" + str(row * self.mygame.MapSize[0] + column)
+        Sname = "Sprite" + str(row * self.mygame.MapSize[1] + column)
+
         if curr==-1:
             self.canvas.create_circle(x0, y0, self.size/3, fill=self.colors[self.turns], tag = Sname)
         else:

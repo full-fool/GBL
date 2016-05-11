@@ -17,8 +17,8 @@
         while ((i) < (self.MapSize[0])):
             j = 0
             while ((j) < (self.MapSize[1])):
-                self.SpriteId[((i) * (self.MapSize[0])) + (j)]= - (1)
-                self.SpriteOwnerId[((i) * (self.MapSize[0])) + (j)]= - (1)
+                self.SpriteId[((i) * (self.MapSize[1])) + (j)]= - (1)
+                self.SpriteOwnerId[((i) * (self.MapSize[1])) + (j)]= - (1)
                 j = (j) + (1)
             i = (i) + (1)
         self.FormerId =  - (1)

@@ -31,7 +31,7 @@ class Gobang extends Game
       
       for(j = left; j <= right; j = j + 1)
       {
-        int curSprite = SpriteOwnerId[position[0] * MapSize[0] + j];
+        int curSprite = SpriteOwnerId[position[0] * MapSize[1] + j];
         #string curSprite = Text@SpriteList[position[0]][j];
         if(curSprite == PlayerSprite)
         {
@@ -58,7 +58,7 @@ class Gobang extends Game
       count = 0;
       for(i = up; i <= down; i = i + 1)
       {
-        int curSprite = SpriteOwnerId[i * MapSize[0] + position[1]];
+        int curSprite = SpriteOwnerId[i * MapSize[1] + position[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -104,7 +104,7 @@ class Gobang extends Game
       {
         curposition[0] = leftup[0] + i;
         curposition[1] = leftup[1] + i;
-        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[1] + curposition[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -148,7 +148,7 @@ class Gobang extends Game
       {
         curposition[0] = leftdown[0] + i;
         curposition[1] = leftdown[1] - i;
-        int curSprite = SpriteOwnerId[curposition[0] * MapSize[0] + curposition[1]];
+        int curSprite = SpriteOwnerId[curposition[0] * MapSize[1] + curposition[1]];
         if(curSprite == PlayerSprite)
         {
           if(PreSprite != PlayerSprite)
@@ -177,15 +177,15 @@ class Gobang extends Game
     {
       if(not (((InputPosition[0]>=0) and (InputPosition[0]<MapSize[0])) and ((InputPosition[1]>=0) and (InputPosition[1]<MapSize[1]))))
         return false;
-      if(SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] == -1)
+      if(SpriteOwnerId[InputPosition[0] * MapSize[1] + InputPosition[1]] == -1)
         return true;
       else return false;
     }
     
     int update(int MapSize[], int GridNum, int PlayerNumber, int PlayerId[], string PlayerName[], int SpriteId[], int SpriteOwnerId[], int FormerId, int FormerPosition[], int NextPlayerID, int NextSpriteID, bool WithAI, int InputPosition[])
     {
-        SpriteId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextSpriteID;
-        SpriteOwnerId[InputPosition[0] * MapSize[0] + InputPosition[1]] = NextPlayerID;
+        SpriteId[InputPosition[0] * MapSize[1] + InputPosition[1]] = NextSpriteID;
+        SpriteOwnerId[InputPosition[0] * MapSize[1] + InputPosition[1]] = NextPlayerID;
 
         FormerId = NextPlayerID;
         FormerPosition[0] = InputPosition[0];
@@ -248,7 +248,7 @@ class UserMain extends Main{
       Gobang mygame;
       int MapS[2];
       MapS[0] = 15;
-      MapS[1] = 15;
+      MapS[1] = 30;
       int GridNumber = MapS[0] * MapS[1];
       int InputPlayerNumber = 2;
       int InputPlayerId[InputPlayerNumber];
