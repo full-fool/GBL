@@ -1,0 +1,2028 @@
+commit 9c34d97ba9f85f1ee852b1e5334968b6970cdba1
+Merge: 807013f fa033d5
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 22:30:44 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 807013febd7bdbde10e3d295158dba4c57fe5bf9
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 22:30:41 2016 -0400
+
+    add AI
+
+commit fa033d5c03687294d682c6b5c2a4fae5ac2e6431
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:50:53 2016 -0400
+
+    update authors comments
+
+commit b1f5533f2edb7e25f022ad97793900dbe5fbd95d
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:47:29 2016 -0400
+
+    add authors
+
+commit adb847ec06ad356ce936b316928167f9b29e5c3b
+Merge: d400cb9 b051cc1
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:42:34 2016 -0400
+
+    add authors
+
+commit d400cb9a43a46c44a86591d833969c65b3128027
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:42:08 2016 -0400
+
+    add authors
+
+commit 74330c2ecadeee008cd13228182972244409e508
+Merge: 044444f b051cc1
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 21:39:32 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit b051cc165202b30a8813a3b821e4151bbee21a73
+Merge: 5b23978 13ac22c
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Tue May 10 21:26:23 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 5b2397883334ba24f830f03ac3ef50d2c223f509
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Tue May 10 21:26:13 2016 -0400
+
+    testall
+
+commit 13ac22c6a9a48e9c35a6590ca0ebd42b440a727e
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Tue May 10 21:23:01 2016 -0400
+
+    gbl update
+
+commit ff86fbde07e00f734d12bf78b0259a648a473cfd
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Tue May 10 21:21:45 2016 -0400
+
+    gbl update
+
+commit 142396e3c8612c98acc83374e3aac4409e4a1a04
+Merge: 2c0515c 9619a47
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Tue May 10 21:17:57 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 2c0515c0a977d34f11e4f751e4c24bfdd6f0f274
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Tue May 10 21:17:55 2016 -0400
+
+    testall.sh
+
+commit 044444fb7d7e159cfff5d7175604e26d2399a45a
+Merge: 6615f0a 9619a47
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 21:14:41 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 9619a47e48d2d222eed2d7eb69f21fea0aae2996
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:14:19 2016 -0400
+
+    rename eat game
+
+commit 7356bcc66a00dd999c98a3d8b247e49724029d85
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Tue May 10 21:13:11 2016 -0400
+
+    Update Eat.gbl
+
+commit 68fdf6b66ee38b47b9311b6f136e2e07b3230c81
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Tue May 10 21:12:18 2016 -0400
+
+    Update GoBang.gbl
+
+commit 6615f0ab99135a0d0f00671f08024a748c06fa47
+Merge: 9d87714 cfb0fb9
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 21:11:29 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit cfb0fb92757740d68f763949370180f15b0b4a4d
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 10 21:10:48 2016 -0400
+
+    rearrange the structure of the project
+
+commit 9d8771465201a31743074c54c0b9a3d19b203063
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 20:45:25 2016 -0400
+
+    update
+
+commit e188f483a341bed6306fb5304ab51d710c643a9e
+Merge: 20a2711 088242a
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 08:52:26 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 20a2711540bbe5b825f303e209bd8390c3879f3b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Tue May 10 08:52:22 2016 -0400
+
+    add logo
+
+commit 088242ab914471b651f147a23e0e3b5817846404
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Tue May 10 00:53:05 2016 -0400
+
+    testall.sh
+
+commit db02c69b63e3485b7e35e205b8e396c5cd81b91a
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Mon May 9 20:09:02 2016 -0400
+
+    add initalize.gbl
+
+commit b0428aab314aac60b4f6a88cdcb9ebb6315a7e26
+Merge: c063c78 49f27e5
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Mon May 9 20:04:24 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit c063c780f920830f8febe33475f6bf6091cadec4
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Mon May 9 20:04:21 2016 -0400
+
+    update
+
+commit 49f27e53d792608a30391df838f3a22718392bbe
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 18:14:49 2016 -0400
+
+    run all testcases
+
+commit d4f60d965e3080af69f7732685758fbdb3a12e24
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 18:09:40 2016 -0400
+
+    run all testcases
+
+commit fa6463e9f909ae3e11b8a8480d8d91de0921d42e
+Merge: 2cfa267 05161e8
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Mon May 9 18:00:12 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 2cfa267b8adb05b9581023e17ae9074958c02c8c
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Mon May 9 18:00:06 2016 -0400
+
+    print generation
+
+commit 05161e81181dd4de52908f33da758f97505d4a7e
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 17:37:39 2016 -0400
+
+    semantic check change
+
+commit d15939aa4f63ca2ac60c81aab70cb10bf68471bb
+Merge: 4aa9fea 34a2a4f
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 17:36:42 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 4aa9fea98e61c6a32654a019064b6eacae4c3e7a
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 17:36:38 2016 -0400
+
+    semantic check change
+
+commit 34a2a4fa9c4989c84631df4b458049fbd6a263d7
+Merge: df79cef 6eff725
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Mon May 9 17:34:34 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit df79cef8133c086fc4a19a0a314f96e210af5cad
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Mon May 9 17:34:30 2016 -0400
+
+    fix bug: class function calling
+
+commit 6eff725fe945fd8e8b6b8760194ed079204445e4
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 17:33:43 2016 -0400
+
+    semantic check change
+
+commit a4a1297e03fe095c24bc38e059ee68de3a471c57
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 16:32:18 2016 -0400
+
+    testcases
+
+commit fdf1b1bd7f8b2749943c9e856c42a9c8687e12b9
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 04:22:45 2016 -0400
+
+    testcases
+
+commit 1d8b4ab2e1445632f4246a7ae13792ad42de7e82
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 00:12:54 2016 -0400
+
+    Semantic
+
+commit e5d25ff80fd9fb7c66cdc06efac8a432f6e0f49f
+Merge: 303b418 f357721
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 00:09:24 2016 -0400
+
+    Semantic
+
+commit 303b4189667bb8bde36cb2b61817b9d50d6dcf0f
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Mon May 9 00:06:00 2016 -0400
+
+    semantic
+
+commit f357721fa3f88a4d1a13b66b85b3ab5febbbbd64
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Mon May 9 00:04:49 2016 -0400
+
+    fix eat.gbl
+
+commit 99b937bacb7925a90bef8461072b172ac86460b2
+Merge: 48c302c e0e8402
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:52:27 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 48c302cb97be8b527a1eb98f400a03d1317f0077
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:52:24 2016 -0400
+
+    semantic
+
+commit e0e840218a1b7d6d0a4f7191660886050bc951fd
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 23:47:50 2016 -0400
+
+    fix sample code
+
+commit ebf6d6e72ed27e8cda9b7d7d68b6598c063ef737
+Merge: 5b59b87 1fbf03c
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:41:38 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 5b59b87b8b9e5d7b1afff6907a13bcddd9bf39c7
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:41:31 2016 -0400
+
+    semantic
+
+commit 1fbf03cf71a22409b551a4be509ae4ac37e6ecea
+Merge: b07d7d7 5853acb
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 23:41:06 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit b07d7d77bd447771875db08514d388121be61fca
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 23:41:02 2016 -0400
+
+    fix sample code
+
+commit 5853acbf9fae71dd97e15f0a3c6e32a08468edce
+Merge: 3b522cb 3b2776e
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:26:21 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 3b522cba5873695da77f78860ed27f52b24b909b
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 23:26:14 2016 -0400
+
+    semantic
+
+commit 3b2776e869d74354a253cdbb1881d6849bdc9168
+Merge: e0dc409 7d1549b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 18:52:55 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit e0dc409581922582c305519911a7ad8433f86de7
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 18:52:36 2016 -0400
+
+    eat.gbl and eat.py
+
+commit 7d1549b64187a72f59af8c56bb653f64b2d91b40
+Merge: e56fc85 acb2f92
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 18:47:01 2016 -0400
+
+    fix sample code and object finder
+
+commit e56fc85305890ad1b0b4d2ba15c41950f47555e6
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 18:46:42 2016 -0400
+
+    fix sample code and object finder
+
+commit acb2f92fb7d7cbd82ec12af1410a2094c25a4b50
+Merge: 21f55ef 2e30206
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 18:17:18 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 21f55ef78f17cac54249055761ebc4c3ddd106ec
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 18:17:09 2016 -0400
+
+    semantic
+
+commit 2e30206efdea98ae2cdbe43107776e74ac596398
+Merge: dc89d32 08476f6
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 18:16:58 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit dc89d3234f432463ffecb2a72b512ec2520bebae
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 18:16:55 2016 -0400
+
+    parser fix
+
+commit ef3f83c8376734e092f104a4d086f3e97eb6b8f1
+Merge: 11eac84 08476f6
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 17:57:22 2016 -0400
+
+    semantic
+
+commit 11eac84fc9cdd19d1b5e31498b5b861b8574ff8f
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 17:56:36 2016 -0400
+
+    semantic
+
+commit 08476f630de93915aa80965dace76f1b6af27711
+Author: full-fool <cyq_2210@163.com>
+Date:   Sun May 8 17:56:27 2016 -0400
+
+    update semant
+
+commit e47d06013c0bfce41e8bef47a9321698e893110c
+Merge: 7e602ae d71af8d
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 17:20:56 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 7e602aea2695ad11ebcb82a60d6dc8bd90d120bf
+Merge: ff7c6f9 040a43c
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 17:20:49 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit d71af8d6eaca1ab8a05a752a56eecc9cdbc11b88
+Author: full-fool <cyq_2210@163.com>
+Date:   Sun May 8 17:20:48 2016 -0400
+
+    update ast
+
+commit ff7c6f9264e90b517856b663efa6701b28e4a8aa
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 17:20:46 2016 -0400
+
+    hard code
+
+commit 040a43c2a339872110a52a5b6e43e6bfdad76392
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 17:00:25 2016 -0400
+
+    semantic
+
+commit 60136a24257f4cc4298f04baf691c11aa8088483
+Merge: 1e30770 614f09a
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 16:53:54 2016 -0400
+
+    semantic
+
+commit 1e30770afd4c339c03c3e20a7c13f882f07ae322
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 16:52:45 2016 -0400
+
+    semantic
+
+commit 614f09a7fa8e35b8f8b436004ed08eaa354eb13b
+Merge: dd96a5e 9746ada
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 16:51:56 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit dd96a5e73e5f0ffaf11cbabbcf5266a2ea4e183a
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 16:51:54 2016 -0400
+
+    fix formal parser
+
+commit 385dc62af0d08054a04937be039350c2d4069934
+Merge: 259a50c 9746ada
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 16:32:20 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 259a50cba2ac9c9dbddd3477e0312da35ef9bd2e
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 16:32:17 2016 -0400
+
+    semant
+
+commit 9746ada5479bb82fb30acdeb147da3c0ebafe57e
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 15:54:57 2016 -0400
+
+    row and col
+
+commit be94bd1afc27f6714f0920b14d09961165699b6b
+Merge: e6fe08c 6765828
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 15:53:54 2016 -0400
+
+    hard code
+
+commit e6fe08c41c1a02c5c271ceaf6513f22a8e7e4e0b
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 15:53:08 2016 -0400
+
+    hard code
+
+commit 6765828aae04701d16660f515dd00134c7a9981f
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 15:50:10 2016 -0400
+
+    add formalvora
+
+commit 7320ec7d28667fe839a959dbb476d7ad3c8982ff
+Merge: 2b2d5c9 e74467b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 14:50:14 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 2b2d5c9bf8ce0939670e8a3f09d1b6ef06eb305f
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 14:50:09 2016 -0400
+
+    add eat.gbl
+
+commit b83858fd7d4599d1888b539b7cdedfbb4a3a1108
+Merge: 51155d4 e74467b
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 01:57:51 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 51155d44fb88dab89b491ec30696503e820d0c40
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sun May 8 01:57:48 2016 -0400
+
+    find game and ai object
+
+commit e74467b70c00b25ce3225527e13ccafc55141988
+Merge: 6b41efe 2ca5192
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 01:56:37 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 6b41efe59ece4d2ae2d60e1bb63493f4eb1c62f1
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 01:56:34 2016 -0400
+
+    semantic
+
+commit 2ca5192e88a6e028757546817eb8d53ee72edc9a
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 01:50:47 2016 -0400
+
+    change win from void to int
+
+commit e345988a2d475547ac564b4a55a4c3e3b3c6066a
+Merge: 07a9889 e919641
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 01:31:08 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 07a988916112239c0661dfab2b0422b89dcc8cd8
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 01:31:04 2016 -0400
+
+    add delete sprite
+
+commit e9196413ac6d04edfb3cc9ddb185a30c8b81cca5
+Merge: 7205a54 7d6c492
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 01:26:16 2016 -0400
+
+    semant
+
+commit 7205a54aa7a2923999cc141a8670f3bc4063ad1d
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun May 8 01:24:31 2016 -0400
+
+    semant
+
+commit 7d6c49254c51f20e782f517613575849c14390a6
+Merge: 885f34b f9ee5de
+Author: full-fool <cyq_2210@163.com>
+Date:   Sun May 8 01:23:29 2016 -0400
+
+    updtae semant check
+
+commit 885f34b80fab4be1d11203148ecb60c9725726ca
+Author: full-fool <cyq_2210@163.com>
+Date:   Sun May 8 01:23:03 2016 -0400
+
+    update semant check
+
+commit f9ee5dec7608cc9be4a97ab28ee8145776d70f12
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 00:55:39 2016 -0400
+
+    add AI
+
+commit 4ed8925cbd364a93ce1977aa0c61308bb060177a
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sun May 8 00:55:03 2016 -0400
+
+    add AI
+
+commit 17bf62beb033c07680b32554d17835d9b4814d55
+Merge: 4683308 24a2dce
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 23:48:17 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 468330836d1c94ce0d0da08e9ffda4a070d06830
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 23:48:13 2016 -0400
+
+    add gobang.py
+
+commit 24a2dceec7263e071fb560133054daa8df21198d
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 22:51:58 2016 -0400
+
+    semantic
+
+commit 44d4401e4303969758dd7f052d917509d243cd43
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 21:35:03 2016 -0400
+
+    semantic
+
+commit fc57987e27d03a0f2516c1ab6880c65ece666c9a
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 21:33:28 2016 -0400
+
+    semantic
+
+commit 188ca0f77f367f2ee158ca4a9a5beb48fb66d861
+Merge: 277c7cb 954db3b
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 21:30:22 2016 -0400
+
+    semantic
+
+commit 277c7cb981340f2f721fa521cdd2c8a8dd9b5267
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 21:29:52 2016 -0400
+
+    semantic
+
+commit 954db3b686c2e774feb60003f788b9af4c470491
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 21:06:59 2016 -0400
+
+    fix sample bug
+
+commit 64d3fc7d448416a30d7e91dc5fc6198619f71986
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 21:03:11 2016 -0400
+
+    fix sample bug
+
+commit 355d78633d7f0110d896d4d91fd662993f3f50c0
+Merge: d9077b0 4adc573
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 21:01:10 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit d9077b03efd523d5693485fb6a5e56a00c687f33
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 21:01:06 2016 -0400
+
+    update
+
+commit 4adc573cd7549f2ae3270b148e5eca972b5ac2a0
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 20:59:28 2016 -0400
+
+    fix
+
+commit 53cf6e48cdb9d1a41f01380838e6b5655c1937dc
+Merge: 4229c00 2f76242
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 20:55:15 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 4229c00c58ebfbba724724f6b39357c8253d68cf
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 20:55:13 2016 -0400
+
+    update
+
+commit 23b3f6dc5286f789bcaffe95515063390492a00b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 20:51:38 2016 -0400
+
+    just update
+
+commit 2f76242ae622ab736149796226f629d1d134acf8
+Merge: 7a678c7 48bf6dd
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 20:49:20 2016 -0400
+
+    hard code
+
+commit 7a678c742c6f9f734cfdaaf1c12f3131d829e1de
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 20:49:09 2016 -0400
+
+    hard code
+
+commit 48bf6dd0049232ab342e1a5f79965e64af1efe88
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 19:57:19 2016 -0400
+
+    WithAI
+
+commit a9d3c5e8aaa517c04bb150b4a6f9abe6f3b4b8e2
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 17:51:05 2016 -0400
+
+    fix sample.gbl
+
+commit 38d3258feeb418a75e53994d7488729ce840b8a4
+Merge: 48c10d5 3d7bb6c
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 17:32:40 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 48c10d5dbaf83a0678c12f7b86db653b0d4a0e39
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 17:32:36 2016 -0400
+
+    get new gbl
+
+commit 3d7bb6cdd287e860672e1e7b2dce8ca2cdb4a371
+Author: full-fool <cyq_2210@163.com>
+Date:   Sat May 7 17:32:09 2016 -0400
+
+    update sample code
+
+commit 253c3788f748012b527fb2fa341ac05f0a1857c4
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 17:14:24 2016 -0400
+
+    gbloutput.py
+
+commit cb4d83b4b5f7908be7a3c596450f8fa6879d8e81
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 17:09:10 2016 -0400
+
+    variable in class
+
+commit f96dcd3f371a64395bcb93f6a2b5193405110791
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:54:28 2016 -0400
+
+    add vandadecls in class body
+
+commit 5c4a9ce55f13cd0b517a757d472183eafffb3f2b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:47:57 2016 -0400
+
+    add a[1]@class
+
+commit b21778c7d12c8e8994f88f52eb16a81319259a60
+Merge: 659a3b1 c0b0e7d
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:44:25 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 659a3b1ba99359d42e31510eeb5ca8a752e4b2a6
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:44:17 2016 -0400
+
+    add a[1]@class
+
+commit c0b0e7d4ac31d42ed34fbd0deaf1e545c8120142
+Merge: 1adfea8 aa25764
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 16:37:35 2016 -0400
+
+    gui color change
+
+commit 1adfea81059de318d91652d3a1c60f97170c4294
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 16:37:26 2016 -0400
+
+    gui color change
+
+commit aa257641536e34cd35b934d73e65f1bf3ef39c22
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:26:25 2016 -0400
+
+    delete main in scanner
+
+commit d751fb7cb3c5ef68a8dc7c34c81af91fc5fa84cb
+Merge: c6d90dc c017a87
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 16:20:34 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit c017a8782675cbc4203670f438241f403afc4ee2
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:20:22 2016 -0400
+
+    fix ast bug
+
+commit c6d90dcf415139f19a02a8e726205ae4556a5f7e
+Merge: a17f30f 8dd1814
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 16:18:12 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit a17f30f9c94eebd30bdec8549aec561b767a0de0
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 16:18:07 2016 -0400
+
+    ast
+
+commit 8dd181479d4abbbacedb7497075ea4bf8dd20dae
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:17:14 2016 -0400
+
+    delete ignore
+
+commit 04015ca67b588834fabbb1f2493d5cb92bb141da
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 16:13:19 2016 -0400
+
+    add string_of_typ... in ast
+
+commit 997ef82b618963edd0d31e1c6f3981f70f712110
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:42:22 2016 -0400
+
+    negative
+
+commit 3cd37491d4483eb293c3c1b63761f88910962dec
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Sat May 7 15:40:07 2016 -0400
+
+    Update parser.mly
+
+commit 4d8bc4e347ca1ea008c4fbec31ad40856dab999a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Sat May 7 15:39:41 2016 -0400
+
+    Update ast.ml
+
+commit de84a277f860efc5b8239c4909031a655dd72c92
+Merge: 879e6f2 53260b6
+Author: full-fool <cyq_2210@163.com>
+Date:   Sat May 7 15:31:10 2016 -0400
+
+    merge
+
+commit 879e6f26e02e7a6c747a4851e55d0c0d1b17e442
+Author: full-fool <cyq_2210@163.com>
+Date:   Sat May 7 15:30:56 2016 -0400
+
+    delete some useless files
+
+commit 53260b6319d835b6141b03356bc4fee8fefb27fb
+Merge: 34676bd c4c5fdd
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:23:35 2016 -0400
+
+    fix is
+
+commit 34676bd76c6658178d1dc694148fb9a360eb66b5
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:23:24 2016 -0400
+
+    fix is
+
+commit c4c5fdd3e016af25d13735cd75b55bfccf0f9d6f
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Sat May 7 15:09:35 2016 -0400
+
+    Update parser.mly
+
+commit e3c1b2895f27227384eec9e7873dadca116d5090
+Merge: 2619a08 da52ae0
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:07:25 2016 -0400
+
+    mod
+
+commit 2619a08adb9f7320d734df5bc5ffd84dc97193ca
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:06:53 2016 -0400
+
+    mod
+
+commit 53a4b4d79d8e212ca9d9be69c88abd11960e0ab3
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 15:06:47 2016 -0400
+
+    mod
+
+commit da52ae0637739c0fa78de999d3a0e59af7270d5f
+Merge: 3b8c872 6878b14
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 15:06:25 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 3b8c8724aaaf62bf4e30b29b7a4ad03f31ec4ebc
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 15:06:21 2016 -0400
+
+    add %
+
+commit 6878b1431591ce3ae2393643247db37b015a1c7f
+Merge: 2022767 9a0c42e
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 15:06:12 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 2022767cd6634072ee3c7a98f2cdd15c819f5ff9
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 15:06:08 2016 -0400
+
+    pythonGui"
+
+commit 9a0c42e7bf62afac6e552d488bda07fccc35695d
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:59:22 2016 -0400
+
+    fix bugs
+
+commit 93ef5892a60f2c93b3cc5d417ebd968136cacdbe
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:50:14 2016 -0400
+
+    print bug
+
+commit 485eddc137873f9451cfac05fdf73661804262a7
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:47:03 2016 -0400
+
+    fix string and call domain
+
+commit e788ba856dac427d63ff0d53f9d93e3820dbc847
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:36:07 2016 -0400
+
+    add main
+
+commit 72514ec28c3c56fee592b9d49c04ca2ddbdc4409
+Merge: c3f3516 7207d16
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:21:13 2016 -0400
+
+    add symbol table
+
+commit c3f3516ee0b5377e13fbb30c582086535c3bf958
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 14:20:58 2016 -0400
+
+    add symbol table
+
+commit ddb337cc302fdaccaa99fb312916d7884a1348d1
+Merge: 31b017c 7207d16
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 14:02:00 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 31b017c50865c07f03dcf3f99ffe6b1e1fa42903
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 14:01:57 2016 -0400
+
+    semantic
+
+commit 7207d16ffa995e7d0ac7d9b640054a261eceefc5
+Merge: d70549b 994d8a0
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 12:32:58 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit d70549b5fa0425ad606cd32e364a3cf29d70ed31
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Sat May 7 12:32:54 2016 -0400
+
+    add ID ID SEMI gobang mygame;
+
+commit 994d8a0ee4fcd7ef4af715849c1ee444fab637f6
+Merge: 8133b97 5090eb9
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 12:11:19 2016 -0400
+
+    fix self variable
+
+commit 8133b972fc54c2abb28e0994dd5ece03998429c9
+Author: caoy11 <yc3113@columbia.edu>
+Date:   Sat May 7 12:10:51 2016 -0400
+
+    fix self vriable
+
+commit 5090eb9f31d31457d615718f75c497f29ea1a8a2
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Sat May 7 12:04:42 2016 -0400
+
+    Update test-var1.mc
+
+commit 6925529141b5b077cb9023e4e51789d547d34242
+Merge: 3489bc7 18aef4f
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 04:08:46 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 3489bc7e106dbc013719bd953f3abd8ea673ccf1
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat May 7 04:08:41 2016 -0400
+
+    semantic
+
+commit 18aef4f767a22a650afc48cae526085ef835c30b
+Merge: ae07d48 66fa3ad
+Author: caoy11 <YeCao@Yes-MacBook-Pro.home>
+Date:   Sat May 7 02:35:53 2016 -0400
+
+    class
+
+commit ae07d4848ffb3fbec4a8676624cbf9b49fe3ef13
+Author: caoy11 <YeCao@Yes-MacBook-Pro.home>
+Date:   Sat May 7 02:35:34 2016 -0400
+
+    class
+
+commit 298d956fef0193d8df1700cbd26971da42294e91
+Author: caoy11 <YeCao@Yes-MacBook-Pro.home>
+Date:   Sat May 7 02:35:12 2016 -0400
+
+    class
+
+commit 66fa3adc1ab572a458096c7463e4d269499938ce
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 23:57:32 2016 -0400
+
+    delete ++
+
+commit 989d1f8b300ffc1c3b15a273770f282aee0e82bc
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 23:53:46 2016 -0400
+
+    add AI class
+
+commit 64bd93e6a9025289d35250b8c5c67e98ed0a2ec5
+Merge: 3a963a0 e3821cb
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 23:43:07 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 3a963a0b6da9f5c9390ce25531e53be345aed658
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 23:43:03 2016 -0400
+
+    new sample code
+
+commit e3821cbdc4dc21682ff17fe3cb0dbe6913e29599
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 23:36:12 2016 -0400
+
+    fix
+
+commit f3fab41a00eb522982c9637d41d07a801cd0c31f
+Merge: 699f061 58ecc78
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 23:24:30 2016 -0400
+
+    array
+
+commit 58ecc78068e108c1b128c23211eb619227025f11
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 23:24:03 2016 -0400
+
+    semantic
+
+commit 699f06112ccd86ceadbc1592030d4377552b3010
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 23:23:14 2016 -0400
+
+    add array
+
+commit f334e834aae6aa498dddb28209d976c6ec8c5279
+Merge: 1c4bad1 19f34ae
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 23:13:00 2016 -0400
+
+    semant
+
+commit 1c4bad1b7d7183de5c636a33ae5260b77bd3862c
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 23:12:38 2016 -0400
+
+    semant
+
+commit 19f34aebdd1061b123c07547ec13aec6c7a5e8e1
+Merge: 7c110d6 ca49104
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 23:11:20 2016 -0400
+
+    merge
+
+commit 7c110d6432c59b381f84327108e04485375806b3
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 23:09:49 2016 -0400
+
+    code generation
+
+commit ca491041e3289f596effc6760400897e23be2bd6
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 23:00:27 2016 -0400
+
+    delete array<>
+
+commit 651083e14e68cd3e8d378308dbbda99c718fd8e5
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 22:58:57 2016 -0400
+
+    adjust if
+
+commit a70ef12b8f48839dacf8cb3918964eaf584b1fd1
+Merge: 7de618d 7e1e2f7
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 22:36:58 2016 -0400
+
+    codegeneration
+
+commit 7de618d113fb90c217a2c9e40f8f98c45c3f8951
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 22:34:39 2016 -0400
+
+    code generation
+
+commit 478880b227ee3cad7c5dc5f0bafbe86fd4daaea6
+Merge: 871cc56 7e1e2f7
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 22:19:22 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 871cc56602d4480cf66078ff9dbabeb3b9d80311
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 22:19:20 2016 -0400
+
+    update
+
+commit 7e1e2f736134f77931db0af9b2abc7aff8a09808
+Merge: 9d7fd72 9a8cc72
+Author: full-fool <cyq_2210@163.com>
+Date:   Fri May 6 21:26:18 2016 -0400
+
+    update sample
+
+commit 9d7fd721dc971115be7612f025bc2968dc2aaf47
+Author: full-fool <cyq_2210@163.com>
+Date:   Fri May 6 21:25:51 2016 -0400
+
+    update sample code
+
+commit 9a8cc72466c4df2a796253d250c478a9bf6de41e
+Merge: d99b4c4 c26975d
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 21:19:46 2016 -0400
+
+    code generation
+
+commit d99b4c45f765e2a0ef9acb0f15cce1ed9e79162b
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 21:18:12 2016 -0400
+
+    code generation
+
+commit c26975dab9cad44e7dba3c912c3f7c82073291b2
+Merge: 161b146 c89bead
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 21:18:05 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 161b1468d4c1fcd6a551ca761ad148a29be638a4
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 21:18:00 2016 -0400
+
+    delete op in @
+
+commit c89beadb05d8bea221b7c89de94bf59ea43f7d33
+Author: full-fool <cyq_2210@163.com>
+Date:   Fri May 6 21:15:35 2016 -0400
+
+    update sample code
+
+commit 5ed7d9af749b8512ec178fa87e30eb8863c9dd8d
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 20:43:15 2016 -0400
+
+    add @
+
+commit 8c790c086daf875c4de8decdbd457a3f23647ac8
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:49:45 2016 -0400
+
+    add @
+
+commit 3cf1f76cba9665e9ead2e8f3537ff4eade1c6e55
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:43:33 2016 -0400
+
+    add @
+
+commit 600c511e252d30ea99432a9c78f5650b606de611
+Merge: ce440c0 19b77f7
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:33:35 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit ce440c06f1022c7d754d09d61b11e86d2a7a5eb6
+Merge: 1cf8404 05240a3
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:33:26 2016 -0400
+
+    just pull
+
+commit 19b77f74f162a2416383824b6501436846359fc0
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 18:29:54 2016 -0400
+
+    code generation
+
+commit 1cf84049b31de746414ada836c025f8a633506cc
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:21:01 2016 -0400
+
+    change int to expr
+
+commit 05240a3d5ce9b6eb0d7a9090b00faf1fae030d3e
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 18:20:23 2016 -0400
+
+    Update ast.ml
+
+commit 42fa8fee0d833082f820482b06c768a26e4d4026
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 18:19:02 2016 -0400
+
+    Update ast.ml
+
+commit 620ecc8377aba1e8b575ee18a96a815380763d8b
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 18:18:18 2016 -0400
+
+    Update ast.ml
+
+commit b593dc7b457f4ba1d28b3d22306caaba9666b61b
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:16:25 2016 -0400
+
+    add int a = 1 in class
+
+commit f54ba1846bdf5ba82a39033f28e82cba341d63c9
+Merge: 66a8f02 3d88905
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:03:51 2016 -0400
+
+    Merge branch 'master' of https://github.com/full-fool/GBL
+
+commit 66a8f02e8faf6ac5028ec02e45335d0535b24826
+Author: zst19930322 <sz2539@columbia.edu>
+Date:   Fri May 6 18:03:32 2016 -0400
+
+    add int a = 1; in class
+
+commit 3d8890511271abb696a6009dc67fe93563e1ba33
+Merge: bd9d234 563a2c7
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 17:57:58 2016 -0400
+
+    code generation
+
+commit bd9d234807eddab68ac1cb98881fb47922f0352d
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 17:57:17 2016 -0400
+
+    code generation
+
+commit 563a2c7e5631158cca7ccd17a33acaa3239cad17
+Merge: f01f47b a9f0482
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 17:47:31 2016 -0400
+
+    gui
+
+commit f01f47b8f9c435c874e07da233c627e32c5068fd
+Merge: 3140fca f04bed9
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 17:47:10 2016 -0400
+
+    gui
+
+commit ce0accb827902fcaf70388c6436cb9561a8cb306
+Merge: 4baefb6 a9f0482
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:45:38 2016 -0400
+
+    code generation
+
+commit 4baefb6998d8dced84b5292c2a22e26478ef9693
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:43:29 2016 -0400
+
+    code generation
+
+commit 26e9a21185f3bb6c5cc194326525fd5b1845910e
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:42:46 2016 -0400
+
+    code generation
+
+commit a9f0482f5dc50e84c8fb5966b43e0b79d382e0a7
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 16:42:19 2016 -0400
+
+    Update parser.mly
+
+commit 9733d6531f18f52e000d46ad1e3ef0093ab99a31
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 16:26:33 2016 -0400
+
+    Update ast.ml
+
+commit 190181efb5847bb3384b1187c7e667b0dc9773dc
+Merge: e5d65b1 f04bed9
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:22:18 2016 -0400
+
+    code generation
+
+commit e5d65b1e36d457876402850b6db71850e8133188
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:21:03 2016 -0400
+
+    code generation
+
+commit 3140fca7e0cbf29b82e7edcae9eb9b4f321573b8
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 16:20:13 2016 -0400
+
+    ast
+
+commit f04bed96bb0223149956a2dcbaa02d572b9308f2
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Fri May 6 16:20:02 2016 -0400
+
+    Update ast.ml
+
+commit 321bd7f118b293d42fa1b227c30fbb0ef5efc610
+Author: full-fool <cyq_2210@163.com>
+Date:   Fri May 6 16:16:55 2016 -0400
+
+    update smaple code
+
+commit a18cc7efa914edfa7c334350ad042159c6208814
+Merge: 5e8b1bf 70f38b2
+Author: zst19930322 <zst19930322@163.com>
+Date:   Fri May 6 16:15:31 2016 -0400
+
+    add class
+
+commit 5e8b1bf28e9949abeb9af15aece7171ae79e34f3
+Author: zst19930322 <zst19930322@163.com>
+Date:   Fri May 6 16:09:49 2016 -0400
+
+    add class to scanner/ast/parser
+
+commit 70f38b2f0bc75e44df8d3f97c68b2ba492acb346
+Merge: 85499b6 3d8342b
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 16:05:21 2016 -0400
+
+    code generation
+
+commit 85499b6b5ef3f45b6b9e8f18e6bc847efcd4921d
+Author: caoy11 <YeCao@dyn-160-39-193-197.dyn.columbia.edu>
+Date:   Fri May 6 15:57:38 2016 -0400
+
+    fix
+
+commit 3d8342ba379b428f848ed52cedf3e5f112c48c55
+Author: full-fool <cyq_2210@163.com>
+Date:   Fri May 6 12:56:18 2016 -0400
+
+    update sement check structure
+
+commit a89b3a33fb8a287ba70800818b68fd7fde3ed192
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Fri May 6 03:23:02 2016 -0400
+
+    gobangGUI
+
+commit 82b96123f7645b2751e719411e2e5480a1959ac1
+Author: full-fool <cyq_2210@163.com>
+Date:   Thu May 5 17:27:17 2016 -0400
+
+    add array and variable initialization
+
+commit 88367b7e04448e051c539b80dbb096fcc13fc3cf
+Author: full-fool <cyq_2210@163.com>
+Date:   Thu May 5 03:09:46 2016 -0400
+
+    add support for array(cannot test, but can make)
+
+commit 414bea8698dd836a53c89ffb639ca3cb5d741654
+Merge: fa770d1 87a3e70
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 23:21:07 2016 -0400
+
+    add arrayele and init
+
+commit fa770d1bba7bbd049ddbd5aa17111239d4bdfa4d
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 23:19:44 2016 -0400
+
+    add arrayele and init
+
+commit 87a3e70f351e66854cff278072f6d761058deb7a
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 23:19:00 2016 -0400
+
+    change
+
+commit 95f4f766a5a75cd41dd90a242f4ed2e9e095c86e
+Merge: 12cd7a5 969f5ad
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 20:59:29 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit 969f5ad9cf0d767fbf90cdbc627f01a166de9d1c
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 20:58:47 2016 -0400
+
+    update comment
+
+commit 12cd7a5def2ea1d661ac86b5589e83317ef12ec9
+Merge: ce34978 1a6bc18
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 20:40:29 2016 -0400
+
+    Merge branch 'master' of github.com:full-fool/GBL
+
+commit ce34978e6265d932c4f883db7661c4b2265813bc
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 20:40:11 2016 -0400
+
+    sement
+
+commit 1a6bc18a832f7ff52a64cd2c468f5b68ba7a16ad
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 20:39:26 2016 -0400
+
+    fix the comment in scanner
+
+commit 1ebfe51f38bb7cce75c1db080389bc37997e9609
+Merge: f7cd8ef 0ea1ce2
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 17:28:53 2016 -0400
+
+    semant
+
+commit 70771051dd8ebc7a4d16800c77220587762bf5b3
+Author: YECAO <yc3113@columbia.edu>
+Date:   Wed May 4 17:12:22 2016 -0400
+
+    Update README.md
+
+commit f7cd8efcc6e77a9a40cede73eeec72be2e5e9e36
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Wed May 4 16:53:08 2016 -0400
+
+    semant
+
+commit 0ea1ce2c1064ffa54b3acd9b33952159bd6c0dca
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:42:40 2016 -0400
+
+    fix
+
+commit 98e58a0923ff132ca22421fb0444da1f3da8513d
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:42:25 2016 -0400
+
+    fix
+
+commit 317cb9ac74dab10358bf7c02afb9f58f12cef7c5
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:13:42 2016 -0400
+
+    fix
+
+commit a32fd79e7440aba6de07eb9521fef313c81b29d8
+Merge: 14a59e9 819307b
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 16:12:27 2016 -0400
+
+    add string in scanner
+
+commit 14a59e9336d505093f3db848a673db1754ee5e6b
+Merge: faffdbc def95bc
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 16:10:57 2016 -0400
+
+    add scanner about string
+
+commit 819307bbcff059cb5ab3fe0be01100242b9463c0
+Merge: c1b4deb def95bc
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:08:55 2016 -0400
+
+    fix
+
+commit faffdbcc30c90dddfda614d45b6590b8c7156165
+Author: full-fool <cyq_2210@163.com>
+Date:   Wed May 4 16:07:51 2016 -0400
+
+    add scanner about string
+
+commit c1b4debf1d302e74a1ad45a0f7f14da240306bdd
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:07:28 2016 -0400
+
+    fix
+
+commit 0610350997ff6a799498f91f9d0ff2e5d52375d1
+Author: caoy11 <YeCao@dyn-160-39-192-226.dyn.columbia.edu>
+Date:   Wed May 4 16:07:12 2016 -0400
+
+    fix
+
+commit def95bc056bef70200f3343af8172a357ee9d4e2
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Wed May 4 15:57:17 2016 -0400
+
+    Update ast.ml
+
+commit 286034ce4bcf500abda857ff365e48f726f6973e
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Wed May 4 14:47:00 2016 -0400
+
+    Update parser.mly
+
+commit ce944e2dda9458dae8e477b7f2d9c0bdc8fe029e
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Wed May 4 11:16:35 2016 -0400
+
+    Update parser.mly
+
+commit cfd562856dd16224ce5a18079dc7e1b0f69e9715
+Author: caoy11 <YeCao@dyn-160-39-192-144.dyn.columbia.edu>
+Date:   Tue May 3 22:54:45 2016 -0400
+
+    fix
+
+commit 00403cc950f209365f6e670ea265845a2c690f92
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Tue May 3 20:49:25 2016 -0400
+
+    Update scanner.mll
+
+commit f090119f8cd2b33c1ea9860b5fdcfbb3ced76053
+Author: full-fool <cyq_2210@163.com>
+Date:   Tue May 3 20:36:12 2016 -0400
+
+    update todo in readme
+
+commit c102350fccec433dfa2ea6a478ed96acf0b5dd5c
+Merge: 6332eb4 4f13d49
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon May 2 16:10:40 2016 -0400
+
+    add sample code
+
+commit 6332eb4f3dfc897e5e2d1a4440ade8d548f35f7a
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon May 2 16:10:17 2016 -0400
+
+    new sample code
+
+commit 4f13d49e48e8ade142ca5153f77b00bb2a07fe9f
+Merge: f6a7d9e 1871c4b
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat Apr 30 21:59:54 2016 -0400
+
+    testcase
+
+commit f6a7d9ea59ce3f867ed76dced9091f79e9a91389
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sat Apr 30 21:58:49 2016 -0400
+
+    testcase
+
+commit 1871c4b3c3f26022d1602793bab572690e30ced0
+Author: full-fool <cyq_2210@163.com>
+Date:   Thu Apr 7 19:14:09 2016 -0400
+
+    rm microc.native
+
+commit a3f082acb6e0cd6a45a86b0dc42e6b178c56bef7
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 21:20:32 2016 -0400
+
+    first version hello world
+
+commit c2cc6e368a4fd618128ce24e308bac7c91c3b4c8
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 21:16:44 2016 -0400
+
+    fix
+
+commit 17a591b593d2a013734663b74c6eed66151239ee
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 21:10:37 2016 -0400
+
+    add semi
+
+commit f72fdfa423553001361acdda06312f55507c65a1
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 20:55:47 2016 -0400
+
+    Update microc.ml
+
+commit 8dc1700bd4a3d9447b3ea75cf2c33595e55e8cd2
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 20:43:44 2016 -0400
+
+    Update ast.ml
+
+commit 226bebb8363da22e66b3eef203098ac02525dc64
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 19:22:28 2016 -0400
+
+    Added files via upload
+
+commit 41bc282d502ed79cc2920b07d1ca4a2714d614b0
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 19:20:44 2016 -0400
+
+    fix
+
+commit d9786f8f251b26e25bd5798e0dd8b0187faa7d0b
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 19:19:43 2016 -0400
+
+    fix
+
+commit c5876a4ae1164f01794d465294741abfc8e4a51a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 19:18:14 2016 -0400
+
+    Added files via upload
+
+commit cd53c552f757e3dcad3ca00e9972a8c0aca6c886
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 19:17:11 2016 -0400
+
+    delete array
+
+commit e96229212fec3d83c5305953f6ce409a37a14dbf
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 19:16:02 2016 -0400
+
+    Added files via upload
+
+commit 019da088e967d9b4cd5b9f657d6c30c36d41059d
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 19:09:00 2016 -0400
+
+    update scanner
+
+commit de1fec62f309c2298dc9c0478b9ed5f589116ed5
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 19:07:49 2016 -0400
+
+    Added files via upload
+
+commit 601ba05075a8a2c5891ab84451496ebc5ceaf216
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 19:07:37 2016 -0400
+
+    Update ast.ml
+
+commit dc159fb6308ebd0dbdc235248449d0820dbda5a4
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 19:05:16 2016 -0400
+
+    Added files via upload
+
+commit 72445945559221344531f2a8393e07670aa8bccd
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 19:03:20 2016 -0400
+
+    Update ast.ml
+
+commit 28ab848a86686ddd6412c09cb6aeb397227f882e
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 19:01:58 2016 -0400
+
+    test
+
+commit cbaa8e31034aaa0a31fbe3e940212611885987e3
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 18:56:46 2016 -0400
+
+    Update ast.ml
+
+commit d1073cb55602b2acd38d88701de577239f92f09a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:52:10 2016 -0400
+
+    Added files via upload
+
+commit 40396377eea5f6fbd375af1315644ddb9324a087
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:47:21 2016 -0400
+
+    Added files via upload
+
+commit 90e5e24f260806562ff03d0d23fbfaa0f4aaab50
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:46:44 2016 -0400
+
+    fix
+
+commit a336e2a57294bfb01e5aaede0441f21a9bbff470
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:44:51 2016 -0400
+
+    test
+
+commit 399c953d8ab08d190757d3c1e6b4eeed66873d3d
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:43:32 2016 -0400
+
+    Added files via upload
+
+commit e4d5f562d794b53e8a9c593be3f56aa5da35551d
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:42:37 2016 -0400
+
+    fix
+
+commit aeec19c743f62cfbe6b909a3ebfb86a1f2eb4133
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 18:40:29 2016 -0400
+
+    add float and string constant
+
+commit 26f0bc26c6ae31be29eb895954cd56a137ff6ee9
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:38:20 2016 -0400
+
+    fix
+
+commit a2324b25ab7a48ee76da8839106b5edd8c18208f
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:37:14 2016 -0400
+
+    fix bug
+
+commit 43b6c12b666ca4a42f6cfa67cb7ae584b6f4f5f2
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 18:36:32 2016 -0400
+
+    Update ast.ml
+
+commit 08a2618802060499c629fe1b2fe144ea3c4f5afc
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:34:01 2016 -0400
+
+    fix bug
+
+commit cbd5ec73f7fdd633ea529cd049c21e477bb77e15
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 18:32:46 2016 -0400
+
+    add string constant'
+
+commit 21fe0a3cbeb3aa6bedc42c141483e924a5257afc
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:30:29 2016 -0400
+
+    string sub
+
+commit e1dcfc29819f68ed05e7791023a5ae8c314042c6
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 18:21:18 2016 -0400
+
+    Update ast.ml
+
+commit b191110d81e139801846aa04ba28ec4352244994
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:13:03 2016 -0400
+
+    Added files via upload
+
+commit a2585ad8f05440ecd6acf45fb4d94159a67a6bc5
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:09:31 2016 -0400
+
+    fix bug
+
+commit ca08fb90b2ae980992cfed2d6c34745a69ec6946
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 18:08:06 2016 -0400
+
+    update array in scanner
+
+commit 5b0cbf2961ca225387cc8d15076798ed48807336
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 18:07:42 2016 -0400
+
+    Update ast.ml
+
+commit 0858f4df70bcef6965cb90b831145060fb99589a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:07:26 2016 -0400
+
+    Added files via upload
+
+commit 7a47977a0fda463c64700e04f27c3bda0716d240
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:06:04 2016 -0400
+
+    Added files via upload
+
+commit e180e78dcc2004a321c56fc8a1e320691b36a127
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:04:14 2016 -0400
+
+    Added files via upload
+
+commit 6873a7563999b061689682c318e1126c0ef75ad6
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 18:03:06 2016 -0400
+
+    Added files via upload
+
+commit 417b82e6ca6180cb24ed1686c79b1351e18c5eaf
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 18:01:08 2016 -0400
+
+    change equal to is
+
+commit a24439f4adcbb038c47605f978670bac1a4261d4
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 18:00:27 2016 -0400
+
+    add float
+
+commit 068954101a1832538d09ad34e6eed06a3f3faba1
+Author: caoy11 <YeCao@dyn-160-39-192-28.dyn.columbia.edu>
+Date:   Mon Apr 4 17:55:55 2016 -0400
+
+    delete symbols
+
+commit 2f4ed1e8da480b8364b58e0f9e92d4c0128997a3
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 17:55:14 2016 -0400
+
+    Update ast.ml
+
+commit 26cece2b8749c001384aee83f1f1dcfae6414f66
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:52:07 2016 -0400
+
+    Added files via upload
+
+commit 115689904b8fa8a52a48236c7c2205223765e296
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:51:21 2016 -0400
+
+    Added files via upload
+
+commit c51ad42fed55feba9fe16b5e6b7334d5a4d04861
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 17:50:28 2016 -0400
+
+    Update ast.ml
+
+commit 9180961d7c7ad55a2b1ec2a9609198820c994b5a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:47:22 2016 -0400
+
+    Added files via upload
+
+commit bd7abaa9af66d314ebbc65d9c09b53cc604b7348
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:47:10 2016 -0400
+
+    add void true false in scanner
+
+commit a5e2db20c135316a5bc0ae1b5ba84654ebbce3b5
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:32:18 2016 -0400
+
+    update scanner
+
+commit 7ad0a3c4cbec0a4a9cb3744d50c104277746a020
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:24:19 2016 -0400
+
+    Update scanner.mll
+
+commit 42eecbc9bdd208d6c3a7c88cf8410b71cab772d5
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:23:35 2016 -0400
+
+    Update scanner.mll
+
+commit f480dd4d5bd9c2c0d6f13f4d11115a717318c8ef
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:22:58 2016 -0400
+
+    Update scanner.mll
+
+commit 563ddcee63a634f8a390e952f3a9c3910e6c0d4d
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Apr 4 17:21:16 2016 -0400
+
+    Update scanner.mll
+
+commit 33ab0be2cfbc0fc6448dd4be25ac054b965d2b4d
+Author: caoy11 <caoy11@foxmail.com>
+Date:   Mon Apr 4 17:17:57 2016 -0400
+
+    add
+
+commit d89dbcc27275584310f672ef8db3b85d2e811104
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:10:57 2016 -0400
+
+    Added files via upload
+
+commit 3526dcb633e5f765a9e5ee084c298109c82c2b50
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:09:15 2016 -0400
+
+    Added files via upload
+
+commit 2adf7b4222d7866e0a6c40e185ea1096a06c24c4
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:08:31 2016 -0400
+
+    Added files via upload
+
+commit e38441fe0e24901a7b2f886cd987dc41dc62bd67
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:03:34 2016 -0400
+
+    Added files via upload
+
+commit fc8452691bc440c8bbdd52c6e158b9066b0fa8bf
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 17:02:16 2016 -0400
+
+    Added files via upload
+
+commit b1476712e47fd2f8e3f58882afc6c540cfdc81a1
+Author: Sihao Zhang <zhangsh0711@gmail.com>
+Date:   Mon Apr 4 16:50:31 2016 -0400
+
+    Update ast.ml
+
+commit 928f8216e623165ceed42cacf6e6e56a38576f65
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 16:45:03 2016 -0400
+
+    Added files via upload
+
+commit bf6c7d84e8746bfb17d7cfddc2176923b9a35d33
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 16:43:34 2016 -0400
+
+    Added files via upload
+
+commit 6bd69fd533cecd44b1223aded8e0787b10d727ed
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 16:42:09 2016 -0400
+
+    Added files via upload
+
+commit 4987e793f57d2380d6b67e203227e5191ec8d145
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 16:39:10 2016 -0400
+
+    Added files via upload
+
+commit c5aa748b92efaefb279efe518ee687d44f6fd53a
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 16:18:55 2016 -0400
+
+    Added files via upload
+
+commit 3afb429f563401a4c904a81df007c27c9737a629
+Author: Shengtong Zhang <zst19930322@163.com>
+Date:   Mon Apr 4 12:28:15 2016 -0400
+
+    Create parser.mly
+    
+    parser
+
+commit 0fa10979c7123f90c2a6de3a51232874fb7a5336
+Author: caoy11 <YeCao@Yes-MacBook-Pro.home>
+Date:   Mon Apr 4 00:06:37 2016 -0400
+
+    add string type and put function
+
+commit 85381cc84e62cbd0be53ee5074d2a191f59cb52b
+Author: zshhhh <zhangsh0711@gmail.com>
+Date:   Sun Apr 3 16:20:03 2016 -0400
+
+    ast
+
+commit 7b81d27de8dc39f65f7c0451eb6cc968d680c924
+Author: full-fool <cyq_2210@163.com>
+Date:   Sun Apr 3 11:03:21 2016 -0400
+
+    scanner
+
+commit bce39540516b5d254ed901616c6cda9757a15a36
+Author: full-fool <cyq_2210@163.com>
+Date:   Mon Mar 28 17:00:25 2016 -0400
+
+    Initial commit
